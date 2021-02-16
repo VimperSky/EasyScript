@@ -1,1 +1,1 @@
-EasyScript
+EasyScript - Easier TypeScript alternative!

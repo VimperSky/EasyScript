@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Lexer.Types;
 using static Lexer.Constants;
 
-namespace Lexer
+namespace Lexer.LexerMachine
 {
-    public partial class LexerMachine: ILexerMachine
+    public partial class LexerMachine : ILexerMachine
     {
+        private readonly Queue<Token> _tokens = new();
         private string _expectedValue;
         private char _lastChar;
         private int _lastLine;
@@ -16,11 +17,22 @@ namespace Lexer
 
         private string _value;
 
-        private readonly Queue<Token> _tokens = new();
+        private int _charIndex;
+        private int _lineIndex;
 
         public LexerMachine()
         {
             Reset();
+        }
+
+        public void PassChar(char ch)
+        {
+            if (ch == '\n')
+            {
+                _charIndex = 0;
+                _lineIndex++;
+            }
+            ProcessChar(ch, _lineIndex, _charIndex++);
         }
 
         public LexerMachine ProcessChar(char ch, int line, int pos)
@@ -76,6 +88,8 @@ namespace Lexer
 
         public LexerMachine GenerateToken(TokenType tokenType)
         {
+            if (SkipTokens.Contains(tokenType))
+                return this;
             var newToken = new Token(tokenType, _value, _startLine, _startPos);
             _tokens.Enqueue(newToken);
             return Reset();
@@ -93,6 +107,9 @@ namespace Lexer
                 : AddChar().GenerateToken(ServiceSymbols[_lastChar.ToString()]);
         }
 
-        public LexerMachine GenerateComment() => AddChar(CommentSymbol).GenerateToken(ServiceSymbols[CommentSymbol.ToString()]);
+        public LexerMachine GenerateComment()
+        {
+            return AddChar(CommentSymbol).GenerateToken(ServiceSymbols[CommentSymbol.ToString()]);
+        }
     }
 }

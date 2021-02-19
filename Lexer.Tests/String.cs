@@ -1,7 +1,5 @@
-﻿using System.Linq;
+﻿using Lexer.Types;
 using Xunit;
-using Lexer.States;
-using Lexer.Types;
 
 namespace Lexer.Tests
 {
@@ -10,35 +8,35 @@ namespace Lexer.Tests
         [Fact]
         public void DefaultString()
         {
-            var lexer = new Lexer("\"some string\"");
+            var lexer = new TestLexer("\"some string\"");
 
-            Assert.Equal(TokenType.String, lexer.Tokens.First().Type);
+            Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void StringWithNewLine()
         {
-            var lexer = new Lexer("\"some\nstring\"");
+            var lexer = new TestLexer("\"some\nstring\"");
 
-            Assert.Equal(TokenType.String, lexer.Tokens.First().Type);
+            Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void StringWithErrorSymbol()
         {
-            var lexer = new Lexer("\"some string\"^");
+            var lexer = new TestLexer("\"some string\"^");
 
-            Assert.Equal(TokenType.String, lexer.Tokens.First().Type);
-            Assert.Equal(TokenType.Error, lexer.Tokens.ToList()[1].Type);
+            Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void StringWithKeyword()
         {
-            var lexer = new Lexer("\"let while string\"^");
+            var lexer = new TestLexer("\"let while string\"^");
 
-            Assert.Equal(TokenType.String, lexer.Tokens.First().Type);
-            Assert.Equal(TokenType.Error, lexer.Tokens.ToList()[1].Type);
+            Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
     }
 }

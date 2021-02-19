@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Lexer.LexerMachine;
 using Lexer.Types;
 
@@ -11,16 +9,7 @@ namespace Lexer
     {
         private readonly ILexerMachine _machine;
         private readonly StreamReader _streamReader;
-        
-        private static MemoryStream GenerateStreamFromString(string value)
-        {
-            return new(Encoding.UTF8.GetBytes(value ?? ""));
-        }
-        
-        public Lexer(string inputString): this(GenerateStreamFromString(inputString))
-        {
-        }
-        
+
         public Lexer(Stream stream)
         {
             _streamReader = new StreamReader(stream);
@@ -45,5 +34,6 @@ namespace Lexer
                 }
             }
         }
+        
     }
 }

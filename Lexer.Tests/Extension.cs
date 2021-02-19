@@ -10,6 +10,8 @@ namespace Lexer.Tests
             {
                 machine.ProcessChar(t, 0, 0);
             }
+
+            machine.ProcessChar('\n', 0, 0);
         }
     }
 }

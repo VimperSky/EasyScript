@@ -2,7 +2,7 @@
 using System.Linq;
 using static Lexer.Constants;
 
-namespace Lexer.States
+namespace Lexer
 {
     public partial class LexerMachine
     {

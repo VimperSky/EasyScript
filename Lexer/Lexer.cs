@@ -8,35 +8,41 @@ namespace Lexer
     public class Lexer
     {
         private readonly LexerMachine _machine;
-        private readonly List<Token> _tokens;
 
-        public Lexer()
+        private readonly StreamReader _streamReader;
+
+        public Lexer(StreamReader streamReader)
         {
-            _tokens = new List<Token>();
+            _streamReader = streamReader;
             _machine = new LexerMachine();
         }
+
 
         private void ProcessTokenValue(char ch, int lineNumber, int pos)
         {
             _machine.ProcessChar(ch, lineNumber, pos);
         }
 
-        public void Run(StreamReader sr, StreamWriter sw)
+        public IEnumerable<Token> GetTokens()
         {
             string line;
             var lineNumber = 0;
-            while ((line = sr.ReadLine()) != null) // Считываем построчно
+            
+            void MachineOnTokenGenerated(Token obj)
+            {
+                yield return obj;
+            }
+            
+            _machine.TokenGenerated += MachineOnTokenGenerated;
+            while ((line = _streamReader.ReadLine()) != null) // Считываем построчно
             {
                 for (var i = 0; i < line.Length; i++) ProcessTokenValue(line[i], lineNumber, i);
-                // После конца строки прогоняем еще один пробел в лексер как разделитель строки. Возможно потом нужно сделать другой тип разделителя.
                 ProcessTokenValue('\n', lineNumber, line.Length);
-                _tokens.AddRange(_machine.GetTokens());
 
                 lineNumber++;
             }
+            _machine.TokenGenerated -= MachineOnTokenGenerated;
 
-            foreach (var token in _tokens)
-                Console.WriteLine(token);
         }
     }
 }

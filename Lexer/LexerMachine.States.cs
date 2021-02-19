@@ -1,4 +1,6 @@
-﻿namespace Lexer.States
+﻿using Lexer.States;
+
+namespace Lexer
 {
     public partial class LexerMachine
     {

@@ -4,38 +4,27 @@ using static Lexer.Constants;
 
 namespace Lexer.LexerMachine
 {
-    public partial class LexerMachine : ILexerMachine
+    public partial class LexerMachine
     {
         private readonly Queue<Token> _tokens = new();
-        private string _expectedValue;
+
         private char _lastChar;
+        
         private int _lastLine;
         private int _lastPos;
 
         private int _startLine;
         private int _startPos;
 
+        private string _expectedValue;
         private string _value;
-
-        private int _charIndex;
-        private int _lineIndex;
 
         public LexerMachine()
         {
             Reset();
         }
-
-        public void PassChar(char ch)
-        {
-            if (ch == '\n')
-            {
-                _charIndex = -1;
-                _lineIndex++;
-            }
-            ProcessChar(ch, _lineIndex, _charIndex++);
-        }
-
-        private LexerMachine ProcessChar(char ch, int line, int pos)
+        
+        private void ProcessChar(char ch, int line, int pos)
         {
             if (_startPos == -1)
                 _startPos = pos;
@@ -46,17 +35,13 @@ namespace Lexer.LexerMachine
             _lastChar = ch;
             _lastPos = pos;
 
-            return _lexerState.Process(this);
-        }
-
-        public Token GetToken()
-        {
-            return _tokens.Count > 0 ? _tokens.Dequeue() : null;
+            _lexerState.Process(this);
         }
 
         public LexerMachine ProcessAsIdle()
         {
-            return Reset().ProcessChar(_lastChar, _lastLine, _lastPos);
+            SetIdleState();
+            return _lexerState.Process(this);
         }
 
         public LexerMachine AddChar()
@@ -90,7 +75,8 @@ namespace Lexer.LexerMachine
         {
             if (SkipTokens.Contains(tokenType))
                 return Reset();
-            var newToken = new Token(tokenType, _value, _startLine, _startPos);
+            var newToken = _startPos == -1 ? new Token(tokenType, _value, _lastLine, _lastPos) : 
+                new Token(tokenType, _value, _startLine, _startPos);
             _tokens.Enqueue(newToken);
             return Reset();
         }

@@ -11,8 +11,7 @@ namespace Lexer.Tests
         [Fact]
         public void DefaultNumber()
         {
-            var lexer = new Lexer("5//yes/\n5");
-            var realTokens = lexer.Tokens.ToList();
+            var lexer = new Lexer("5");
 
             Assert.Equal(TokenType.Number, lexer.Tokens.First().Type);
         }

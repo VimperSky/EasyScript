@@ -15,6 +15,7 @@ namespace Lexer
 
         public const char EndLine = '\n';
         private const char Space = ' ';
+        private const char Underscore = '_';
 
         public static readonly List<TokenType> SkipTokens = new() {TokenType.Space, TokenType.EndLine};
 
@@ -82,12 +83,17 @@ namespace Lexer
 
         public static bool IsIdentifier(string text)
         {
-            return IsIdentifierStart(text[0]) && text.Skip(1).All(x => char.IsLetterOrDigit(x) || x == '_');
+            return IsValidIdentifierStartChar(text[0]) && text.Skip(1).All(IsValidIdentifierChar);
         }
 
-        private static bool IsIdentifierStart(char ch)
+        private static bool IsValidIdentifierChar(char ch)
         {
-            return char.IsLetter(ch) || ch == '_';
+            return IsValidIdentifierStartChar(ch) || char.IsDigit(ch);
+        }
+        
+        private static bool IsValidIdentifierStartChar(char ch)
+        {
+            return char.IsLetter(ch) || ch == Underscore;
         }
     }
 }

@@ -89,7 +89,7 @@ namespace Lexer.LexerMachine
         public LexerMachine GenerateToken(TokenType tokenType)
         {
             if (SkipTokens.Contains(tokenType))
-                return this;
+                return Reset();
             var newToken = new Token(tokenType, _value, _startLine, _startPos);
             _tokens.Enqueue(newToken);
             return Reset();

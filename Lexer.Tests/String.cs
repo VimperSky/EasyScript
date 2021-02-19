@@ -6,18 +6,41 @@ namespace Lexer.Tests
 {
     public class String
     {
-        [Fact]
-        public void DefaultString()
+        private void ProcessString(string line, LexerMachine machine)
         {
-            const string str = "\"some string\"";
-            var machine = new LexerMachine();
-            foreach (var t in str)
+            foreach (var t in line)
             {
                 machine.ProcessChar(t, 0, 0);
             }
-
-            Assert.Equal(machine.GetTokens().First().Type, TokenType.String);
+        }
             
+            
+        [Fact]
+        public void DefaultString()
+        {
+            var machine = new LexerMachine();
+            ProcessString("\"some string\"", machine);
+
+            Assert.Equal(TokenType.String, machine.GetTokens().First().Type);
+        }
+        
+        [Fact]
+        public void StringWithNewLine()
+        {
+            var machine = new LexerMachine();
+            ProcessString("\"some\nstring\"", machine);
+
+            Assert.Equal(TokenType.String, machine.GetTokens().First().Type);
+        }
+        
+        [Fact]
+        public void StringWithErrorSymbol()
+        {
+            var machine = new LexerMachine();
+            ProcessString("\"some string\"^", machine);
+
+            Assert.Equal(TokenType.String, machine.GetTokens().First().Type);
+            Assert.Equal(TokenType.Error, machine.GetTokens().ToList()[1].Type);
         }
     }
 }

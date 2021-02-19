@@ -29,13 +29,13 @@ namespace Lexer.LexerMachine
         {
             if (ch == '\n')
             {
-                _charIndex = 0;
+                _charIndex = -1;
                 _lineIndex++;
             }
             ProcessChar(ch, _lineIndex, _charIndex++);
         }
 
-        public LexerMachine ProcessChar(char ch, int line, int pos)
+        private LexerMachine ProcessChar(char ch, int line, int pos)
         {
             if (_startPos == -1)
                 _startPos = pos;

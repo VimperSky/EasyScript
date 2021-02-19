@@ -1,48 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Lexer.States;
+using System.Text;
+using Lexer.LexerMachine;
+using Lexer.Types;
 
 namespace Lexer
 {
     public class Lexer
     {
-        private readonly LexerMachine _machine;
-
+        private readonly ILexerMachine _machine;
         private readonly StreamReader _streamReader;
-
-        public Lexer(StreamReader streamReader)
+        
+        private static MemoryStream GenerateStreamFromString(string value)
         {
-            _streamReader = streamReader;
-            _machine = new LexerMachine();
+            return new(Encoding.UTF8.GetBytes(value ?? ""));
+        }
+        
+        public Lexer(string inputString): this(GenerateStreamFromString(inputString))
+        {
+        }
+        
+        public Lexer(Stream stream)
+        {
+            _streamReader = new StreamReader(stream);
+            _machine = new LexerMachine.LexerMachine();
         }
 
-
-        private void ProcessTokenValue(char ch, int lineNumber, int pos)
+        public IEnumerable<Token> Tokens
         {
-            _machine.ProcessChar(ch, lineNumber, pos);
-        }
-
-        public IEnumerable<Token> GetTokens()
-        {
-            string line;
-            var lineNumber = 0;
-            
-            void MachineOnTokenGenerated(Token obj)
+            get
             {
-                yield return obj;
+                string line;
+                while ((line = _streamReader.ReadLine()) != null)
+                {
+                    for (var i = 0; i <= line.Length; i++)
+                    {
+                        var ch = i == line.Length ? '\n' : line[i];
+                        _machine.PassChar(ch);
+                        Token token;
+                        while ((token = _machine.GetToken()) != null)
+                            yield return token;
+                    }
+                }
             }
-            
-            _machine.TokenGenerated += MachineOnTokenGenerated;
-            while ((line = _streamReader.ReadLine()) != null) // Считываем построчно
-            {
-                for (var i = 0; i < line.Length; i++) ProcessTokenValue(line[i], lineNumber, i);
-                ProcessTokenValue('\n', lineNumber, line.Length);
-
-                lineNumber++;
-            }
-            _machine.TokenGenerated -= MachineOnTokenGenerated;
-
         }
     }
 }

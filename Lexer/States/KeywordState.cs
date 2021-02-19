@@ -1,8 +1,10 @@
-﻿namespace Lexer.States
+﻿using Lexer.Types;
+
+namespace Lexer.States
 {
     public class KeywordState : ILexerState
     {
-        public LexerMachine Process(LexerMachine machine)
+        public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
         {
             if (machine.IsStringSymbol) return machine.GenerateError();
 

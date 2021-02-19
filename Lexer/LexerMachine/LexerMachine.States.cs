@@ -1,6 +1,6 @@
 ﻿using Lexer.States;
 
-namespace Lexer
+namespace Lexer.LexerMachine
 {
     public partial class LexerMachine
     {

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Lexer
 {
@@ -6,10 +7,8 @@ namespace Lexer
     {
         private static void Main(string[] args)
         {
-            using var sr = new StreamReader("input.txt");
-
-            var lexer = new Lexer(sr);
-            lexer.Run(sr);
+            var lexer = new Lexer(File.OpenRead("input.txt"));
+            foreach (var token in lexer.Tokens) Console.WriteLine(token);
         }
     }
 }

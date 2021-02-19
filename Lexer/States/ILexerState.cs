@@ -2,6 +2,6 @@
 {
     public interface ILexerState
     {
-        public LexerMachine Process(LexerMachine machine);
+        public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine);
     }
 }

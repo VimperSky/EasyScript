@@ -2,12 +2,12 @@
 {
     public class IdleState : ILexerState
     {
-        public LexerMachine Process(LexerMachine machine)
+        public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
         {
             if (machine.IsNumberStart) return machine.AddChar().SetNumberState();
 
             if (machine.IsComment) return machine.SetCommentState();
-            
+
             if (machine.IsSeparator) return machine.GenerateServiceSymbol();
 
             if (machine.IsStringSymbol) return machine.SetStringState();

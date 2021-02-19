@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Xunit;
 using Lexer.States;
+using Lexer.Types;
 
 namespace Lexer.Tests
 {
@@ -9,39 +10,35 @@ namespace Lexer.Tests
         [Fact]
         public void DefaultString()
         {
-            var machine = new LexerMachine(); 
-            Extension.ProcessString("\"some string\"", machine);
+            var lexer = new Lexer("\"some string\"");
 
-            Assert.Equal(TokenType.String, machine.GetTokens().First().Type);
+            Assert.Equal(TokenType.String, lexer.Tokens.First().Type);
         }
         
         [Fact]
         public void StringWithNewLine()
         {
-            var machine = new LexerMachine();
-            Extension.ProcessString("\"some\nstring\"", machine);
+            var lexer = new Lexer("\"some\nstring\"");
 
-            Assert.Equal(TokenType.String, machine.GetTokens().First().Type);
+            Assert.Equal(TokenType.String, lexer.Tokens.First().Type);
         }
         
         [Fact]
         public void StringWithErrorSymbol()
         {
-            var machine = new LexerMachine();
-            Extension.ProcessString("\"some string\"^", machine);
+            var lexer = new Lexer("\"some string\"^");
 
-            Assert.Equal(TokenType.String, machine.GetTokens().First().Type);
-            Assert.Equal(TokenType.Error, machine.GetTokens().ToList()[1].Type);
+            Assert.Equal(TokenType.String, lexer.Tokens.First().Type);
+            Assert.Equal(TokenType.Error, lexer.Tokens.ToList()[1].Type);
         }
         
         [Fact]
         public void StringWithKeyword()
         {
-            var machine = new LexerMachine();
-            Extension.ProcessString("\"let while string\"^", machine);
+            var lexer = new Lexer("\"let while string\"^");
 
-            Assert.Equal(TokenType.String, machine.GetTokens().First().Type);
-            Assert.Equal(TokenType.Error, machine.GetTokens().ToList()[1].Type);
+            Assert.Equal(TokenType.String, lexer.Tokens.First().Type);
+            Assert.Equal(TokenType.Error, lexer.Tokens.ToList()[1].Type);
         }
     }
 }

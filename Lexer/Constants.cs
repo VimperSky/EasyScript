@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+using Lexer.Types;
 
 namespace Lexer
 {
@@ -12,11 +12,12 @@ namespace Lexer
 
         public const char NumberPoint = '.';
         public const char CommentSymbol = '/';
-        
+
         public const char EndLine = '\n';
         private const char Space = ' ';
 
-        public static readonly List<TokenType> SkipSymbols = new() {TokenType.Space, TokenType.EndLine};
+        public static readonly List<TokenType> SkipTokens = new() {TokenType.Space, TokenType.EndLine};
+
         public static readonly Dictionary<string, TokenType> ServiceSymbols = new()
         {
             {Space.ToString(), TokenType.Space},
@@ -64,19 +65,14 @@ namespace Lexer
             return ServiceSymbols.ContainsKey(ch.ToString());
         }
 
-        /*public static bool IsNumberConstructed(string text)
-        {
-            return text.Length > text.IndexOf(NumberPoint) + 1 && (IsSign(text[0]) && text.Length > 1 || IsDigit(text[0]));
-        }*/
-
         private static bool IsSign(char ch)
         {
             return ch == NumberMinusSign || ch == NumberPlusSign;
         }
 
-        public static bool IsNumberStart(char ch)
+        public static bool IsNumberChar(char ch)
         {
-            return IsDigit(ch) || IsSign(ch);
+            return IsDigit(ch) || IsSign(ch) || ch == NumberPoint;
         }
 
         public static bool IsDigit(char ch)

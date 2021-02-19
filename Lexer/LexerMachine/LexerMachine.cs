@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using static Lexer.Constants;
 
 namespace Lexer
 {
-    public partial class LexerMachine
+    public partial class LexerMachine: ILexerMachine
     {
         private string _expectedValue;
         private char _lastChar;
@@ -15,7 +16,7 @@ namespace Lexer
 
         private string _value;
 
-        public event Action<Token> TokenGenerated;
+        private readonly Queue<Token> _tokens = new();
 
         public LexerMachine()
         {
@@ -34,6 +35,11 @@ namespace Lexer
             _lastPos = pos;
 
             return _lexerState.Process(this);
+        }
+
+        public Token GetToken()
+        {
+            return _tokens.Count > 0 ? _tokens.Dequeue() : null;
         }
 
         public LexerMachine ProcessAsIdle()
@@ -71,7 +77,7 @@ namespace Lexer
         public LexerMachine GenerateToken(TokenType tokenType)
         {
             var newToken = new Token(tokenType, _value, _startLine, _startPos);
-            TokenGenerated?.Invoke(newToken);
+            _tokens.Enqueue(newToken);
             return Reset();
         }
 

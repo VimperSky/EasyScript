@@ -44,12 +44,15 @@ namespace Lexer
             {"-", TokenType.MinusOp},
             {"*", TokenType.MultiplyOp},
             {"/", TokenType.DivOp},
+            {"++", TokenType.Increment},
+            {"--", TokenType.Decrement},
 
-            {"&", TokenType.And},
-            {"|", TokenType.Or},
+            {"&&", TokenType.And},
+            {"||", TokenType.Or},
         };
 
-        public static readonly string[] KeyWords = {"let", "if", "else", "for", "while", "true", "false"};
+        public static readonly string[] KeyWords = {"let", "if", "else", "for", "while", "true", "false", "number", "bool", "string",
+            "print", "prints", "read", "reads", "fun"};
         
         public static bool IsKeywordStart(char ch)
         {

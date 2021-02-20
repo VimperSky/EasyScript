@@ -40,7 +40,10 @@
         PlusOp, // -
         DivOp, // / 
         MultiplyOp, // *
-
+        
+        Increment, // ++
+        Decrement, // --
+        
         // Операторы сравнения
         MoreEquals, // >=
         LessEquals, // <=

@@ -1,7 +1,7 @@
 ﻿using Lexer.Types;
 using Xunit;
 
-namespace Lexer.Tests
+namespace Lexer.Tests.Types
 {
     public class String
     {
@@ -36,6 +36,23 @@ namespace Lexer.Tests
             var lexer = new TestLexer("\"let while string\"^");
 
             Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
+        }
+        
+        [Fact]
+        public void QuotAfterString()
+        {
+            var lexer = new TestLexer("\"let while string\"\"");
+
+            Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
+        }
+        
+        [Fact]
+        public void NotClosedString()
+        {
+            var lexer = new TestLexer("\"string");
+
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
     }

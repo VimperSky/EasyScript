@@ -17,7 +17,7 @@ namespace Lexer.LexerMachine
         private int _startLine;
         private int _startPos;
 
-        private string[] _expectedKeywords;
+        private string[] _expectedValues;
         private string _value;
 
         public LexerMachine()
@@ -39,9 +39,8 @@ namespace Lexer.LexerMachine
             _lexerState.Process(this);
         }
 
-        public LexerMachine ProcessAsIdle()
+        public LexerMachine ReProcess()
         {
-            SetIdleState();
             return _lexerState.Process(this);
         }
 
@@ -56,16 +55,10 @@ namespace Lexer.LexerMachine
             return this;
         }
 
-        public LexerMachine SetKeyword()
-        {
-            _expectedKeywords = KeyWords.Where(x => x.StartsWith(_lastChar)).ToArray();
-            return this;
-        }
-
         private LexerMachine Reset()
         {
             _value = "";
-            _expectedKeywords = System.Array.Empty<string>();
+            _expectedValues = System.Array.Empty<string>();
             _startPos = -1;
             _startLine = -1;
 
@@ -84,19 +77,14 @@ namespace Lexer.LexerMachine
 
         public LexerMachine GenerateError()
         {
-            return AddChar().GenerateToken(TokenType.Error);
+            return GenerateToken(TokenType.Error);
         }
 
         public LexerMachine GenerateServiceSymbol(bool first = false)
         {
             return first
                 ? GenerateToken(ServiceSymbols[_value[0].ToString()])
-                : AddChar().GenerateToken(ServiceSymbols[_lastChar.ToString()]);
-        }
-
-        public LexerMachine GenerateComment()
-        {
-            return AddChar(CommentSymbol).GenerateToken(ServiceSymbols[CommentSymbol.ToString()]);
+                : GenerateToken(ServiceSymbols[_value]);
         }
     }
 }

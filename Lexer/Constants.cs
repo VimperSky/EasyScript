@@ -10,8 +10,9 @@ namespace Lexer
         private const char NumberMinusSign = '-';
         private const char NumberPlusSign = '+';
 
-        public const char NumberPoint = '.';
+        private const char NumberPoint = '.';
         public const char CommentSymbol = '/';
+        public const string Comment = "//";
 
         public const char EndLine = '\n';
         private const char Space = ' ';
@@ -30,7 +31,7 @@ namespace Lexer
             {"}", TokenType.CloseBrace},
             {"=", TokenType.Assign},
             {";", TokenType.Separator},
-            {"//", TokenType.Comment},
+            {Comment, TokenType.Comment},
 
             {">", TokenType.More},
             {">=", TokenType.MoreEquals},
@@ -45,7 +46,7 @@ namespace Lexer
             {"/", TokenType.DivOp},
 
             {"&", TokenType.And},
-            {"|", TokenType.Or}
+            {"|", TokenType.Or},
         };
 
         public static readonly string[] KeyWords = {"let", "if", "else", "for", "while", "true", "false"};
@@ -55,27 +56,37 @@ namespace Lexer
             return KeyWords.Any(x => x.StartsWith(ch));
         }
 
-        public static bool IsSeparator(char ch)
+        public static bool IsServiceSymbolStart(char ch)
         {
-            return ServiceSymbols.ContainsKey(ch.ToString());
+            return ServiceSymbols.Any(x => x.Key.StartsWith(ch));
         }
 
-        private static bool IsSign(char ch)
+        public static bool IsSign(char ch)
         {
             return ch == NumberMinusSign || ch == NumberPlusSign;
         }
 
-        public static bool IsNumberChar(char ch)
+        public static bool IsNumberConstructed(string num)
         {
-            return IsDigit(ch) || ch == NumberPoint;
+            return IsNumberPredicted(num) && num.Any(IsDigit);
         }
         
-        public static bool IsNumberStart(char ch)
+        public static bool IsNumberPredicted(string num)
         {
-            return IsNumberChar(ch) || IsSign(ch);
+            return num.Length >= 1 && num.All(IsNumberCharacter) && num.Count(IsPoint) <= 1 && num.Count(IsSign) <= 1;
         }
 
-        public static bool IsDigit(char ch)
+        public static bool IsNumberCharacter(char ch)
+        {
+            return IsDigit(ch) || IsSign(ch) || ch == NumberPoint;
+        }
+
+        private static bool IsPoint(char ch)
+        {
+            return ch == NumberPoint;
+        }
+
+        private static bool IsDigit(char ch)
         {
             return char.IsDigit(ch);
         }

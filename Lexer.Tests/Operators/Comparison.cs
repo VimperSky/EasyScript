@@ -34,7 +34,7 @@ namespace Lexer.Tests.Operators
         {
             var lexer = new TestLexer("<=");
 
-            Assert.Equal(TokenType.More, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.LessEquals, lexer.GetNextToken().Type);
         }
         
         [Fact]

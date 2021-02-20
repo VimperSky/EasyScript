@@ -7,7 +7,6 @@ namespace Lexer.LexerMachine
         private int _lineIndex;
         private int _charIndex;
 
-        private bool _isFinish;
         public void PassChar(char ch)
         {
             if (ch == '\n')
@@ -26,7 +25,7 @@ namespace Lexer.LexerMachine
 
         public void Finish()
         {
-            _isFinish = true;
+            IsEof = true;
             PassChar(' ');
         }
     }

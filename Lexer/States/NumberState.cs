@@ -4,39 +4,22 @@ namespace Lexer.States
 {
     public class NumberState : ILexerState
     {
-        private bool _containsPoint;
-
         public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
         {
-            // -5 or 53
-            if (machine.IsDigit)
+            // +5 53
+            if (machine.IsNumberPredict)
                 return machine.AddChar();
 
-            if (machine.IsPoint)
+            // +; +5; 5; .;
+            if (machine.IsServiceStart)
             {
-                if (_containsPoint)
-                    return machine.GenerateError();
+                // +5; .5; 5;  
+                if (machine.IsNumberConstructed) return machine.GenerateToken(TokenType.Number).SetServiceState().AddChar();
 
-                _containsPoint = true;
-                return machine.AddChar();
+                // +; +.;
+                if (machine.IsNumberStartsFromSign) return machine.GenerateServiceSymbol(true).SetServiceState().AddChar();
             }
             
-            if (machine.IsComment)
-            {
-                if (machine.IsNumberFinished) return machine.GenerateToken(TokenType.Number).SetCommentState();
-                
-                // +//
-                if (machine.IsArithmetic) return machine.GenerateServiceSymbol(true).GenerateServiceSymbol();
-            }
-            
-            if (machine.IsSeparator)
-            {
-                if (machine.IsNumberFinished) return machine.GenerateToken(TokenType.Number).GenerateServiceSymbol();
-
-                // -;
-                if (machine.IsArithmetic) return machine.GenerateServiceSymbol(true).GenerateServiceSymbol();
-            }
-
             return machine.GenerateError();
         }
     }

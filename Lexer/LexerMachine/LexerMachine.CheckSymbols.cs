@@ -5,40 +5,37 @@ namespace Lexer.LexerMachine
 {
     public partial class LexerMachine
     {
-        public bool IsComment => _lastChar == CommentSymbol;
+        private bool IsCommentStart => _lastChar == CommentSymbol;
         public bool IsStringSymbol => _lastChar == StringSymbol;
+        
+        public bool IsServiceStart => IsServiceSymbolStart(_lastChar);
+        
+        public bool IsNumberStart => IsNumberCharacter(_lastChar);
 
-        public bool IsDigit => IsDigit(_lastChar);
-
-        public bool IsPoint => _lastChar == NumberPoint;
-
-        public bool IsSeparator => IsSeparator(_lastChar);
-
-        public bool IsNumberStart => IsNumberStart(_lastChar);
-
-        public bool IsIdentifier => IsIdentifier(_value + _lastChar);
+        public bool IsIdentifierPredict => IsIdentifier(_value + _lastChar);
 
         public bool IsKeywordStart => IsKeywordStart(_lastChar);
 
-        public bool IsKeywordFinished => _expectedKeywords.Contains(_value);
+        public bool IsExpectedValueAchieved => _expectedValues.Contains(_value);
 
-        public bool IsNumberFinished => IsNumberChar(_value.Last());
+        public bool IsNumberPredict => IsNumberPredicted(_value + _lastChar);
+        public bool IsNumberConstructed => IsNumberConstructed(_value);
 
-        public bool IsArithmetic => _value.Length == 1 && IsSeparator(_value[0]);
+        public bool IsNumberStartsFromSign => _value.Length >= 1 && IsSign(_value[0]);
 
-        public bool IsKeywordContinue
+        public bool IsExpectedValueContinue
         {
             get
             {
                 {
                     var value = _value + _lastChar;
-                    return _expectedKeywords.Any(x => x.Length >= value.Length && x.Substring(0, value.Length) == value);
+                    return _expectedValues.Any(x => x.Length >= value.Length && x.Substring(0, value.Length) == value);
                 }
             }
         }
 
         public bool IsEndLine => _lastChar == EndLine;
 
-        public bool IsEof => _isFinish;
+        public bool IsEof { get; private set; }
     }
 }

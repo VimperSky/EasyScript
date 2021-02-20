@@ -6,20 +6,24 @@ namespace Lexer.States
     {
         public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
         {
-            if (machine.IsStringSymbol) return machine.GenerateError();
+            // let
+            if (machine.IsExpectedValueContinue) return machine.AddChar();
 
-            if (machine.IsComment) return machine.SetCommentState();
+            // letk lek
+            if (machine.IsIdentifierPredict) return machine.SetIdentifierState().AddChar();
 
-            // le; or let; or let 
-            if (machine.IsSeparator) return machine.GenerateToken(machine.IsKeywordFinished ? TokenType.KeyWord : TokenType.Identifier).GenerateServiceSymbol();
+            // let; let" let/
+            if (machine.IsExpectedValueAchieved)
+            {
+                machine.GenerateToken(TokenType.KeyWord);
 
-            // l"e"
-            if (machine.IsKeywordContinue) return machine.AddChar();
+                if (machine.IsServiceStart) return machine.SetServiceState().AddChar();
+                
+                if (machine.IsStringSymbol) return machine.GenerateError();
+            }
 
-            // led or letd
-            if (machine.IsIdentifier) return machine.AddChar().SetIdentifierState();
-
-            return machine.GenerateError();
+            // le; le" le/
+            return machine.SetIdentifierState().ReProcess();
         }
     }
 }

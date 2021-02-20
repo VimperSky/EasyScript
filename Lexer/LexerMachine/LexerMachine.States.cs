@@ -1,4 +1,6 @@
-﻿using Lexer.States;
+﻿using System.Linq;
+using Lexer.States;
+using static Lexer.Constants;
 
 namespace Lexer.LexerMachine
 {
@@ -14,6 +16,7 @@ namespace Lexer.LexerMachine
 
         public LexerMachine SetKeywordState()
         {
+            _expectedValues = KeyWords.Where(x => x.StartsWith(_lastChar)).ToArray();
             _lexerState = new KeywordState();
             return this;
         }
@@ -35,10 +38,11 @@ namespace Lexer.LexerMachine
             _lexerState = new NumberState();
             return this;
         }
-
-        public LexerMachine SetCommentState()
+        
+        public LexerMachine SetServiceState()
         {
-            _lexerState = new CommentState();
+            _expectedValues = IsCommentStart ? new []{Comment} : ServiceSymbols.Keys.Where(x => x.StartsWith(_lastChar)).ToArray();
+            _lexerState = new ServiceState(IsCommentStart);
             return this;
         }
     }

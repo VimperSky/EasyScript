@@ -5,7 +5,7 @@ namespace Lexer.LexerMachine
 {
     public partial class LexerMachine
     {
-        private bool IsCommentStart => _lastChar == CommentSymbol;
+        public bool IsCommentStart => _lastChar == CommentSymbol;
         public bool IsStringSymbol => _lastChar == StringSymbol;
         
         public bool IsServiceStart => IsServiceSymbolStart(_lastChar);

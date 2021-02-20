@@ -38,11 +38,18 @@ namespace Lexer.LexerMachine
             _lexerState = new NumberState();
             return this;
         }
+
+        public LexerMachine SetCommentState()
+        {
+            _lexerState = new CommentState();
+            return this;
+        }
+        
         
         public LexerMachine SetServiceState()
         {
-            _expectedValues = IsCommentStart ? new []{Comment} : ServiceSymbols.Keys.Where(x => x.StartsWith(_lastChar)).ToArray();
-            _lexerState = new ServiceState(IsCommentStart);
+            _expectedValues = ServiceSymbols.Keys.Where(x => x.StartsWith(_lastChar) && x != Comment).ToArray();
+            _lexerState = IsCommentStart ? new CommentState() : new ServiceState();
             return this;
         }
     }

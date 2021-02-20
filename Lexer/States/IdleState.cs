@@ -8,7 +8,7 @@
             
             if (machine.IsNumberStart) return machine.SetNumberState().AddChar();
             
-            if (machine.IsServiceStart) return machine.SetServiceState().AddChar();
+            if (machine.IsServiceStart) return machine.IsCommentStart ? machine.SetCommentState() : machine.SetServiceState().AddChar();
 
             if (machine.IsStringSymbol) return machine.SetStringState();
 

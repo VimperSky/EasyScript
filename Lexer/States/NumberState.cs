@@ -14,10 +14,19 @@ namespace Lexer.States
             if (machine.IsServiceStart)
             {
                 // +5; .5; 5;  
-                if (machine.IsNumberConstructed) return machine.GenerateToken(TokenType.Number).SetServiceState().AddChar();
+                if (machine.IsNumberConstructed)
+                {
+                    machine.GenerateToken(TokenType.Number);
+                    return machine.IsCommentStart ? machine.SetCommentState() : machine.SetServiceState().AddChar();
+                }
 
                 // +; +.;
-                if (machine.IsNumberStartsFromSign) return machine.GenerateServiceSymbol(true).SetServiceState().AddChar();
+                if (machine.IsNumberStartsFromSign)
+                {
+                    machine.GenerateServiceSymbol(true);
+
+                    return machine.IsCommentStart ? machine.SetCommentState() : machine.SetServiceState().AddChar();
+                }
             }
             
             return machine.GenerateError();

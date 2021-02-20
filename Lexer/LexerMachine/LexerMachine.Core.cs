@@ -86,5 +86,10 @@ namespace Lexer.LexerMachine
                 ? GenerateToken(ServiceSymbols[_value[0].ToString()])
                 : GenerateToken(ServiceSymbols[_value]);
         }
+
+        public LexerMachine AddCommentSymbol()
+        {
+            return AddChar(CommentSymbol);
+        }
     }
 }

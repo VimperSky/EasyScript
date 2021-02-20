@@ -11,7 +11,7 @@ namespace Lexer.States
             if (machine.IsComment) return machine.SetCommentState();
 
             // le; or let; or let 
-            if (machine.IsSeparator) return machine.GenerateToken(machine.IsKeywordFinished ? TokenType.Number : TokenType.Identifier).GenerateServiceSymbol();
+            if (machine.IsSeparator) return machine.GenerateToken(machine.IsKeywordFinished ? TokenType.KeyWord : TokenType.Identifier).GenerateServiceSymbol();
 
             // l"e"
             if (machine.IsKeywordContinue) return machine.AddChar();

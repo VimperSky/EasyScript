@@ -6,6 +6,8 @@ namespace Lexer.LexerMachine
     {
         private int _lineIndex;
         private int _charIndex;
+
+        private bool _isFinish;
         public void PassChar(char ch)
         {
             if (ch == '\n')
@@ -20,6 +22,12 @@ namespace Lexer.LexerMachine
         public Token GetToken()
         {
             return _tokens.Count > 0 ? _tokens.Dequeue() : null;
+        }
+
+        public void Finish()
+        {
+            _isFinish = true;
+            PassChar(' ');
         }
     }
 }

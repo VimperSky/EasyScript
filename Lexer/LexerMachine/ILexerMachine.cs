@@ -4,7 +4,8 @@ namespace Lexer.LexerMachine
 {
     public interface ILexerMachine
     { 
-        public void PassChar(char ch);
+        void PassChar(char ch);
+        void Finish();
         Token GetToken();
     }
 }

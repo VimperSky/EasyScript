@@ -14,7 +14,7 @@ namespace Lexer.LexerMachine
 
         public bool IsSeparator => IsSeparator(_lastChar);
 
-        public bool IsNumberStart => IsNumberChar(_lastChar);
+        public bool IsNumberStart => IsNumberStart(_lastChar);
 
         public bool IsIdentifier => IsIdentifier(_value + _lastChar);
 
@@ -24,7 +24,7 @@ namespace Lexer.LexerMachine
 
         public bool IsNumberFinished => IsNumberChar(_value.Last());
 
-        public bool IsArithmetic => _value.Length == 0 && IsSeparator(_value[0]);
+        public bool IsArithmetic => _value.Length == 1 && IsSeparator(_value[0]);
 
         public bool IsKeywordContinue
         {
@@ -39,5 +39,7 @@ namespace Lexer.LexerMachine
         }
 
         public bool IsEndLine => _lastChar == EndLine;
+
+        public bool IsEof => _isFinish;
     }
 }

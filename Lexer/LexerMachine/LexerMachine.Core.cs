@@ -57,7 +57,7 @@ namespace Lexer.LexerMachine
 
         public LexerMachine SetKeyword()
         {
-            _expectedValue = _lastChar.ToString();
+            _expectedValue = KeyWordsCheck[_lastChar];
             return this;
         }
 

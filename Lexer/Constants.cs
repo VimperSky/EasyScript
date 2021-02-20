@@ -73,7 +73,12 @@ namespace Lexer
 
         public static bool IsNumberChar(char ch)
         {
-            return IsDigit(ch) || IsSign(ch) || ch == NumberPoint;
+            return IsDigit(ch) || ch == NumberPoint;
+        }
+        
+        public static bool IsNumberStart(char ch)
+        {
+            return IsNumberChar(ch) || IsSign(ch);
         }
 
         public static bool IsDigit(char ch)

@@ -21,17 +21,21 @@ namespace Lexer
             get
             {
                 string line;
+                Token token;
                 while ((line = _streamReader.ReadLine()) != null)
                 {
                     for (var i = 0; i <= line.Length; i++)
                     {
                         var ch = i == line.Length ? '\n' : line[i];
                         _machine.PassChar(ch);
-                        Token token;
                         while ((token = _machine.GetToken()) != null)
                             yield return token;
                     }
                 }
+                
+                _machine.Finish();
+                while ((token = _machine.GetToken()) != null)
+                    yield return token;
             }
         }
         

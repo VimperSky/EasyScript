@@ -10,6 +10,9 @@ namespace Lexer.States
             if (machine.IsStringSymbol)
                 return machine.GenerateToken(TokenType.String);
 
+            if (machine.IsEof)
+                return machine.GenerateError();
+            
             return machine.AddChar();
         }
     }

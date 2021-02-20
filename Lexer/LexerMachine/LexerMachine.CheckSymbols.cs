@@ -20,7 +20,7 @@ namespace Lexer.LexerMachine
 
         public bool IsKeywordStart => IsKeywordStart(_lastChar);
 
-        public bool IsKeywordFinished => _value == _expectedValue;
+        public bool IsKeywordFinished => _expectedKeywords.Contains(_value);
 
         public bool IsNumberFinished => IsNumberChar(_value.Last());
 
@@ -32,8 +32,7 @@ namespace Lexer.LexerMachine
             {
                 {
                     var value = _value + _lastChar;
-                    return _expectedValue.Length >= value.Length
-                           && value == _expectedValue.Substring(0, value.Length);
+                    return _expectedKeywords.Any(x => x.Length >= value.Length && x.Substring(0, value.Length) == value);
                 }
             }
         }

@@ -48,17 +48,11 @@ namespace Lexer
             {"|", TokenType.Or}
         };
 
-        private static readonly string[] KeyWords = {"let", "if", "else", "while", "true", "false"};
-        public static readonly Dictionary<char, string> KeyWordsCheck;
-
-        static Constants()
-        {
-            KeyWordsCheck = KeyWords.ToDictionary(x => x[0], x => x);
-        }
-
+        public static readonly string[] KeyWords = {"let", "if", "else", "for", "while", "true", "false"};
+        
         public static bool IsKeywordStart(char ch)
         {
-            return KeyWordsCheck.ContainsKey(ch);
+            return KeyWords.Any(x => x.StartsWith(ch));
         }
 
         public static bool IsSeparator(char ch)

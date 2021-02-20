@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Lexer.Types;
 using static Lexer.Constants;
 
@@ -16,7 +17,7 @@ namespace Lexer.LexerMachine
         private int _startLine;
         private int _startPos;
 
-        private string _expectedValue;
+        private string[] _expectedKeywords;
         private string _value;
 
         public LexerMachine()
@@ -57,14 +58,14 @@ namespace Lexer.LexerMachine
 
         public LexerMachine SetKeyword()
         {
-            _expectedValue = KeyWordsCheck[_lastChar];
+            _expectedKeywords = KeyWords.Where(x => x.StartsWith(_lastChar)).ToArray();
             return this;
         }
 
         private LexerMachine Reset()
         {
             _value = "";
-            _expectedValue = "";
+            _expectedKeywords = System.Array.Empty<string>();
             _startPos = -1;
             _startLine = -1;
 

@@ -26,7 +26,7 @@ namespace Lexer.States
                 if (machine.IsNumberFinished) return machine.GenerateToken(TokenType.Number).SetCommentState();
                 
                 // +//
-                if (machine.IsArithmetic) return machine.GenerateServiceSymbol(true);
+                if (machine.IsArithmetic) return machine.GenerateServiceSymbol(true).GenerateServiceSymbol();
             }
             
             if (machine.IsSeparator)
@@ -34,7 +34,7 @@ namespace Lexer.States
                 if (machine.IsNumberFinished) return machine.GenerateToken(TokenType.Number).GenerateServiceSymbol();
 
                 // -;
-                if (machine.IsArithmetic) return machine.GenerateServiceSymbol(true);
+                if (machine.IsArithmetic) return machine.GenerateServiceSymbol(true).GenerateServiceSymbol();
             }
 
             return machine.GenerateError();

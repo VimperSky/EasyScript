@@ -36,6 +36,33 @@ namespace Lexer.Tests.Operators
 
             Assert.Equal(TokenType.MultiplyOp, lexer.GetNextToken().Type);
         }
+
+        [Fact]
+        public void IncrementWithoutWords()
+        {
+            var lexer = new TestLexer("++");
+
+            Assert.NotEqual(TokenType.Increment, lexer.GetNextToken().Type);
+        }
+        
+        [Fact]
+        public void DecrementWithoutWords()
+        {
+            var lexer = new TestLexer("--");
+
+            Assert.NotEqual(TokenType.Decrement, lexer.GetNextToken().Type);
+        }
+        
+        [Fact]
+        public void DecrementAndIncrementAfterWord()
+        {
+            var lexer = new TestLexer("word-- some++");
+
+            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Decrement, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Increment, lexer.GetNextToken().Type);
+        }
         
         [Fact]
         public void ArithmeticOpBeforeWord()
@@ -49,10 +76,10 @@ namespace Lexer.Tests.Operators
         [Fact]
         public void ArithmeticOpAfterWord()
         {
-            var lexer = new TestLexer("some*");
+            var lexer = new TestLexer("some+");
 
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.MultiplyOp, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.PlusOp, lexer.GetNextToken().Type);
         }
         
         [Fact]

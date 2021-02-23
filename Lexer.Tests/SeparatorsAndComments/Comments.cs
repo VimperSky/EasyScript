@@ -1,0 +1,44 @@
+﻿using Lexer.Types;
+using Xunit;
+
+namespace Lexer.Tests.SeparatorsAndComments
+{
+    public class Comments
+    {
+        [Fact]
+        public void Default()
+        {
+            var lexer = new TestLexer("//");
+
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
+        }
+        
+        [Fact]
+        public void CommentInComment()
+        {
+            var lexer = new TestLexer("// //");
+
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
+        }
+        
+        [Fact]
+        public void CommentWithKeywords()
+        {
+            var lexer = new TestLexer("// let this");
+
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
+        } 
+        
+        [Fact]
+        public void CommentsInAnotherString()
+        {
+            var lexer = new TestLexer("// let this\n get the fo // sry for this)");
+
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
+        }
+    }
+}

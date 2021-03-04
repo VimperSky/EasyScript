@@ -48,12 +48,15 @@ namespace Lexer
             {"--", TokenType.Decrement},
 
             {"&&", TokenType.And},
-            {"||", TokenType.Or},
+            {"||", TokenType.Or}
         };
 
-        public static readonly string[] KeyWords = {"let", "if", "else", "for", "while", "true", "false", "number", "bool", "string",
-            "print", "prints", "read", "reads", "fun"};
-        
+        public static readonly string[] KeyWords =
+        {
+            "let", "if", "else", "for", "while", "true", "false", "number", "bool", "string",
+            "print", "prints", "read", "reads", "fun"
+        };
+
         public static bool IsKeywordStart(char ch)
         {
             return KeyWords.Any(x => x.StartsWith(ch));
@@ -73,7 +76,7 @@ namespace Lexer
         {
             return IsNumberPredicted(num) && num.Any(IsDigit);
         }
-        
+
         public static bool IsNumberPredicted(string num)
         {
             return num.Length >= 1 && num.All(IsNumberCharacter) && num.Count(IsPoint) <= 1 && num.Count(IsSign) <= 1;
@@ -103,7 +106,7 @@ namespace Lexer
         {
             return IsValidIdentifierStartChar(ch) || char.IsDigit(ch);
         }
-        
+
         private static bool IsValidIdentifierStartChar(char ch)
         {
             return char.IsLetter(ch) || ch == Underscore;

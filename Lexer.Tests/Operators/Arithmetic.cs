@@ -12,7 +12,7 @@ namespace Lexer.Tests.Operators
 
             Assert.Equal(TokenType.PlusOp, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void Minus()
         {
@@ -20,7 +20,7 @@ namespace Lexer.Tests.Operators
 
             Assert.Equal(TokenType.MinusOp, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void Divide()
         {
@@ -28,7 +28,7 @@ namespace Lexer.Tests.Operators
 
             Assert.Equal(TokenType.DivOp, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void Multiply()
         {
@@ -44,7 +44,7 @@ namespace Lexer.Tests.Operators
 
             Assert.NotEqual(TokenType.Increment, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void DecrementWithoutWords()
         {
@@ -52,7 +52,7 @@ namespace Lexer.Tests.Operators
 
             Assert.NotEqual(TokenType.Decrement, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void DecrementAndIncrementAfterWord()
         {
@@ -63,7 +63,7 @@ namespace Lexer.Tests.Operators
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Increment, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void ArithmeticOpBeforeWord()
         {
@@ -72,7 +72,7 @@ namespace Lexer.Tests.Operators
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.MultiplyOp, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void ArithmeticOpAfterWord()
         {
@@ -81,17 +81,17 @@ namespace Lexer.Tests.Operators
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.PlusOp, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void ArithmeticOpAfterWordAndSpace()
         {
             var lexer = new TestLexer("some *");
 
-            
+
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.MultiplyOp, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void ManyArithmeticOp()
         {
@@ -102,7 +102,7 @@ namespace Lexer.Tests.Operators
             Assert.Equal(TokenType.MultiplyOp, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.DivOp, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void ManyArithmeticOpWithSpaces()
         {
@@ -113,7 +113,7 @@ namespace Lexer.Tests.Operators
             Assert.Equal(TokenType.MultiplyOp, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.DivOp, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void DefaultOperation()
         {

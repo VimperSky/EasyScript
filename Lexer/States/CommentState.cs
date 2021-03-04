@@ -2,15 +2,13 @@
 
 namespace Lexer.States
 {
-    public class CommentState: ILexerState
+    public class CommentState : ILexerState
     {
         private bool _commentFound;
+
         public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
         {
-            if (_commentFound)
-            {
-                return machine.IsEndLine ? machine.GenerateToken(TokenType.Comment) : machine.AddChar();
-            }
+            if (_commentFound) return machine.IsEndLine ? machine.GenerateToken(TokenType.Comment) : machine.AddChar();
 
             if (machine.IsCommentStart)
             {

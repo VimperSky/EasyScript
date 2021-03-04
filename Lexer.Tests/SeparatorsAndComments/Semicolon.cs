@@ -12,7 +12,7 @@ namespace Lexer.Tests.SeparatorsAndComments
 
             Assert.Equal(TokenType.Separator, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void SeparatorInIdentifier()
         {
@@ -22,7 +22,7 @@ namespace Lexer.Tests.SeparatorsAndComments
             Assert.Equal(TokenType.Separator, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void SeparatorInString()
         {
@@ -30,7 +30,7 @@ namespace Lexer.Tests.SeparatorsAndComments
 
             Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void SeparatorInComment()
         {
@@ -38,7 +38,7 @@ namespace Lexer.Tests.SeparatorsAndComments
 
             Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void DefaultString()
         {

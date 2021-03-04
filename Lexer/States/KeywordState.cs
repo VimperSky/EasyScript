@@ -17,8 +17,9 @@ namespace Lexer.States
             {
                 machine.GenerateToken(TokenType.KeyWord);
 
-                if (machine.IsServiceStart) return machine.IsCommentStart ? machine.SetCommentState() :  machine.SetServiceState().AddChar();
-                
+                if (machine.IsServiceStart)
+                    return machine.IsCommentStart ? machine.SetCommentState() : machine.SetServiceState().AddChar();
+
                 if (machine.IsStringSymbol) return machine.GenerateError();
             }
 

@@ -23,7 +23,6 @@ namespace Lexer
                 string line;
                 Token token;
                 while ((line = _streamReader.ReadLine()) != null)
-                {
                     for (var i = 0; i <= line.Length; i++)
                     {
                         var ch = i == line.Length ? '\n' : line[i];
@@ -31,13 +30,11 @@ namespace Lexer
                         while ((token = _machine.GetToken()) != null)
                             yield return token;
                     }
-                }
-                
+
                 _machine.Finish();
                 while ((token = _machine.GetToken()) != null)
                     yield return token;
             }
         }
-        
     }
 }

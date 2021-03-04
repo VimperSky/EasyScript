@@ -13,7 +13,7 @@ namespace Lexer.Tests.Types
             Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void BoolAfterIdentifier()
         {
@@ -22,7 +22,7 @@ namespace Lexer.Tests.Types
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void BoolBeforeIdentifier()
         {

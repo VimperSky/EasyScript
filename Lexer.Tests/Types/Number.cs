@@ -36,7 +36,7 @@ namespace Lexer.Tests.Types
 
             Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void NumberWithoutIntPart()
         {
@@ -44,7 +44,7 @@ namespace Lexer.Tests.Types
 
             Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void NegativeNumberWithoutIntPart()
         {
@@ -52,7 +52,7 @@ namespace Lexer.Tests.Types
 
             Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void NumberWithoutFractionalPart()
         {

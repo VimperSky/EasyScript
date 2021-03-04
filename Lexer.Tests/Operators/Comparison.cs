@@ -12,7 +12,7 @@ namespace Lexer.Tests.Operators
 
             Assert.Equal(TokenType.More, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void MoreEquals()
         {
@@ -20,7 +20,7 @@ namespace Lexer.Tests.Operators
 
             Assert.Equal(TokenType.MoreEquals, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void Less()
         {
@@ -28,7 +28,7 @@ namespace Lexer.Tests.Operators
 
             Assert.Equal(TokenType.Less, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void LessEquals()
         {
@@ -36,7 +36,7 @@ namespace Lexer.Tests.Operators
 
             Assert.Equal(TokenType.LessEquals, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void Equal()
         {
@@ -44,7 +44,7 @@ namespace Lexer.Tests.Operators
 
             Assert.Equal(TokenType.Equals, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void NotEqual()
         {
@@ -52,7 +52,7 @@ namespace Lexer.Tests.Operators
 
             Assert.Equal(TokenType.NotEquals, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void ManyCompOp()
         {
@@ -65,7 +65,7 @@ namespace Lexer.Tests.Operators
             Assert.Equal(TokenType.Less, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.More, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void DefaultOperation()
         {

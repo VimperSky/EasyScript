@@ -28,7 +28,7 @@ namespace Lexer.States
                     return machine.IsCommentStart ? machine.SetCommentState() : machine.SetServiceState().AddChar();
                 }
             }
-            
+
             return machine.GenerateError();
         }
     }

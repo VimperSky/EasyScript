@@ -12,7 +12,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void IdentifierWithNumbers()
         {
@@ -20,7 +20,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void IdentifierStartAtDigit()
         {
@@ -28,7 +28,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void AnotherSymbolInIdentifier()
         {
@@ -37,8 +37,8 @@ namespace Lexer.Tests.Words
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
-        }       
-        
+        }
+
         [Fact]
         public void StringInIdentifier()
         {

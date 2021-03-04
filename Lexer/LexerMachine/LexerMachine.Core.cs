@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using Lexer.Types;
 using static Lexer.Constants;
 
@@ -9,22 +9,22 @@ namespace Lexer.LexerMachine
     {
         private readonly Queue<Token> _tokens = new();
 
+        private string[] _expectedValues;
+
         private char _lastChar;
-        
+
         private int _lastLine;
         private int _lastPos;
 
         private int _startLine;
         private int _startPos;
-
-        private string[] _expectedValues;
         private string _value;
 
         public LexerMachine()
         {
             Reset();
         }
-        
+
         private void ProcessChar(char ch, int line, int pos)
         {
             if (_startPos == -1)
@@ -58,7 +58,7 @@ namespace Lexer.LexerMachine
         private LexerMachine Reset()
         {
             _value = "";
-            _expectedValues = System.Array.Empty<string>();
+            _expectedValues = Array.Empty<string>();
             _startPos = -1;
             _startLine = -1;
 
@@ -69,8 +69,9 @@ namespace Lexer.LexerMachine
         {
             if (SkipTokens.Contains(tokenType))
                 return Reset();
-            var newToken = _startPos == -1 ? new Token(tokenType, _value, _lastLine, _lastPos) : 
-                new Token(tokenType, _value, _startLine, _startPos);
+            var newToken = _startPos == -1
+                ? new Token(tokenType, _value, _lastLine, _lastPos)
+                : new Token(tokenType, _value, _startLine, _startPos);
             _tokens.Enqueue(newToken);
             return Reset();
         }

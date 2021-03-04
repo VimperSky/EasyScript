@@ -12,7 +12,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void For()
         {
@@ -20,7 +20,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void While()
         {
@@ -28,7 +28,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void Fun()
         {
@@ -36,7 +36,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void Print()
         {
@@ -44,7 +44,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void Read()
         {
@@ -52,7 +52,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void If()
         {
@@ -60,7 +60,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void Else()
         {
@@ -68,7 +68,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void KeywordInIdentifier()
         {

@@ -8,7 +8,7 @@ namespace Lexer.States
         {
             // med led
             if (machine.IsIdentifierPredict) return machine.AddChar();
-            
+
             // led; led/ led"
             machine.GenerateToken(TokenType.Identifier);
             if (machine.IsServiceStart) // led; led/

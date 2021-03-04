@@ -44,8 +44,8 @@ namespace Lexer.LexerMachine
             _lexerState = new CommentState();
             return this;
         }
-        
-        
+
+
         public LexerMachine SetServiceState()
         {
             _expectedValues = ServiceSymbols.Keys.Where(x => x.StartsWith(_lastChar) && x != Comment).ToArray();

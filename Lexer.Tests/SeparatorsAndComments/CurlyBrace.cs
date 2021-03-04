@@ -13,7 +13,7 @@ namespace Lexer.Tests.SeparatorsAndComments
             Assert.Equal(TokenType.OpenBrace, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.CloseBrace, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void BraceInIdentifier()
         {
@@ -25,7 +25,7 @@ namespace Lexer.Tests.SeparatorsAndComments
             Assert.Equal(TokenType.OpenBrace, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void BraceInComment()
         {

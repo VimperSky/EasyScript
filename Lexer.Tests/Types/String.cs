@@ -38,7 +38,7 @@ namespace Lexer.Tests.Types
             Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void QuotAfterString()
         {
@@ -47,7 +47,7 @@ namespace Lexer.Tests.Types
             Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void NotClosedString()
         {

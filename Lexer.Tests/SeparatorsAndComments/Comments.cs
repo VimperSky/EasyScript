@@ -12,23 +12,24 @@ namespace Lexer.Tests.SeparatorsAndComments
 
             Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void CommentInComment()
         {
             var lexer = new TestLexer("// //");
 
             Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
+            Assert.Null(lexer.GetNextToken());
         }
-        
+
         [Fact]
         public void CommentWithKeywords()
         {
             var lexer = new TestLexer("// let this");
 
             Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
-        } 
-        
+        }
+
         [Fact]
         public void CommentsInAnotherString()
         {

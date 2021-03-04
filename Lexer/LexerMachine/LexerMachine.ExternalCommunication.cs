@@ -2,10 +2,10 @@
 
 namespace Lexer.LexerMachine
 {
-    public partial class LexerMachine: ILexerMachine
+    public partial class LexerMachine : ILexerMachine
     {
-        private int _lineIndex;
         private int _charIndex;
+        private int _lineIndex;
 
         public void PassChar(char ch)
         {

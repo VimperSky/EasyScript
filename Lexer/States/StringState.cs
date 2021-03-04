@@ -12,7 +12,7 @@ namespace Lexer.States
 
             if (machine.IsEof)
                 return machine.GenerateError();
-            
+
             return machine.AddChar();
         }
     }

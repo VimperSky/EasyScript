@@ -53,8 +53,8 @@ namespace Lexer
 
         public static readonly string[] KeyWords =
         {
-            "let", "if", "else", "for", "while", "true", "false", "number", "bool", "string",
-            "print", "prints", "read", "reads", "fun"
+            "let", "const", "if", "else", "for", "while", "true", "false", "number", "bool", "string",
+            "print", "prints", "read", "reads", "fun", "return"
         };
 
         public static bool IsKeywordStart(char ch)

@@ -38,7 +38,23 @@ namespace Lexer.Tests.Words
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
         }
+        
+        [Fact]
+        public void StartWithUnderscore()
+        {
+            var lexer = new TestLexer("_some");
 
+            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
+        }
+        
+        [Fact]
+        public void IdentifierStartWithKeyword()
+        {
+            var lexer = new TestLexer("while1");
+
+            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
+        }
+        
         [Fact]
         public void StringInIdentifier()
         {

@@ -17,7 +17,7 @@
 
         public override string ToString()
         {
-            return $"{Type}: \"{Value}\", line: {Line}, pos: {Position}";
+            return $"{Type}: [{Value}], line: {Line}, pos: {Position}";
         }
     }
 }

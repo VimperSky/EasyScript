@@ -4,8 +4,6 @@
     {
         public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
         {
-            // Value always is empty
-
             if (machine.IsNumberStart) return machine.SetNumberState().AddChar();
 
             if (machine.IsServiceStart)

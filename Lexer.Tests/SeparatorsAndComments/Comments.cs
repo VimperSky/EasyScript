@@ -41,16 +41,15 @@ namespace Lexer.Tests.SeparatorsAndComments
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
         }
-        
-        
+
         [Fact]
         public void MultilineComments()
         {
             var lexer = new TestLexer("/* lol try this\non another string\n*/");
 
             Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
-        }        
-        
+        }
+
         [Fact]
         public void MultilineCommentsInMoreThanOneStrings()
         {
@@ -58,7 +57,7 @@ namespace Lexer.Tests.SeparatorsAndComments
 
             Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void NotClosedMultilineComments()
         {
@@ -66,7 +65,7 @@ namespace Lexer.Tests.SeparatorsAndComments
 
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void NotClosedMultilineCommentsWithAnotherStrings()
         {

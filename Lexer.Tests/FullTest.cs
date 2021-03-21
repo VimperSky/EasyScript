@@ -8,15 +8,17 @@ namespace Lexer.Tests
         // Многострочные комментарии
         // some"s"string
         // Длина number фиксированна 
-        // неправильная position после скобок (всех)
+        // неправильная position после скобок (всех) и после ";"
         // фикс Error(position)
         // Выводить EOF при пустом файле
         [Fact]
         public void Default()
         {
             var lexer = new TestLexer(
-                "fun sum(number a, number br)\n  return a + br;\n \nconst maxNum = 41;\nfor (let i = 0; i < maxNum; i++) // печать чётных чисел\nif (i / 2 == 0)\nprint(\"Even\");\nlet firstNumber = read(); // read\nlet firstSum = sum(firstNumber + maxNum);\nlet _str = \"Hello\";\nprints(_str);");
-            
+                "fun sum(number a, number br)\n  return a + br;\n \nconst maxNum = 41;\nfor (let i =0; i <= maxNum; i++) " + 
+                "//печать чётных чисел\nif (i / 2 == 0)\nprint(\"Even\");\nlet firstNumber = read(); // read\n" + 
+                "let firstSum = sum(firstNumber + maxNum);\nlet _str = \"Hello\";\nprints(_str);");
+
             Assert.Equal(new Token(TokenType.KeyWord, "fun", 0, 0).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Identifier, "sum", 0, 5).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.OpenBracket, "(", 0, 8).ToString(), lexer.GetNextToken().ToString());
@@ -36,6 +38,21 @@ namespace Lexer.Tests
             Assert.Equal(new Token(TokenType.Assign, "=", 3, 13).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Number, "43", 3, 15).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Separator, ";", 3, 17).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.KeyWord, "for", 4, 0).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.OpenBrace, "(", 4, 4).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.KeyWord, "let", 4, 5).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.Identifier, "i", 4, 9).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.Assign, "=", 4, 11).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.Number, "0", 4, 12).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.Separator, ";", 4, 13).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.Identifier, "i", 4, 15).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.LessEquals, "<=", 4, 17).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.Identifier, "maxNum", 4, 20).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.Separator, ";", 4, 26).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.Identifier, "i", 4, 28).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.Increment, "++", 4, 29).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.CloseBracket, ")", 4, 31).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.Comment, "печать чётных чисел", 4, 33).ToString(),lexer.GetNextToken().ToString());
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Lexer.Tests.Words
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void StartWithUnderscore()
         {
@@ -46,7 +46,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void IdentifierStartWithKeyword()
         {
@@ -54,7 +54,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void StringInIdentifier()
         {
@@ -62,7 +62,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void StartWithNumberButWithUnderscore()
         {
@@ -70,7 +70,7 @@ namespace Lexer.Tests.Words
 
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void StartWithUnderscoreAndEndWithUnderscore()
         {

@@ -69,7 +69,7 @@ namespace Lexer.Tests.Types
             Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void StartAndEndWithDot()
         {
@@ -77,7 +77,7 @@ namespace Lexer.Tests.Types
 
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void ManyDots()
         {
@@ -85,7 +85,7 @@ namespace Lexer.Tests.Types
 
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void ManyDotsWithLetter()
         {

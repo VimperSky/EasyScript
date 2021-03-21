@@ -20,7 +20,7 @@ namespace Lexer.Tests.Types
 
             Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
         }
-        
+
         [Fact]
         public void StringWithNewLineNotClosed()
         {

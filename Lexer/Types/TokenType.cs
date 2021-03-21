@@ -17,7 +17,8 @@
         CloseBrace, // }
 
         // Комментарий
-        Comment, // //
+        SingleComment, // //
+        MultiLineComment, // /* */
 
         // Ключевое слово (let, if, for ...)
         KeyWord,

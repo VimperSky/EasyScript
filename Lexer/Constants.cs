@@ -10,7 +10,11 @@ namespace Lexer
 
         private const char NumberPoint = '.';
         public const char CommentSymbol = '/';
-        public const string Comment = "//";
+        public const char MultiCommentSymbol = '*';
+        
+        public const string MultiCommentStart = "/*";
+        public const string MultiCommentEnd = "*/";
+        public const string SingleComment = "//";
 
         public const char EndLine = '\n';
         private const char Space = ' ';
@@ -33,7 +37,8 @@ namespace Lexer
             {"=", TokenType.Assign},
             {";", TokenType.Semicolon},
             {",", TokenType.Comma},
-            {Comment, TokenType.Comment},
+            {SingleComment, TokenType.SingleComment},
+            {MultiCommentStart, TokenType.MultiLineComment},
 
             {">", TokenType.More},
             {">=", TokenType.MoreEquals},

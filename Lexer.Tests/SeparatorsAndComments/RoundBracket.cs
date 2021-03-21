@@ -29,7 +29,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("// maybe this (or not)");
 
-            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.SingleComment, lexer.GetNextToken().Type);
         }
     }
 }

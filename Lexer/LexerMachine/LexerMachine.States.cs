@@ -47,7 +47,7 @@ namespace Lexer.LexerMachine
 
         private LexerMachine SetCommentState()
         {
-            _lexerState = new CommentState();
+            _lexerState = new SingleLineComment();
             return this;
         }
 
@@ -78,8 +78,14 @@ namespace Lexer.LexerMachine
         /// <returns></returns>
         public LexerMachine SetServiceOrComment()
         {
-            _expectedValues = ServiceSymbols.Keys.Where(x => x.StartsWith(_lastChar) && x != Comment).ToArray();
-            return IsCommentStart ? SetCommentState() : SetServiceState().AddChar();
+            _expectedValues = ServiceSymbols.Keys.Where(x => x.StartsWith(_lastChar) && x != SingleComment).ToArray();
+            return AddChar().IsCommentSymbol ? SetCommentState() : SetServiceState();
+        }
+
+        public LexerMachine SetMultiLineCommentState()
+        {
+            _lexerState = new MultiLineComment();
+            return this;
         }
     }
    

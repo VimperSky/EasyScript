@@ -49,6 +49,12 @@ namespace Lexer.LexerMachine
             return AddChar(_lastChar);
         }
 
+        public LexerMachine RemoveLast()
+        {
+            _value = _value.Substring(0, _value.Length - 1);
+            return this;
+        }
+
         private LexerMachine AddChar(char ch)
         {
             _value += ch;
@@ -79,11 +85,6 @@ namespace Lexer.LexerMachine
         public LexerMachine GenerateServiceSymbol()
         {
             return GenerateToken(ServiceSymbols[_value]);
-        }
-
-        public LexerMachine AddCommentSymbol()
-        {
-            return AddChar(CommentSymbol);
         }
         
     }

@@ -36,7 +36,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("// TODO: separators (\';\')");
 
-            Assert.Equal(TokenType.SingleComment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
         }
 
         [Fact]

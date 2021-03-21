@@ -6,7 +6,7 @@ namespace Lexer.Tests
     public class FullTest
     {
         // 1_1 /1 = _ /_1_a /+-1 /2 -1 - done
-        // Многострочные комментарии
+        // Многострочные комментарии - done
         // 1.1.1 - done
         // .1. - done
         // some"s"string - done
@@ -55,7 +55,7 @@ namespace Lexer.Tests
             Assert.Equal(new Token(TokenType.Identifier, "i", 4, 28).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Increment, "++", 4, 29).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.CloseBracket, ")", 4, 31).ToString(), lexer.GetNextToken().ToString());
-            Assert.Equal(new Token(TokenType.SingleComment, "печать чётных чисел", 4, 33).ToString(),lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.Comment, "печать чётных чисел", 4, 33).ToString(),lexer.GetNextToken().ToString());
         }
     }
 }

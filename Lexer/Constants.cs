@@ -37,8 +37,8 @@ namespace Lexer
             {"=", TokenType.Assign},
             {";", TokenType.Semicolon},
             {",", TokenType.Comma},
-            {SingleComment, TokenType.SingleComment},
-            {MultiCommentStart, TokenType.MultiLineComment},
+            {SingleComment, TokenType.Comment},
+            {MultiCommentStart, TokenType.MultiComment},
 
             {">", TokenType.More},
             {">=", TokenType.MoreEquals},

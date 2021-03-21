@@ -16,11 +16,11 @@
         OpenBrace, // {
         CloseBrace, // }
 
-        // Комментарий
-        SingleComment, // //
-        MultiLineComment, // /* */
+        // Комментарии
+        Comment, // //
+        MultiComment, // /* */
 
-        // Ключевое слово (let, if, for ...)
+        // Ключевые слово (let, if, for ...)
         KeyWord,
 
         // Название переменной

@@ -2,13 +2,13 @@
 
 namespace Lexer.States
 {
-    public class SingleLineComment : ILexerState
+    public class SingleComment : ILexerState
     {
         private bool _isFound;
         public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
         {
             if (_isFound)
-                return machine.IsEndLine ? machine.GenerateToken(TokenType.SingleComment) : machine.AddChar();
+                return machine.IsEndLine ? machine.GenerateToken(TokenType.Comment) : machine.AddChar();
             
             // //
             if (machine.IsCommentSymbol)

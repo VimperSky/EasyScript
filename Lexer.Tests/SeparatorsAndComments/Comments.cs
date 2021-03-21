@@ -10,7 +10,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("//");
 
-            Assert.Equal(TokenType.SingleComment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -18,7 +18,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("// //");
 
-            Assert.Equal(TokenType.SingleComment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
             Assert.Null(lexer.GetNextToken());
         }
 
@@ -27,7 +27,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("// let this");
 
-            Assert.Equal(TokenType.SingleComment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -35,11 +35,11 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("// let this\n get the fo // sry for this)");
 
-            Assert.Equal(TokenType.SingleComment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.SingleComment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("/* lol try this\non another string\n*/");
 
-            Assert.Equal(TokenType.SingleComment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("/* lol try this\non another\nstring*/");
 
-            Assert.Equal(TokenType.SingleComment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
         }
 
         [Fact]

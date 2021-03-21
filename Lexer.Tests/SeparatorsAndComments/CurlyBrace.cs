@@ -31,7 +31,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("// im so tired {of this}");
 
-            Assert.Equal(TokenType.SingleComment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
         }
     }
 }

@@ -20,6 +20,15 @@ namespace Lexer.Tests.Types
 
             Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
         }
+        
+        [Fact]
+        public void StringWithNewLineNotClosed()
+        {
+            var lexer = new TestLexer("\"some\nstring");
+
+            Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
+        }
 
         [Fact]
         public void StringWithErrorSymbol()

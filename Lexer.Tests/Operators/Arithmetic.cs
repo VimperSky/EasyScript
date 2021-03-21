@@ -123,5 +123,26 @@ namespace Lexer.Tests.Operators
             Assert.Equal(TokenType.PlusOp, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
         }
+        
+        
+        [Fact]
+        public void MinusWithNumberInOperation()
+        {
+            var lexer = new TestLexer("2 -1");
+
+            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.MinusOp, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
+        }
+        
+        [Fact]
+        public void PlusMinus()
+        {
+            var lexer = new TestLexer("+-1");
+
+            Assert.Equal(TokenType.PlusOp, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.MinusOp, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
+        }
     }
 }

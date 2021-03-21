@@ -58,12 +58,24 @@ namespace Lexer.Tests.Words
         [Fact]
         public void StringInIdentifier()
         {
-            var lexer = new TestLexer("flex\"path\"er");
+            var lexer = new TestLexer("some\"s\"string");
 
-            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
+        }
+        
+        [Fact]
+        public void StartWithNumberButWithUnderscore()
+        {
+            var lexer = new TestLexer("1_1");
+
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
+        }
+        
+        [Fact]
+        public void StartWithUnderscoreAndEndWithUnderscore()
+        {
+            var lexer = new TestLexer("_1_a_");
+
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
         }
     }

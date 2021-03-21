@@ -69,5 +69,29 @@ namespace Lexer.Tests.Types
             Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
         }
+        
+        [Fact]
+        public void StartAndEndWithDot()
+        {
+            var lexer = new TestLexer(".1.");
+
+            Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
+        }
+        
+        [Fact]
+        public void ManyDots()
+        {
+            var lexer = new TestLexer("1.1.1");
+
+            Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
+        }
+        
+        [Fact]
+        public void ManyDotsWithLetter()
+        {
+            var lexer = new TestLexer("1.1.a");
+
+            Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
+        }
     }
 }

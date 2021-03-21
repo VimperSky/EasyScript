@@ -15,7 +15,7 @@ namespace Lexer.States
                 _isProbablyEnd = false;
 
                 if (machine.IsCommentSymbol)
-                    return machine.RemoveLast().GenerateToken(TokenType.MultiComment);
+                    return machine.RemoveChar().GenerateToken(TokenType.MultiComment);
             }
             
             if (machine.IsMultiCommentSymbol)

@@ -49,7 +49,7 @@ namespace Lexer.LexerMachine
             return AddChar(_lastChar);
         }
 
-        public LexerMachine RemoveLast()
+        public LexerMachine RemoveChar()
         {
             _value = _value.Substring(0, _value.Length - 1);
             return this;

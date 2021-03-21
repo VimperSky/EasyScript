@@ -14,13 +14,13 @@ namespace Lexer.States
             if (machine.IsCommentSymbol)
             {
                 _isFound = true;
-                return machine.RemoveLast();
+                return machine.RemoveChar();
             }
 
             // /*
             if (machine.IsMultiCommentSymbol)
             {
-                return machine.RemoveLast().SetMultiLineCommentState();
+                return machine.RemoveChar().SetMultiLineCommentState();
             }
 
             // /a /;

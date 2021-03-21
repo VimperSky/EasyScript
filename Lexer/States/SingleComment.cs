@@ -20,7 +20,7 @@ namespace Lexer.States
             // /*
             if (machine.IsMultiCommentSymbol)
             {
-                return machine.SetMultiLineCommentState();
+                return machine.RemoveLast().SetMultiLineCommentState();
             }
 
             // /a /;

@@ -26,11 +26,13 @@
         Identifier,
 
         // Типы данных
-        Number, // 
+        Int, // 32 bit integer
+        Float, // 32 bit floating point
         String, // "
 
         // Точка с запятой
-        Separator, // ;
+        Semicolon, // ;
+        Comma, // ,
 
         // Присвоение
         Assign, // =
@@ -54,6 +56,8 @@
 
         // Операторы условия
         And, // &
-        Or // |
+        Or, // |
+        
+        EoF, // End of Line
     }
 }

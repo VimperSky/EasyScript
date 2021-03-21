@@ -10,19 +10,22 @@ namespace Lexer.LexerMachine
 
         public bool IsServiceStart => IsServiceSymbolStart(_lastChar);
 
-        public bool IsNumberStart => IsNumberCharacter(_lastChar);
+        public bool IsFloat => IsFloatCharacter(_lastChar);
 
+        public bool IsInt => IsDigit(_lastChar);
+        
         public bool IsIdentifierPredict => IsIdentifier(_value + _lastChar);
 
         public bool IsKeywordStart => IsKeywordStart(_lastChar);
 
         public bool IsExpectedValueAchieved => _expectedValues.Contains(_value);
 
-        public bool IsNumberPredict => IsNumberPredicted(_value + _lastChar);
-        public bool IsNumberConstructed => IsNumberConstructed(_value);
+        public bool IsIntContinue => IsIntContinue(_value + _lastChar);
+        public bool IsFloatContinue => IsFloatContinue(_value + _lastChar);
+        
+        public bool IsFloatConstructed => IsFloatConstructed(_value);
 
-        public bool IsNumberStartsFromSign => _value.Length >= 1 && IsSign(_value[0]);
-
+        public bool IsPoint => IsPoint(_lastChar);
         public bool IsExpectedValueContinue
         {
             get

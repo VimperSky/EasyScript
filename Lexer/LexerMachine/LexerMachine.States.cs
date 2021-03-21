@@ -33,24 +33,54 @@ namespace Lexer.LexerMachine
             return this;
         }
 
-        public LexerMachine SetNumberState()
+        public LexerMachine SetIntState()
         {
-            _lexerState = new NumberState();
+            _lexerState = new IntState();
             return this;
         }
 
-        public LexerMachine SetCommentState()
+        public LexerMachine SetFloatState()
+        {
+            _lexerState = new FloatState();
+            return this;
+        }
+
+        private LexerMachine SetCommentState()
         {
             _lexerState = new CommentState();
             return this;
         }
 
-
         public LexerMachine SetServiceState()
         {
-            _expectedValues = ServiceSymbols.Keys.Where(x => x.StartsWith(_lastChar) && x != Comment).ToArray();
-            _lexerState = IsCommentStart ? new CommentState() : new ServiceState();
+            _lexerState = new ServiceState();
             return this;
         }
+
+        private LexerMachine SerErrorState()
+        {
+            _lexerState = new ErrorState();
+            return this;
+        }
+        
+        /// <summary>
+        /// Sets error state and reprocesses it
+        /// </summary>
+        /// <returns></returns>
+        public LexerMachine SetError()
+        {
+            return SerErrorState().ReProcess();
+        }
+
+        /// <summary>
+        ///  Sets comment state without adding last char or service state with last char
+        /// </summary>
+        /// <returns></returns>
+        public LexerMachine SetServiceOrComment()
+        {
+            _expectedValues = ServiceSymbols.Keys.Where(x => x.StartsWith(_lastChar) && x != Comment).ToArray();
+            return IsCommentStart ? SetCommentState() : SetServiceState().AddChar();
+        }
     }
+   
 }

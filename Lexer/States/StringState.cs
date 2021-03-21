@@ -11,7 +11,7 @@ namespace Lexer.States
                 return machine.GenerateToken(TokenType.String);
 
             if (machine.IsEof)
-                return machine.GenerateError();
+                return machine.SetError();
 
             return machine.AddChar();
         }

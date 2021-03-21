@@ -11,7 +11,7 @@
             if (machine.IsExpectedValueAchieved) return machine.GenerateServiceSymbol().SetIdleState().ReProcess();
 
             // !k or ! or !;
-            return machine.AddChar().GenerateError();
+            return machine.SetError();
         }
     }
 }

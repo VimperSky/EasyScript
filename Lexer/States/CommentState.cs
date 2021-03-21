@@ -17,7 +17,7 @@ namespace Lexer.States
             }
 
             // /a /;
-            return machine.AddCommentSymbol().GenerateServiceSymbol().SetServiceState().ReProcess();
+            return machine.AddCommentSymbol().GenerateServiceSymbol().SetIdleState().ReProcess();
         }
     }
 }

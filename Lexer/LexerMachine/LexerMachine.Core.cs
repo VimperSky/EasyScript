@@ -75,22 +75,16 @@ namespace Lexer.LexerMachine
             _tokens.Enqueue(newToken);
             return Reset();
         }
-
-        public LexerMachine GenerateError()
+        
+        public LexerMachine GenerateServiceSymbol()
         {
-            return GenerateToken(TokenType.Error);
-        }
-
-        public LexerMachine GenerateServiceSymbol(bool first = false)
-        {
-            return first
-                ? GenerateToken(ServiceSymbols[_value[0].ToString()])
-                : GenerateToken(ServiceSymbols[_value]);
+            return GenerateToken(ServiceSymbols[_value]);
         }
 
         public LexerMachine AddCommentSymbol()
         {
             return AddChar(CommentSymbol);
         }
+        
     }
 }

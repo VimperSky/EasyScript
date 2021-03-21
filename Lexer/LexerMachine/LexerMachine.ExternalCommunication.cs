@@ -9,13 +9,12 @@ namespace Lexer.LexerMachine
 
         public void PassChar(char ch)
         {
+            ProcessChar(ch, _lineIndex, _charIndex++);
             if (ch == '\n')
             {
                 _charIndex = -1;
                 _lineIndex++;
             }
-
-            ProcessChar(ch, _lineIndex, _charIndex++);
         }
 
         public Token GetToken()

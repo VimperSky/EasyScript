@@ -9,13 +9,11 @@ namespace Lexer.States
             // med led
             if (machine.IsIdentifierPredict) return machine.AddChar();
 
-            // led; led/ led"
-            machine.GenerateToken(TokenType.Identifier);
             if (machine.IsServiceStart) // led; led/
-                return machine.IsCommentStart ? machine.SetCommentState() : machine.AddChar().SetServiceState();
+                return machine.GenerateToken(TokenType.Identifier).SetServiceOrComment();
 
             // led"
-            return machine.AddChar().GenerateError();
+            return machine.SetError();
         }
     }
 }

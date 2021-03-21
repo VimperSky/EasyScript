@@ -4,10 +4,12 @@
     {
         public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
         {
-            if (machine.IsNumberStart) return machine.SetNumberState().AddChar();
+            if (machine.IsInt) return machine.SetIntState().AddChar();
+
+            if (machine.IsFloat) return machine.SetFloatState().AddChar();
 
             if (machine.IsServiceStart)
-                return machine.IsCommentStart ? machine.SetCommentState() : machine.SetServiceState().AddChar();
+                return machine.SetServiceOrComment();
 
             if (machine.IsStringSymbol) return machine.SetStringState();
 
@@ -15,7 +17,7 @@
 
             if (machine.IsIdentifierPredict) return machine.SetIdentifierState().AddChar();
 
-            return machine.AddChar().GenerateError();
+            return machine.SetError();
         }
     }
 }

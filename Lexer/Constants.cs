@@ -7,8 +7,6 @@ namespace Lexer
     public static class Constants
     {
         public const char StringSymbol = '"';
-        private const char NumberMinusSign = '-';
-        private const char NumberPlusSign = '+';
 
         private const char NumberPoint = '.';
         public const char CommentSymbol = '/';
@@ -18,8 +16,11 @@ namespace Lexer
         private const char Space = ' ';
         private const char Underscore = '_';
 
-        public static readonly List<TokenType> SkipTokens = new() {TokenType.Space, TokenType.EndLine};
+        private const byte MaxIntSize = 19; // long = 19 characters
+        private const byte MaxFloatSize = 38;
 
+        public static readonly List<TokenType> SkipTokens = new() {TokenType.Space, TokenType.EndLine};
+        
         public static readonly Dictionary<string, TokenType> ServiceSymbols = new()
         {
             {Space.ToString(), TokenType.Space},
@@ -30,7 +31,8 @@ namespace Lexer
             {"{", TokenType.OpenBrace},
             {"}", TokenType.CloseBrace},
             {"=", TokenType.Assign},
-            {";", TokenType.Separator},
+            {";", TokenType.Semicolon},
+            {",", TokenType.Comma},
             {Comment, TokenType.Comment},
 
             {">", TokenType.More},
@@ -53,7 +55,7 @@ namespace Lexer
 
         public static readonly string[] KeyWords =
         {
-            "let", "const", "if", "else", "for", "while", "true", "false", "number", "bool", "string",
+            "let", "const", "if", "else", "for", "while", "true", "false", "int", "float", "bool", "string",
             "print", "prints", "read", "reads", "fun", "return"
         };
 
@@ -66,33 +68,33 @@ namespace Lexer
         {
             return ServiceSymbols.Any(x => x.Key.StartsWith(ch));
         }
-
-        public static bool IsSign(char ch)
+        
+        public static bool IsFloatConstructed(string num)
         {
-            return ch == NumberMinusSign || ch == NumberPlusSign;
+            return IsFloatContinue(num) && num.Any(IsDigit);
+        }
+        
+        public static bool IsIntContinue(string num)
+        {
+            return num.Length >= 1 && num.Length <= MaxIntSize && num.All(IsDigit);
+        }
+        
+        public static bool IsFloatContinue(string num)
+        {
+            return num.Length >= 1 && num.Length <= MaxFloatSize && num.All(IsFloatCharacter) && num.Count(IsPoint) <= 1;
         }
 
-        public static bool IsNumberConstructed(string num)
+        public static bool IsFloatCharacter(char ch)
         {
-            return IsNumberPredicted(num) && num.Any(IsDigit);
+            return IsDigit(ch) || ch == NumberPoint;
         }
 
-        public static bool IsNumberPredicted(string num)
-        {
-            return num.Length >= 1 && num.All(IsNumberCharacter) && num.Count(IsPoint) <= 1 && num.Count(IsSign) <= 1;
-        }
-
-        public static bool IsNumberCharacter(char ch)
-        {
-            return IsDigit(ch) || IsSign(ch) || ch == NumberPoint;
-        }
-
-        private static bool IsPoint(char ch)
+        public static bool IsPoint(char ch)
         {
             return ch == NumberPoint;
         }
 
-        private static bool IsDigit(char ch)
+        public static bool IsDigit(char ch)
         {
             return char.IsDigit(ch);
         }

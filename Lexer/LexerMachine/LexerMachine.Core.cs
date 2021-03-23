@@ -81,11 +81,10 @@ namespace Lexer.LexerMachine
             _tokens.Enqueue(newToken);
             return Reset();
         }
-        
+
         public LexerMachine GenerateServiceSymbol()
         {
             return GenerateToken(ServiceSymbols[_value]);
         }
-        
     }
 }

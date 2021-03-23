@@ -6,11 +6,12 @@ namespace Lexer.Tests.SeparatorsAndComments
     public class Comments
     {
         [Fact]
-        public void Default()
+        public void DefaultComment()
         {
             var lexer = new TestLexer("//");
 
             Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
+            Assert.Null(lexer.GetNextToken());
         }
 
         [Fact]
@@ -45,9 +46,9 @@ namespace Lexer.Tests.SeparatorsAndComments
         [Fact]
         public void MultilineComments()
         {
-            var lexer = new TestLexer("/* lol try this\non another string\n*/");
+            var lexer = new TestLexer("/* lol try this */");
 
-            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.MultiComment, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -55,7 +56,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("/* lol try this\non another\nstring*/");
 
-            Assert.Equal(TokenType.Comment, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.MultiComment, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -63,7 +64,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("/* lol try this\n");
 
-            Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.MultiComment, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -71,9 +72,8 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("/* lol try this\non another");
 
-            Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.MultiComment, lexer.GetNextToken().Type);
+            Assert.Null(lexer.GetNextToken());
         }
     }
 }

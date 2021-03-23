@@ -58,7 +58,7 @@
         // Операторы условия
         And, // &
         Or, // |
-        
-        EoF, // End of Line
+
+        EoF // End of Line
     }
 }

@@ -10,7 +10,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("5");
 
-            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Int, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -18,7 +18,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("52");
 
-            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Int, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -26,15 +26,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("5.222");
 
-            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
-        }
-
-        [Fact]
-        public void NegativeNumber()
-        {
-            var lexer = new TestLexer("-5.222");
-
-            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Float, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -42,15 +34,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer(".222");
 
-            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
-        }
-
-        [Fact]
-        public void NegativeNumberWithoutIntPart()
-        {
-            var lexer = new TestLexer("-.22");
-
-            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Float, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -58,16 +42,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("5.");
 
-            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
-        }
-
-        [Fact]
-        public void NegativeNumberAfterNumber()
-        {
-            var lexer = new TestLexer("2 -5.222");
-
-            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Float, lexer.GetNextToken().Type);
         }
 
         [Fact]

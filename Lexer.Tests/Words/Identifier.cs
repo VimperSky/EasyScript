@@ -34,9 +34,7 @@ namespace Lexer.Tests.Words
         {
             var lexer = new TestLexer("Fle$x");
 
-            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
         }
 
         [Fact]

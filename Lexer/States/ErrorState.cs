@@ -2,7 +2,7 @@ using Lexer.Types;
 
 namespace Lexer.States
 {
-    public class ErrorState: ILexerState
+    public class ErrorState : ILexerState
     {
         public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
         {

@@ -2,9 +2,10 @@ using Lexer.Types;
 
 namespace Lexer.States
 {
-    public class MultiComment: ILexerState
+    public class MultiComment : ILexerState
     {
         private bool _isProbablyEnd;
+
         public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
         {
             if (machine.IsEof)
@@ -17,11 +18,8 @@ namespace Lexer.States
                 if (machine.IsCommentSymbol)
                     return machine.RemoveChar().GenerateToken(TokenType.MultiComment);
             }
-            
-            if (machine.IsMultiCommentSymbol)
-            {
-                _isProbablyEnd = true;
-            }
+
+            if (machine.IsMultiCommentSymbol) _isProbablyEnd = true;
 
             return machine.AddChar();
         }

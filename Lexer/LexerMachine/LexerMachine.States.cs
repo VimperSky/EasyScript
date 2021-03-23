@@ -62,9 +62,9 @@ namespace Lexer.LexerMachine
             _lexerState = new ErrorState();
             return this;
         }
-        
+
         /// <summary>
-        /// Sets error state and reprocesses it
+        ///     Sets error state and reprocesses it
         /// </summary>
         /// <returns></returns>
         public LexerMachine SetError()
@@ -73,12 +73,13 @@ namespace Lexer.LexerMachine
         }
 
         /// <summary>
-        ///  Sets comment state without adding last char or service state with last char
+        ///     Sets comment state without adding last char or service state with last char
         /// </summary>
         /// <returns></returns>
         public LexerMachine SetServiceOrComment()
         {
-            _expectedValues = ServiceSymbols.Keys.Where(x => x.StartsWith(_lastChar) && x != Constants.SingleComment).ToArray();
+            _expectedValues = ServiceSymbols.Keys.Where(x => x.StartsWith(_lastChar) && x != Constants.SingleComment)
+                .ToArray();
             return AddChar().IsCommentSymbol ? SetCommentState() : SetServiceState();
         }
 
@@ -88,5 +89,4 @@ namespace Lexer.LexerMachine
             return this;
         }
     }
-   
 }

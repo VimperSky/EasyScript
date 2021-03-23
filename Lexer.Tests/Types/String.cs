@@ -27,7 +27,7 @@ namespace Lexer.Tests.Types
             var lexer = new TestLexer("\"some\nstring");
 
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
+            Assert.Null(lexer.GetNextToken());
         }
 
         [Fact]

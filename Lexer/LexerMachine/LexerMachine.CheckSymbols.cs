@@ -6,7 +6,7 @@ namespace Lexer.LexerMachine
     public partial class LexerMachine
     {
         public bool IsCommentSymbol => _lastChar == CommentSymbol;
-        
+
         public bool IsMultiCommentSymbol => _lastChar == MultiCommentSymbol;
 
         public bool IsStringSymbol => _lastChar == StringSymbol;
@@ -16,7 +16,7 @@ namespace Lexer.LexerMachine
         public bool IsFloat => IsFloatCharacter(_lastChar);
 
         public bool IsInt => IsDigit(_lastChar);
-        
+
         public bool IsIdentifierPredict => IsIdentifier(_value + _lastChar);
 
         public bool IsKeywordStart => IsKeywordStart(_lastChar);
@@ -25,10 +25,11 @@ namespace Lexer.LexerMachine
 
         public bool IsIntContinue => IsIntContinue(_value + _lastChar);
         public bool IsFloatContinue => IsFloatContinue(_value + _lastChar);
-        
+
         public bool IsFloatConstructed => IsFloatConstructed(_value);
 
         public bool IsPoint => IsPoint(_lastChar);
+
         public bool IsExpectedValueContinue
         {
             get

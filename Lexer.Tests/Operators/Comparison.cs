@@ -56,6 +56,19 @@ namespace Lexer.Tests.Operators
         [Fact]
         public void ManyCompOp()
         {
+            var lexer = new TestLexer("!===<=>=<>");
+
+            Assert.Equal(TokenType.NotEquals, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Equals, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.LessEquals, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.MoreEquals, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Less, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.More, lexer.GetNextToken().Type);
+        }
+
+        [Fact]
+        public void ManyCompOpWithSpaces()
+        {
             var lexer = new TestLexer("!= == <= >= < >");
 
             Assert.Equal(TokenType.NotEquals, lexer.GetNextToken().Type);
@@ -73,7 +86,7 @@ namespace Lexer.Tests.Operators
 
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.NotEquals, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.Number, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Int, lexer.GetNextToken().Type);
         }
     }
 }

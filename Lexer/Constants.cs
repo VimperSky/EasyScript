@@ -11,7 +11,7 @@ namespace Lexer
         private const char NumberPoint = '.';
         public const char CommentSymbol = '/';
         public const char MultiCommentSymbol = '*';
-        
+
         public const string MultiCommentStart = "/*";
         public const string MultiCommentEnd = "*/";
         public const string SingleComment = "//";
@@ -24,7 +24,7 @@ namespace Lexer
         private const byte MaxFloatSize = 38;
 
         public static readonly List<TokenType> SkipTokens = new() {TokenType.Space, TokenType.EndLine};
-        
+
         public static readonly Dictionary<string, TokenType> ServiceSymbols = new()
         {
             {Space.ToString(), TokenType.Space},
@@ -73,20 +73,21 @@ namespace Lexer
         {
             return ServiceSymbols.Any(x => x.Key.StartsWith(ch));
         }
-        
+
         public static bool IsFloatConstructed(string num)
         {
             return IsFloatContinue(num) && num.Any(IsDigit);
         }
-        
+
         public static bool IsIntContinue(string num)
         {
             return num.Length >= 1 && num.Length <= MaxIntSize && num.All(IsDigit);
         }
-        
+
         public static bool IsFloatContinue(string num)
         {
-            return num.Length >= 1 && num.Length <= MaxFloatSize && num.All(IsFloatCharacter) && num.Count(IsPoint) <= 1;
+            return num.Length >= 1 && num.Length <= MaxFloatSize && num.All(IsFloatCharacter) &&
+                   num.Count(IsPoint) <= 1;
         }
 
         public static bool IsFloatCharacter(char ch)

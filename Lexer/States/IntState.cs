@@ -12,8 +12,8 @@ namespace Lexer.States
 
             // 53.
             if (machine.IsPoint)
-                return machine.AddChar().SetFloatState(); 
-            
+                return machine.AddChar().SetFloatState();
+
             // 5;
             if (machine.IsServiceStart)
             {

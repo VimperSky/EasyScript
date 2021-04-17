@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace SetsParser
 {
@@ -6,7 +7,8 @@ namespace SetsParser
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            
+            var lexer = new SetsParser(File.OpenRead("input.txt"));
         }
     }
 }

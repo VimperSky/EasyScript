@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 
@@ -7,23 +8,31 @@ namespace SetsParser
 {
     public class SetsParser
     {
-        private readonly StreamReader _streamReader;
 
         public SetsParser(Stream input)
         {
-            _streamReader = new StreamReader(input);
+            using var sr = new StreamReader(input);
             string line;
-            var rules = new List<Rule>();
-            while ((line = _streamReader.ReadLine()) != null)
+            var rawRules = new List<(string LeftBody, string RightBody)>();
+            while ((line = sr.ReadLine()) != null)
             {
-                var terminals = line.Split("->");
-                var right = terminals[1].Split("|");
-                rules.AddRange(right.Select(item => new Rule
-                {
-                    NonTerminal = terminals[0],
-                    Elements = item.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList()
-                }));
+                var split = line.Split("->", StringSplitOptions.TrimEntries);
+                var localRules = split[1].Split("|", StringSplitOptions.TrimEntries);
+                rawRules.AddRange(localRules.Select(rule => (split[0], rule)));
             }
+            
+            var nonTerminals = rawRules.Select(x => x.LeftBody).ToImmutableHashSet();
+            var rules = rawRules.Select(rawRule => new Rule
+                {
+                    NonTerminal = rawRule.LeftBody,
+                    Items = rawRule.RightBody.Split(" ", StringSplitOptions.TrimEntries)
+                        .Select(x => new RuleItem(x, !nonTerminals.Contains(x)))
+                        .ToList()
+                })
+                .ToList();
+
+
+            Console.WriteLine();
         }
     }
 }

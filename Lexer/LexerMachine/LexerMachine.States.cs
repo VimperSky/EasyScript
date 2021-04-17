@@ -16,7 +16,7 @@ namespace Lexer.LexerMachine
 
         public LexerMachine SetKeywordState()
         {
-            _expectedValues = KeyWords.Where(x => x.StartsWith(_lastChar)).ToArray();
+            _expectedValues = KeyWords.Where(x => x.StartsWith(_curChar)).ToArray();
             _lexerState = new KeywordState();
             return this;
         }
@@ -78,7 +78,7 @@ namespace Lexer.LexerMachine
         /// <returns></returns>
         public LexerMachine SetServiceOrComment()
         {
-            _expectedValues = ServiceSymbols.Keys.Where(x => x.StartsWith(_lastChar) && x != Constants.SingleComment)
+            _expectedValues = ServiceSymbols.Keys.Where(x => x.StartsWith(_curChar) && x != Constants.SingleComment)
                 .ToArray();
             return AddChar().IsCommentSymbol ? SetCommentState() : SetServiceState();
         }

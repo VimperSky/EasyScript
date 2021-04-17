@@ -8,7 +8,7 @@
             if (machine.IsExpectedValueContinue) return machine.AddChar();
 
             // !== or !=; or !=k or !=/ or != ...
-            if (machine.IsExpectedValueAchieved) return machine.GenerateServiceSymbol().SetIdleState().ReProcess();
+            if (machine.IsExpectedValueAchieved) return machine.GenerateServiceSymbol().ReProcess();
 
             // !k or ! or !;
             return machine.SetError();

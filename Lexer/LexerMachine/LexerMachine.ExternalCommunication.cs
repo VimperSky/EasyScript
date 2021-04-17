@@ -12,7 +12,7 @@ namespace Lexer.LexerMachine
             ProcessChar(ch, _lineIndex, _charIndex++);
             if (ch == '\n')
             {
-                _charIndex = -1;
+                _charIndex = 0;
                 _lineIndex++;
             }
         }

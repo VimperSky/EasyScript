@@ -22,7 +22,7 @@ namespace Lexer.States
             if (machine.IsMultiCommentSymbol) return machine.RemoveChar().SetMultiLineCommentState();
 
             // /a /;
-            return machine.GenerateServiceSymbol().SetIdleState().ReProcess();
+            return machine.GenerateServiceSymbol().ReProcess();
         }
     }
 }

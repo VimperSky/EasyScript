@@ -91,7 +91,7 @@ namespace Lexer.Tests
             Assert.Equal(new Token(TokenType.OpenBracket, "(", 8, 22).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.CloseBracket, ")", 8, 23).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Semicolon, ";", 8, 24).ToString(), lexer.GetNextToken().ToString());
-            Assert.Equal(new Token(TokenType.Comment, "read", 8, 26).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.Comment, " read", 8, 26).ToString(), lexer.GetNextToken().ToString());
 
             Assert.Equal(new Token(TokenType.KeyWord, "let", 9, 0).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Identifier, "firstSum", 9, 4).ToString(), lexer.GetNextToken().ToString());
@@ -114,7 +114,7 @@ namespace Lexer.Tests
             Assert.Equal(new Token(TokenType.KeyWord, "prints", 11, 0).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.OpenBracket, "(", 11, 6).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Identifier, "_str", 11, 7).ToString(), lexer.GetNextToken().ToString());
-            Assert.Equal(new Token(TokenType.CloseBracket, "_str", 11, 11).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.CloseBracket, ")", 11, 11).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Semicolon, ";", 11, 12).ToString(), lexer.GetNextToken().ToString());
 
             Assert.Equal(new Token(TokenType.MultiComment, " comment\nmany\nmuch ", 12, 0).ToString(), lexer.GetNextToken().ToString());

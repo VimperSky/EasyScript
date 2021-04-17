@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Lexer.States;
 using Lexer.Types;
 using static Lexer.Constants;
 
@@ -11,7 +12,7 @@ namespace Lexer.LexerMachine
 
         private string[] _expectedValues;
 
-        private char _lastChar;
+        private char _curChar;
 
         private int _lastLine;
         private int _lastPos;
@@ -27,15 +28,14 @@ namespace Lexer.LexerMachine
 
         private void ProcessChar(char ch, int line, int pos)
         {
-            if (_startPos == -1)
+            if (_lexerState is IdleState)
+            {
                 _startPos = pos;
-            if (_startLine == -1)
                 _startLine = line;
-
+            }
             _lastLine = line;
-            _lastChar = ch;
             _lastPos = pos;
-
+            _curChar = ch;
             _lexerState.Process(this);
         }
 
@@ -46,7 +46,7 @@ namespace Lexer.LexerMachine
 
         public LexerMachine AddChar()
         {
-            return AddChar(_lastChar);
+            return AddChar(_curChar);
         }
 
         public LexerMachine RemoveChar()
@@ -65,8 +65,8 @@ namespace Lexer.LexerMachine
         {
             _value = "";
             _expectedValues = Array.Empty<string>();
-            _startPos = -1;
-            _startLine = -1;
+            _startPos = _lastPos;
+            _startLine = _lastLine;
 
             return SetIdleState();
         }
@@ -75,9 +75,7 @@ namespace Lexer.LexerMachine
         {
             if (SkipTokens.Contains(tokenType))
                 return Reset();
-            var newToken = _startPos == -1
-                ? new Token(tokenType, _value, _lastLine, _lastPos)
-                : new Token(tokenType, _value, _startLine, _startPos);
+            var newToken = new Token(tokenType, _value, _startLine, _startPos);
             _tokens.Enqueue(newToken);
             return Reset();
         }

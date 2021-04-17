@@ -10,12 +10,12 @@ namespace SetsParser
     {
         public SetsParser(Stream input)
         {
-            var baseRules = ReadRules(input);
-            DoFactorization(baseRules);
-            Console.WriteLine(baseRules);
+            var baseRules = ParseInput(input);
+            var factorizedRules = DoFactorization(baseRules);
+            
         }
 
-        private List<Rule> DoFactorization(RulesTable rulesTable)
+        private static IEnumerable<Rule> DoFactorization(RulesTable rulesTable)
         {
             var newRules = new List<Rule>();
             foreach (var t in rulesTable.NonTerminals)
@@ -56,7 +56,7 @@ namespace SetsParser
             return newRules;
         }
         
-        private RulesTable ReadRules(Stream input)
+        private static RulesTable ParseInput(Stream input)
         {
             using var sr = new StreamReader(input);
             string line;

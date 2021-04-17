@@ -8,8 +8,55 @@ namespace SetsParser
 {
     public class SetsParser
     {
-
         public SetsParser(Stream input)
+        {
+            var baseRules = ReadRules(input);
+            DoFactorization(baseRules);
+            Console.WriteLine(baseRules);
+        }
+
+        private List<Rule> DoFactorization(RulesTable rulesTable)
+        {
+            var newRules = new List<Rule>();
+            foreach (var t in rulesTable.NonTerminals)
+            {
+                var rules = rulesTable.Rules.Where(x => x.NonTerminal == t).ToList();
+                if (rules.Count > 1)
+                {
+                    var common = rules.FindCommon();
+                    if (common.Count > 0)
+                    {
+                        var newNonTerm = Extensions.GetNextFreeLetter(rulesTable.NonTerminals).ToString();
+                        common.Add(new RuleItem(newNonTerm, false));
+                        var newRule = new Rule
+                        {
+                            NonTerminal = t,
+                            Items = common
+                        };
+                        newRules.Add(newRule);
+                        newRules.Add(new Rule {NonTerminal = newNonTerm, Items = new List<RuleItem>
+                        {
+                            new("e", true)
+                        }});
+                    
+                        foreach (var rule in rules)
+                        {
+                            var rest = rule.Items.Skip(common.Count - 1).ToList();
+                            if (rest.Count == 0)
+                                continue;
+                            newRules.Add(new Rule {NonTerminal = newNonTerm, Items = rest});
+                        }
+                        continue;
+                    }
+                }
+                newRules.AddRange(rules);
+            }
+            
+
+            return newRules;
+        }
+        
+        private RulesTable ReadRules(Stream input)
         {
             using var sr = new StreamReader(input);
             string line;
@@ -30,9 +77,7 @@ namespace SetsParser
                         .ToList()
                 })
                 .ToList();
-
-
-            Console.WriteLine();
+            return new RulesTable(rules, nonTerminals);
         }
     }
 }

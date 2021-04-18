@@ -3,10 +3,10 @@ using System;
 
 namespace SetsParser
 {
-    public class RuleItem: IEquatable<RuleItem>
+    public class RuleItem : IEquatable<RuleItem>
     {
-        public readonly string Value;
         public readonly bool IsTerminal;
+        public readonly string Value;
 
         public RuleItem(string value, bool isTerminal)
         {
@@ -14,7 +14,7 @@ namespace SetsParser
             IsTerminal = isTerminal;
         }
 
-        
+
         public bool Equals(RuleItem? other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -26,7 +26,7 @@ namespace SetsParser
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((RuleItem) obj);
         }
 
@@ -35,5 +35,4 @@ namespace SetsParser
             return HashCode.Combine(Value, IsTerminal);
         }
     }
-    
 }

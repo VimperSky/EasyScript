@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 
@@ -11,14 +10,66 @@ namespace SetsParser
         public SetsParser(Stream input)
         {
             var baseRules = ParseInput(input);
-            var factorizedRules = DoFactorization(baseRules);
-            
+            var factorized = Factorization(baseRules);
+            var removedRecursionRules = RemoveLeftRecursion(factorized);
         }
 
-        private static IEnumerable<Rule> DoFactorization(RulesTable rulesTable)
+        private static IEnumerable<Rule> RemoveLeftRecursion(RulesTable rulesTable)
         {
             var newRules = new List<Rule>();
-            foreach (var t in rulesTable.NonTerminals)
+            foreach (var t in rulesTable.NonTerminals.ToList())
+            {
+                var rules = rulesTable.Rules.Where(x => x.NonTerminal == t).ToList();
+                if (rules.Count > 1)
+                {
+                    var similarRules = new List<Rule>();
+                    var nonSimilarRules = new List<Rule>();
+                    foreach (var rule in rules)
+                        if (rule.Items[0].Value == rule.NonTerminal)
+                            similarRules.Add(rule);
+                        else
+                            nonSimilarRules.Add(rule);
+
+                    if (similarRules.Count > 0)
+                    {
+                        if (nonSimilarRules.Count == 0) throw new Exception("Infinity recursion");
+                        var newNonTerm = Extensions.GetNextFreeLetter(rulesTable.NonTerminals).ToString();
+                        nonSimilarRules[0].Items.Add(new RuleItem(newNonTerm, false));
+                        var newRule = new Rule
+                        {
+                            NonTerminal = t,
+                            Items = nonSimilarRules[0].Items
+                        };
+                        newRules.Add(newRule);
+                        newRules.Add(new Rule
+                        {
+                            NonTerminal = newNonTerm, Items = new List<RuleItem>
+                            {
+                                new("e", true)
+                            }
+                        });
+                        foreach (var r in similarRules)
+                        {
+                            var rest = r.Items.Skip(1).ToList();
+                            rest.Add(new RuleItem(newNonTerm, false));
+                            newRules.Add(new Rule {NonTerminal = newNonTerm, Items = rest});
+                        }
+
+                        continue;
+                    }
+                }
+
+                newRules.AddRange(rules);
+            }
+
+            return newRules;
+        }
+
+        private static RulesTable Factorization(RulesTable rulesTable)
+        {
+            var newRules = new List<Rule>();
+            var newNonTerminals = rulesTable.NonTerminals;
+            foreach (var t in rulesTable.NonTerminals.ToList())
             {
                 var rules = rulesTable.Rules.Where(x => x.NonTerminal == t).ToList();
                 if (rules.Count > 1)
@@ -34,11 +85,14 @@ namespace SetsParser
                             Items = common
                         };
                         newRules.Add(newRule);
-                        newRules.Add(new Rule {NonTerminal = newNonTerm, Items = new List<RuleItem>
+                        newRules.Add(new Rule
                         {
-                            new("e", true)
-                        }});
-                    
+                            NonTerminal = newNonTerm, Items = new List<RuleItem>
+                            {
+                                new("e", true)
+                            }
+                        });
+                        newNonTerminals.Add(newNonTerm);
                         foreach (var rule in rules)
                         {
                             var rest = rule.Items.Skip(common.Count - 1).ToList();
@@ -46,16 +100,17 @@ namespace SetsParser
                                 continue;
                             newRules.Add(new Rule {NonTerminal = newNonTerm, Items = rest});
                         }
+
                         continue;
                     }
                 }
+
                 newRules.AddRange(rules);
             }
-            
 
-            return newRules;
+            return new RulesTable(newRules, newNonTerminals);
         }
-        
+
         private static RulesTable ParseInput(Stream input)
         {
             using var sr = new StreamReader(input);
@@ -67,8 +122,8 @@ namespace SetsParser
                 var localRules = split[1].Split("|", StringSplitOptions.TrimEntries);
                 rawRules.AddRange(localRules.Select(rule => (split[0], rule)));
             }
-            
-            var nonTerminals = rawRules.Select(x => x.LeftBody).ToImmutableHashSet();
+
+            var nonTerminals = rawRules.Select(x => x.LeftBody).ToHashSet();
             var rules = rawRules.Select(rawRule => new Rule
                 {
                     NonTerminal = rawRule.LeftBody,
@@ -77,6 +132,7 @@ namespace SetsParser
                         .ToList()
                 })
                 .ToList();
+
             return new RulesTable(rules, nonTerminals);
         }
     }

@@ -43,18 +43,13 @@ namespace SetsParser
             }
             else
             {
-                FindFirstAll(rule.Items[localIndex].Value, origRuleId);
-            }
-        }
-        
-        private void FindFirstAll(string nonTerm, int origRuleId)
-        {
-            for (var index = 0; index < _rules.Count; index++)
-            {
-                if (_rules[index].NonTerminal == nonTerm)
+                for (var index = 0; index < _rules.Count; index++)
                 {
-                    FindN(index, origRuleId);
-                }
+                    if (_rules[index].NonTerminal == rule.Items[localIndex].Value)
+                    {
+                        FindN(index, origRuleId);
+                    }
+                }            
             }
         }
 
@@ -78,6 +73,7 @@ namespace SetsParser
                                 continue;
                             
                             recursiveNonTerms.Add(rule.NonTerminal);
+                            
                             FindUp(rule.NonTerminal, origRuleId, recursiveNonTerms);
                         }
                     }

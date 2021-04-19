@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Common;
 
 namespace SetsParser
 {
@@ -17,14 +19,14 @@ namespace SetsParser
             }
         }
 
-        public List<HashSet<string>> Find()
+        public List<DirRule> Find()
         {
-            for (var index = 0; index < _rules.Count; index++)
+            for (var i = 0; i < _rules.Count; i++)
             {
-                FindN(index, index);
+                FindN(i, i);
             }
 
-            return _foundValues;
+            return _rules.Select((t, i) => DirRule.Create(_foundValues[i], t)).ToList();
         }
 
         private void FindN(int globalIndex, int origRuleId, int localIndex = 0)

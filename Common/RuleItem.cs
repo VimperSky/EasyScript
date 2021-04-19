@@ -1,9 +1,9 @@
 #nullable enable
 using System;
 
-namespace SetsParser
+namespace Common
 {
-    internal class RuleItem : IEquatable<RuleItem>
+    public class RuleItem : IEquatable<RuleItem>
     {
         public readonly bool IsTerminal;
         public readonly string Value;

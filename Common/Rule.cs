@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SetsParser
+namespace Common
 {
-    internal class Rule
+    public class Rule
     {
         public string NonTerminal { get; init; }
         public List<RuleItem> Items { get; init; }

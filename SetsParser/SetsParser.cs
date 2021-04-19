@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Common;
 
 namespace SetsParser
 {
-    public class SetsParser
+    public static class SetsParser
     {
-        public SetsParser(Stream input)
+        public static List<DirRule> DoParse(Stream input)
         {
             var baseRules = ParseInput(input);
-            var factorized = Factorization(baseRules);
-            var finalRules = RemoveLeftRecursion(factorized);
-            var firstList = new DirSetsFinder(finalRules).Find();
-
-            for (var i = 0; i < finalRules.Count; i++) 
-                Console.WriteLine($"{finalRules[i]} [{string.Join(", ", firstList[i])}]");
+            
+            var factorizedRules = Factorization(baseRules);
+            
+            var noLeftRules = RemoveLeftRecursion(factorizedRules);
+            
+            var dirRules = new DirSetsFinder(noLeftRules).Find();
+            return dirRules;
         }
         
         private static List<Rule> RemoveLeftRecursion(RulesTable rulesTable)

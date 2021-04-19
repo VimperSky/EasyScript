@@ -10,4 +10,8 @@
       <ProjectReference Include="..\SetsParser\SetsParser.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="CsvHelper" Version="26.1.0" />
+    </ItemGroup>
+
 </Project>

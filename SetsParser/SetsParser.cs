@@ -12,60 +12,12 @@ namespace SetsParser
             var baseRules = ParseInput(input);
             var factorized = Factorization(baseRules);
             var finalRules = RemoveLeftRecursion(factorized);
-            //var firstList = TransitiveClosure(finalRules);
+            var firstList = new FirstFinder(finalRules).Find();
 
-            for (var i = 0; i < finalRules.Count; i++) Console.WriteLine($"{finalRules[i]}");
+            for (var i = 0; i < finalRules.Count; i++) 
+                Console.WriteLine($"{finalRules[i]} [{string.Join(", ", firstList[i])}]");
         }
-
-        private static List<string> TransitiveClosure(List<Rule> rules)
-        {
-            var listOfFirsts = new List<string>();
-            foreach (var rule in rules)
-                if (rule.Items[0].IsTerminal)
-                {
-                    if (rule.Items[0].Value == "e")
-                        listOfFirsts.Add(RecursionSearchUp(rules, rule.NonTerminal));
-                    else
-                        listOfFirsts.Add(rule.Items[0].Value);
-                }
-                else
-                {
-                    listOfFirsts.Add(RecursionSearchDeep(rules, rule.Items[0].Value));
-                }
-
-            return listOfFirsts;
-        }
-
-        private static string RecursionSearchUp(List<Rule> rules, string nonTerminal)
-        {
-            foreach (var rule in rules)
-                for (var i = 0; i < rule.Items.Count; i++)
-                    if (rule.Items[i].Value == nonTerminal)
-                    {
-                        if (i + 1 < rule.Items.Count)
-                        {
-                            if (rule.Items[i + 1].IsTerminal)
-                                return rule.Items[i + 1].Value;
-                            return RecursionSearchDeep(rules, rule.Items[i + 1].Value);
-                        }
-
-                        return RecursionSearchUp(rules, rule.NonTerminal);
-                    }
-
-            return null;
-        }
-
-        private static string RecursionSearchDeep(List<Rule> rules, string wanted)
-        {
-            foreach (var x in rules)
-                if (wanted == x.NonTerminal && x.Items[0].IsTerminal)
-                    return x.Items[0].Value;
-                else if (wanted == x.NonTerminal)
-                    return RecursionSearchDeep(rules, wanted);
-
-            return null;
-        }
-
+        
         private static List<Rule> RemoveLeftRecursion(RulesTable rulesTable)
         {
             var newRules = new List<Rule>();

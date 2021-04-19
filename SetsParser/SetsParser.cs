@@ -12,7 +12,7 @@ namespace SetsParser
             var baseRules = ParseInput(input);
             var factorized = Factorization(baseRules);
             var finalRules = RemoveLeftRecursion(factorized);
-            var firstList = new FirstFinder(finalRules).Find();
+            var firstList = new DirSetsFinder(finalRules).Find();
 
             for (var i = 0; i < finalRules.Count; i++) 
                 Console.WriteLine($"{finalRules[i]} [{string.Join(", ", firstList[i])}]");

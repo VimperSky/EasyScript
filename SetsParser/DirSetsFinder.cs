@@ -2,22 +2,22 @@ using System.Collections.Generic;
 
 namespace SetsParser
 {
-    public class FirstFinder
+    public class DirSetsFinder
     {
-        private readonly List<List<string>> _foundValues = new();
+        private readonly List<HashSet<string>> _foundValues = new();
         private readonly List<Rule> _rules;
 
-        public FirstFinder(List<Rule> rules)
+        public DirSetsFinder(List<Rule> rules)
         {
             _rules = rules;
 
             for (var i = 0; i < _rules.Count; i++)
             {
-                _foundValues.Add(new List<string>());
+                _foundValues.Add(new HashSet<string>());
             }
         }
 
-        public List<List<string>> Find()
+        public List<HashSet<string>> Find()
         {
             for (var index = 0; index < _rules.Count; index++)
             {

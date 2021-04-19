@@ -69,10 +69,14 @@ namespace SetsParser
         private static List<Rule> RemoveLeftRecursion(RulesTable rulesTable)
         {
             var newRules = new List<Rule>();
-            var newNonTerms = rulesTable.NonTerminals;
-            foreach (var t in rulesTable.NonTerminals.ToList())
+            var oldRules = rulesTable.Rules.ToList();
+            var nonTerms = rulesTable.NonTerminals;
+            
+            while (oldRules.Count > 0)
             {
-                var rules = rulesTable.Rules.Where(x => x.NonTerminal == t).ToList();
+                var nonTerminal = oldRules[0].NonTerminal;
+                var rules = rulesTable.Rules.Where(x => x.NonTerminal == nonTerminal).ToList();
+                oldRules.RemoveRange(0, rules.Count);
                 if (rules.Count > 1)
                 {
                     var similarRules = new List<Rule>();
@@ -88,14 +92,21 @@ namespace SetsParser
                         if (nonSimilarRules.Count == 0) 
                             throw new Exception("Infinity recursion");
                         
-                        var newNonTerm = Extensions.GetNextFreeLetter(newNonTerms).ToString();
-                        newNonTerms.Add(newNonTerm);
-                        foreach (var nonSimilarRule in nonSimilarRules)
+                        var newNonTerm = Extensions.GetNextFreeLetter(nonTerms).ToString();
+                        nonTerms.Add(newNonTerm);
+                        foreach (var r in nonSimilarRules)
                         {
-                            nonSimilarRule.Items.Add(new RuleItem(newNonTerm, false));
-                            newRules.Add(nonSimilarRule);
+                            r.Items.Add(new RuleItem(newNonTerm, false));
+                            newRules.Add(r);
                         }
-
+                        
+                        foreach (var r in similarRules)
+                        {
+                            var rest = r.Items.Skip(1).ToList();
+                            rest.Add(new RuleItem(newNonTerm, false));
+                            newRules.Add(new Rule {NonTerminal = newNonTerm, Items = rest});
+                        }
+                        
                         newRules.Add(new Rule
                         {
                             NonTerminal = newNonTerm, Items = new List<RuleItem>
@@ -103,12 +114,6 @@ namespace SetsParser
                                 new("e", true)
                             }
                         });
-                        foreach (var r in similarRules)
-                        {
-                            var rest = r.Items.Skip(1).ToList();
-                            rest.Add(new RuleItem(newNonTerm, false));
-                            newRules.Add(new Rule {NonTerminal = newNonTerm, Items = rest});
-                        }
                         
                         continue;
                     }
@@ -123,21 +128,25 @@ namespace SetsParser
         private static RulesTable Factorization(RulesTable rulesTable)
         {
             var newRules = new List<Rule>();
-            var newNonTerminals = rulesTable.NonTerminals;
-            foreach (var t in rulesTable.NonTerminals.ToList())
+            var oldRules = rulesTable.Rules.ToList();
+            
+            var nonTerminals = rulesTable.NonTerminals;
+            while (oldRules.Count > 0)
             {
-                var rules = rulesTable.Rules.Where(x => x.NonTerminal == t).ToList();
+                var nonTerminal = oldRules[0].NonTerminal;
+                var rules = rulesTable.Rules.Where(x => x.NonTerminal == nonTerminal).ToList();
+                oldRules.RemoveRange(0, rules.Count);
                 if (rules.Count > 1)
                 {
                     var common = rules.FindCommon();
                     if (common.Count > 0)
                     {
-                        var newNonTerm = Extensions.GetNextFreeLetter(newNonTerminals).ToString();
-                        newNonTerminals.Add(newNonTerm);
+                        var newNonTerm = Extensions.GetNextFreeLetter(nonTerminals).ToString();
+                        nonTerminals.Add(newNonTerm);
                         common.Add(new RuleItem(newNonTerm, false));
                         var newRule = new Rule
                         {
-                            NonTerminal = t,
+                            NonTerminal = nonTerminal,
                             Items = common
                         };
                         newRules.Add(newRule);
@@ -163,7 +172,7 @@ namespace SetsParser
                 newRules.AddRange(rules);
             }
 
-            return new RulesTable(newRules, newNonTerminals);
+            return new RulesTable(newRules, nonTerminals);
         }
 
         private static RulesTable ParseInput(Stream input)

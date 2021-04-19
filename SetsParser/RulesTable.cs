@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace SetsParser
 {
-    public class RulesTable
+    internal class RulesTable
     {
         public readonly HashSet<string> NonTerminals;
         public readonly List<Rule> Rules;

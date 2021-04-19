@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SetsParser
 {
-    public static class Extensions
+    internal static class Extensions
     {
         private const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

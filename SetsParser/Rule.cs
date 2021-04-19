@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SetsParser
 {
-    public class Rule
+    internal class Rule
     {
         public string NonTerminal { get; init; }
         public List<RuleItem> Items { get; init; }

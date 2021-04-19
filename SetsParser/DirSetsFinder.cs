@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace SetsParser
 {
-    public class DirSetsFinder
+    internal class DirSetsFinder
     {
         private readonly List<HashSet<string>> _foundValues = new();
         private readonly List<Rule> _rules;

@@ -3,7 +3,7 @@ using System;
 
 namespace SetsParser
 {
-    public class RuleItem : IEquatable<RuleItem>
+    internal class RuleItem : IEquatable<RuleItem>
     {
         public readonly bool IsTerminal;
         public readonly string Value;

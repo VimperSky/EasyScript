@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\LLTableGenerator\LLTableGenerator.csproj" />
       <ProjectReference Include="..\SetsParser\SetsParser.csproj" />
     </ItemGroup>
 

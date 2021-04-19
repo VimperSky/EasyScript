@@ -5,7 +5,7 @@ namespace SetsParser
 {
     public static class Extensions
     {
-        private static readonly char[] Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+        private const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         public static char GetNextFreeLetter(HashSet<string> takenLetters)
         {

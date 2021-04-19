@@ -12,9 +12,9 @@ namespace SetsParser
             var baseRules = ParseInput(input);
             var factorized = Factorization(baseRules);
             var finalRules = RemoveLeftRecursion(factorized);
-            var firstList = TransitiveClosure(finalRules);
+            //var firstList = TransitiveClosure(finalRules);
 
-            for (var i = 0; i < finalRules.Count; i++) Console.WriteLine($"{finalRules[i]}  [{firstList[i]}]");
+            for (var i = 0; i < finalRules.Count; i++) Console.WriteLine($"{finalRules[i]}");
         }
 
         private static List<string> TransitiveClosure(List<Rule> rules)
@@ -69,6 +69,7 @@ namespace SetsParser
         private static List<Rule> RemoveLeftRecursion(RulesTable rulesTable)
         {
             var newRules = new List<Rule>();
+            var newNonTerms = rulesTable.NonTerminals;
             foreach (var t in rulesTable.NonTerminals.ToList())
             {
                 var rules = rulesTable.Rules.Where(x => x.NonTerminal == t).ToList();
@@ -84,15 +85,17 @@ namespace SetsParser
 
                     if (similarRules.Count > 0)
                     {
-                        if (nonSimilarRules.Count == 0) throw new Exception("Infinity recursion");
-                        var newNonTerm = Extensions.GetNextFreeLetter(rulesTable.NonTerminals).ToString();
-                        nonSimilarRules[0].Items.Add(new RuleItem(newNonTerm, false));
-                        var newRule = new Rule
+                        if (nonSimilarRules.Count == 0) 
+                            throw new Exception("Infinity recursion");
+                        
+                        var newNonTerm = Extensions.GetNextFreeLetter(newNonTerms).ToString();
+                        newNonTerms.Add(newNonTerm);
+                        foreach (var nonSimilarRule in nonSimilarRules)
                         {
-                            NonTerminal = t,
-                            Items = nonSimilarRules[0].Items
-                        };
-                        newRules.Add(newRule);
+                            nonSimilarRule.Items.Add(new RuleItem(newNonTerm, false));
+                            newRules.Add(nonSimilarRule);
+                        }
+
                         newRules.Add(new Rule
                         {
                             NonTerminal = newNonTerm, Items = new List<RuleItem>
@@ -106,7 +109,7 @@ namespace SetsParser
                             rest.Add(new RuleItem(newNonTerm, false));
                             newRules.Add(new Rule {NonTerminal = newNonTerm, Items = rest});
                         }
-
+                        
                         continue;
                     }
                 }
@@ -129,7 +132,8 @@ namespace SetsParser
                     var common = rules.FindCommon();
                     if (common.Count > 0)
                     {
-                        var newNonTerm = Extensions.GetNextFreeLetter(rulesTable.NonTerminals).ToString();
+                        var newNonTerm = Extensions.GetNextFreeLetter(newNonTerminals).ToString();
+                        newNonTerminals.Add(newNonTerm);
                         common.Add(new RuleItem(newNonTerm, false));
                         var newRule = new Rule
                         {
@@ -144,7 +148,6 @@ namespace SetsParser
                                 new("e", true)
                             }
                         });
-                        newNonTerminals.Add(newNonTerm);
                         foreach (var rule in rules)
                         {
                             var rest = rule.Items.Skip(common.Count - 1).ToList();

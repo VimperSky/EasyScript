@@ -1,6 +1,6 @@
 namespace Common
 {
-    public class AddTableRule: TableRule
+    public class AddTableRule : TableRule
     {
         public bool IsShift { get; init; }
         public bool MoveToStack { get; init; }

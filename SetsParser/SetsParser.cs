@@ -11,21 +11,21 @@ namespace SetsParser
         public static List<DirRule> DoParse(Stream input)
         {
             var baseRules = ParseInput(input);
-            
+
             var factorizedRules = Factorization(baseRules);
-            
+
             var noLeftRules = RemoveLeftRecursion(factorizedRules);
-            
+
             var dirRules = new DirSetsFinder(noLeftRules).Find();
             return dirRules;
         }
-        
+
         private static List<Rule> RemoveLeftRecursion(RulesTable rulesTable)
         {
             var newRules = new List<Rule>();
             var oldRules = rulesTable.Rules.ToList();
             var nonTerms = rulesTable.NonTerminals;
-            
+
             while (oldRules.Count > 0)
             {
                 var nonTerminal = oldRules[0].NonTerminal;
@@ -43,9 +43,9 @@ namespace SetsParser
 
                     if (similarRules.Count > 0)
                     {
-                        if (nonSimilarRules.Count == 0) 
+                        if (nonSimilarRules.Count == 0)
                             throw new Exception("Infinity recursion");
-                        
+
                         var newNonTerm = Extensions.GetNextFreeLetter(nonTerms).ToString();
                         nonTerms.Add(newNonTerm);
                         foreach (var r in nonSimilarRules)
@@ -53,14 +53,14 @@ namespace SetsParser
                             r.Items.Add(new RuleItem(newNonTerm, false));
                             newRules.Add(r);
                         }
-                        
+
                         foreach (var r in similarRules)
                         {
                             var rest = r.Items.Skip(1).ToList();
                             rest.Add(new RuleItem(newNonTerm, false));
                             newRules.Add(new Rule {NonTerminal = newNonTerm, Items = rest});
                         }
-                        
+
                         newRules.Add(new Rule
                         {
                             NonTerminal = newNonTerm, Items = new List<RuleItem>
@@ -68,7 +68,7 @@ namespace SetsParser
                                 new("e", true)
                             }
                         });
-                        
+
                         continue;
                     }
                 }
@@ -83,7 +83,7 @@ namespace SetsParser
         {
             var newRules = new List<Rule>();
             var oldRules = rulesTable.Rules.ToList();
-            
+
             var nonTerminals = rulesTable.NonTerminals;
             while (oldRules.Count > 0)
             {
@@ -152,9 +152,7 @@ namespace SetsParser
                 .ToList();
 
             if (rules[0].Items[^1].Value != Constants.NewLineSymbol)
-            {
                 rules[0].Items.Add(new RuleItem(Constants.NewLineSymbol, true));
-            }
 
             return new RulesTable(rules, nonTerminals);
         }

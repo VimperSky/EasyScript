@@ -117,7 +117,8 @@ namespace Lexer.Tests
             Assert.Equal(new Token(TokenType.CloseBracket, ")", 11, 11).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Semicolon, ";", 11, 12).ToString(), lexer.GetNextToken().ToString());
 
-            Assert.Equal(new Token(TokenType.MultiComment, " comment\nmany\nmuch ", 12, 0).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.MultiComment, " comment\nmany\nmuch ", 12, 0).ToString(),
+                lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.OpenBracket, "(", 15, 0).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.CloseBracket, ")", 15, 1).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Semicolon, ";", 15, 2).ToString(), lexer.GetNextToken().ToString());

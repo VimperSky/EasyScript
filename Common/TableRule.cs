@@ -12,7 +12,7 @@ namespace Common
 
         public override string ToString()
         {
-            return $"{Id}   {NonTerminal}   {string.Join(", ", DirSet)}    {GoTo}   {IsError}";
+            return $"{Id}\t{NonTerminal}\t{string.Join(", ", DirSet)}\t{GoTo}\t{IsError}";
         }
     }
 }

@@ -13,18 +13,12 @@ namespace SetsParser
         {
             _rules = rules;
 
-            for (var i = 0; i < _rules.Count; i++)
-            {
-                _foundValues.Add(new HashSet<string>());
-            }
+            for (var i = 0; i < _rules.Count; i++) _foundValues.Add(new HashSet<string>());
         }
 
         public List<DirRule> Find()
         {
-            for (var i = 0; i < _rules.Count; i++)
-            {
-                FindN(i, i);
-            }
+            for (var i = 0; i < _rules.Count; i++) FindN(i, i);
 
             return _rules.Select((t, i) => DirRule.Create(_foundValues[i], t)).ToList();
         }
@@ -35,23 +29,15 @@ namespace SetsParser
             if (rule.Items[localIndex].IsTerminal)
             {
                 if (rule.Items[localIndex].Value == "e")
-                {
                     FindUp(rule.NonTerminal, origRuleId);
-                }
                 else
-                {
                     _foundValues[origRuleId].Add(rule.Items[localIndex].Value);
-                }
             }
             else
             {
                 for (var index = 0; index < _rules.Count; index++)
-                {
                     if (_rules[index].NonTerminal == rule.Items[localIndex].Value)
-                    {
                         FindN(index, origRuleId);
-                    }
-                }            
             }
         }
 
@@ -61,7 +47,6 @@ namespace SetsParser
             {
                 var rule = _rules[globalIndex];
                 for (var localIndex = 0; localIndex < rule.Items.Count; localIndex++)
-                {
                     if (rule.Items[localIndex].Value == nonTerm)
                     {
                         if (++localIndex < rule.Items.Count)
@@ -73,13 +58,12 @@ namespace SetsParser
                             recursiveNonTerms ??= new List<string>();
                             if (recursiveNonTerms.Contains(rule.NonTerminal))
                                 continue;
-                            
+
                             recursiveNonTerms.Add(rule.NonTerminal);
-                            
+
                             FindUp(rule.NonTerminal, origRuleId, recursiveNonTerms);
                         }
                     }
-                }
             }
         }
     }

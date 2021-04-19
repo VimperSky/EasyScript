@@ -13,10 +13,10 @@ namespace LLTableGenerator
             for (; globalId < dirRules.Count; globalId++)
             {
                 var dRule = dirRules[globalId];
-                
+
                 table.Add(new TableRule
                 {
-                    Id = globalId + 1 , NonTerminal = dRule.NonTerminal, DirSet = dRule.Dirs,
+                    Id = globalId + 1, NonTerminal = dRule.NonTerminal, DirSet = dRule.Dirs,
                     IsError = globalId + 1 >= dirRules.Count || dirRules[globalId + 1].NonTerminal != dRule.NonTerminal
                 });
             }
@@ -33,13 +33,9 @@ namespace LLTableGenerator
                     if (item.IsTerminal)
                     {
                         if (item.Value == Constants.EmptySymbol)
-                        {
                             dirSet = dRule.Dirs;
-                        }
                         else
-                        {
                             dirSet.Add(item.Value);
-                        }
                     }
                     else
                     {
@@ -74,7 +70,7 @@ namespace LLTableGenerator
                         table[i].GoTo = newRuleId;
                 }
             }
-            
+
             table.AddRange(addTable);
             return table;
         }

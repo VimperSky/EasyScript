@@ -38,11 +38,13 @@ namespace Lexer.Tests
             Assert.Equal(new Token(TokenType.KeyWord, "int", 0, 15).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Identifier, "br", 0, 19).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.CloseBracket, ")", 0, 21).ToString(), lexer.GetNextToken().ToString());
+
             Assert.Equal(new Token(TokenType.KeyWord, "return", 1, 2).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Identifier, "a", 1, 9).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.PlusOp, "+", 1, 11).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Identifier, "br", 1, 13).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Semicolon, ";", 1, 15).ToString(), lexer.GetNextToken().ToString());
+
             Assert.Equal(new Token(TokenType.KeyWord, "const", 3, 0).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Identifier, "maxNum", 3, 6).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Assign, "=", 3, 13).ToString(), lexer.GetNextToken().ToString());

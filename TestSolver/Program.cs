@@ -13,23 +13,19 @@ namespace TestSolver
     {
         private static void Main()
         {
-            var inputStream = File.OpenRead("input.txt");
-            var dirRules = SetsParser.DoParse(inputStream);
-            foreach (var rule in dirRules)
-                Console.WriteLine(rule);
+            var dirRules = SetsParser.DoParse(File.OpenRead("input.txt"));
+            foreach (var rule in dirRules) Console.WriteLine(rule);
 
             var tableRules = TableGenerator.Parse(dirRules);
             var config = new CsvConfiguration(CultureInfo.InvariantCulture) {Delimiter = ";"};
             using var writer = new StreamWriter("table.csv");
-            using (var csv = new CsvWriter(writer, config))
+            using var csv = new CsvWriter(writer, config);
+            csv.WriteHeader<TableRule>();
+            csv.NextRecord();
+            foreach (var rule in tableRules)
             {
-                csv.WriteHeader<TableRule>();
+                csv.WriteRecord(rule);
                 csv.NextRecord();
-                foreach (var rule in tableRules)
-                {
-                    csv.WriteRecord(rule);
-                    csv.NextRecord();
-                }
             }
         }
     }

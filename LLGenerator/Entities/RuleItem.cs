@@ -14,7 +14,6 @@ namespace LLGenerator.Entities
             IsTerminal = isTerminal;
         }
 
-
         public bool Equals(RuleItem? other)
         {
             if (ReferenceEquals(null, other)) return false;

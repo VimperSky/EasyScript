@@ -6,7 +6,7 @@ namespace LLGenerator.TableGenerator
 {
     public static class TableGenerator
     {
-        public static List<TableRule> Parse(List<DirRule> dirRules)
+        public static IEnumerable<TableRule> Parse(List<DirRule> dirRules)
         {
             var table = new List<TableRule>();
             var globalId = 0;

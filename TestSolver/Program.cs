@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using Common;
 using CsvHelper;
 using CsvHelper.Configuration;
+using LLGenerator.Entities;
+using LLGenerator.SetsParser;
 using LLGenerator.TableGenerator;
 
 namespace TestSolver
@@ -13,7 +14,7 @@ namespace TestSolver
         private static void Main()
         {
             var inputStream = File.OpenRead("input.txt");
-            var dirRules = SetsParser.SetsParser.DoParse(inputStream);
+            var dirRules = SetsParser.DoParse(inputStream);
             foreach (var rule in dirRules)
                 Console.WriteLine(rule);
             

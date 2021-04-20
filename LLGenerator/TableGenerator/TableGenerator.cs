@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Common;
+using LLGenerator.Entities;
 
 namespace LLGenerator.TableGenerator
 {

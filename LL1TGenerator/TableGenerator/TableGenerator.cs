@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Common;
 
-namespace LLTableGenerator
+namespace LL1TGenerator.TableGenerator
 {
-    public static class Generator
+    public static class TableGenerator
     {
         public static List<TableRule> Parse(List<DirRule> dirRules)
         {

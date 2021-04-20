@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Common
+namespace LL1TGenerator.Entities
 {
     public class Rule
     {

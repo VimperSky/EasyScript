@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Common;
+using LL1TGenerator.Entities;
 
-namespace SetsParser
+namespace LL1TGenerator.SetsParser
 {
     public static class SetsParser
     {
@@ -46,7 +46,7 @@ namespace SetsParser
                         if (nonSimilarRules.Count == 0)
                             throw new Exception("Infinity recursion");
 
-                        var newNonTerm = Extensions.GetNextFreeLetter(nonTerms).ToString();
+                        var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms).ToString();
                         nonTerms.Add(newNonTerm);
                         foreach (var r in nonSimilarRules)
                         {
@@ -95,7 +95,7 @@ namespace SetsParser
                     var common = rules.FindCommon();
                     if (common.Count > 0)
                     {
-                        var newNonTerm = Extensions.GetNextFreeLetter(nonTerminals).ToString();
+                        var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerminals).ToString();
                         nonTerminals.Add(newNonTerm);
                         common.Add(new RuleItem(newNonTerm, false));
                         var newRule = new Rule

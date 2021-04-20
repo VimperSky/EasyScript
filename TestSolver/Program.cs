@@ -4,7 +4,7 @@ using System.IO;
 using Common;
 using CsvHelper;
 using CsvHelper.Configuration;
-using LLTableGenerator;
+using LL1TGenerator.TableGenerator;
 
 namespace TestSolver
 {
@@ -17,7 +17,7 @@ namespace TestSolver
             foreach (var rule in dirRules)
                 Console.WriteLine(rule);
             
-            var tableRules = Generator.Parse(dirRules);
+            var tableRules = TableGenerator.Parse(dirRules);
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 Delimiter = ";"

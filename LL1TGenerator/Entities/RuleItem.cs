@@ -1,7 +1,7 @@
 #nullable enable
 using System;
 
-namespace Common
+namespace LL1TGenerator.Entities
 {
     public class RuleItem : IEquatable<RuleItem>
     {

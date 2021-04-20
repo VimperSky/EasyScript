@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using Common;
+using LL1TGenerator.Entities;
 
-namespace SetsParser
+namespace LL1TGenerator.SetsParser
 {
-    internal static class Extensions
+    internal static class SetsParserExtensions
     {
         private const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

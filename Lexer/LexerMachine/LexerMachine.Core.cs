@@ -10,9 +10,9 @@ namespace Lexer.LexerMachine
     {
         private readonly Queue<Token> _tokens = new();
 
-        private string[] _expectedValues;
-
         private char _curChar;
+
+        private string[] _expectedValues;
 
         private int _lastLine;
         private int _lastPos;
@@ -33,6 +33,7 @@ namespace Lexer.LexerMachine
                 _startPos = pos;
                 _startLine = line;
             }
+
             _lastLine = line;
             _lastPos = pos;
             _curChar = ch;

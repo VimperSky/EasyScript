@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Common;
+using LL1TGenerator.Entities;
 
-namespace SetsParser
+namespace LL1TGenerator.SetsParser
 {
     internal class RulesTable
     {

@@ -21,7 +21,7 @@ namespace LLTableGenerator
                 });
             }
 
-            var addTable = new List<AddTableRule>();
+            var addTable = new List<TableRule>();
             for (var i = 0; i < dirRules.Count; i++)
             {
                 var dRule = dirRules[i];
@@ -54,7 +54,7 @@ namespace LLTableGenerator
                         ptr = table.First(x => x.NonTerminal == item.Value).Id;
                     }
 
-                    addTable.Add(new AddTableRule
+                    addTable.Add(new TableRule
                     {
                         Id = newRuleId,
                         NonTerminal = item.Value,

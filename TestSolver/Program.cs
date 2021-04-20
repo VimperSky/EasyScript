@@ -16,10 +16,12 @@ namespace TestSolver
             var dirRules = SetsParser.SetsParser.DoParse(inputStream);
             foreach (var rule in dirRules)
                 Console.WriteLine(rule);
-
-
+            
             var tableRules = Generator.Parse(dirRules);
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture) {Delimiter = " "};
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ";"
+            };
             using (var writer = new StreamWriter("table.csv"))
             {
                 using (var csv = new CsvWriter(writer, config))

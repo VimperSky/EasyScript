@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using CsvHelper;
-using CsvHelper.Configuration;
-using LLGenerator.Entities;
 using LLGenerator.SetsParser;
 using LLGenerator.SyntaxAnalyzer;
 using LLGenerator.TableGenerator;
@@ -35,7 +29,5 @@ namespace TestSolver
 
             CsvExport.SaveToCsv(tableRules);
         }
-
-        
     }
 }

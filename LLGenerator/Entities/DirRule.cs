@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace LL1TGenerator.Entities
+namespace LLGenerator.Entities
 {
     public class DirRule : Rule
     {

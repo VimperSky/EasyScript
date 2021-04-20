@@ -1,4 +1,4 @@
-namespace LL1TGenerator
+namespace LLGenerator
 {
     public static class Constants
     {

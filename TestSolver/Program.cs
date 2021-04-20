@@ -4,7 +4,7 @@ using System.IO;
 using Common;
 using CsvHelper;
 using CsvHelper.Configuration;
-using LL1TGenerator.TableGenerator;
+using LLGenerator.TableGenerator;
 
 namespace TestSolver
 {

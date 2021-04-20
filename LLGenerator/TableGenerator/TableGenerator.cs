@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Common;
 
-namespace LL1TGenerator.TableGenerator
+namespace LLGenerator.TableGenerator
 {
     public static class TableGenerator
     {

@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LL1TGenerator\LL1TGenerator.csproj" />
+      <ProjectReference Include="..\LLGenerator\LLGenerator.csproj" />
       <ProjectReference Include="..\SetsParser\SetsParser.csproj" />
     </ItemGroup>
 

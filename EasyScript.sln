@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexer.Tests", "Lexer.Tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSolver", "TestSolver\TestSolver.csproj", "{84007E90-49E5-493E-A98A-90B7D2443972}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL1TGenerator", "LL1TGenerator\LL1TGenerator.csproj", "{33051D2A-5B2B-4CE7-82CB-0E839F94D40E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLGenerator", "LLGenerator\LLGenerator.csproj", "{33051D2A-5B2B-4CE7-82CB-0E839F94D40E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

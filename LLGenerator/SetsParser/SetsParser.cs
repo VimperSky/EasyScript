@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using LL1TGenerator.Entities;
+using LLGenerator.Entities;
 
-namespace LL1TGenerator.SetsParser
+namespace LLGenerator.SetsParser
 {
     public static class SetsParser
     {

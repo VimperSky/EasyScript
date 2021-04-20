@@ -17,8 +17,9 @@ namespace LLGenerator.Entities
 
         public override string ToString()
         {
-            return $"Id: {Id} NonTerm: {NonTerminal} Dirs: {string.Join(", ", DirSet)} Goto: {GoTo} Err: {IsError}" +
-                   $" Shift: {IsShift} Stack: {MoveToStack} End: {IsEnd}";
+            return $"Id: {Id}, NonTerm: {NonTerminal}, Dirs: {string.Join(", ", DirSet)}, " +
+                   $"Goto: {(GoTo == null ? "NULL" : GoTo)}, Err: {IsError}, " +
+                   $"Shift: {IsShift}, Stack: {MoveToStack}, End: {IsEnd}";
         }
     }
 }

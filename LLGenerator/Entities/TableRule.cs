@@ -9,7 +9,7 @@ namespace LLGenerator.Entities
         public HashSet<string> DirSet { get; init; }
         public int? GoTo { get; set; }
         public bool IsError { get; init; }
-        
+
         // Дополнительные поля
         public bool IsShift { get; init; }
         public bool MoveToStack { get; init; }
@@ -18,7 +18,7 @@ namespace LLGenerator.Entities
         public override string ToString()
         {
             return $"Id: {Id} NonTerm: {NonTerminal} Dirs: {string.Join(", ", DirSet)} Goto: {GoTo} Err: {IsError}" +
-                   $" Shift: {IsShift} Stack: {MoveToStack} End: {IsEnd}" ;
+                   $" Shift: {IsShift} Stack: {MoveToStack} End: {IsEnd}";
         }
     }
 }

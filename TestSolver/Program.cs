@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using CsvHelper;
 using CsvHelper.Configuration;
 using LLGenerator.Entities;
@@ -31,16 +33,9 @@ namespace TestSolver
                 Console.WriteLine($"Input does not correct: {ex}");
             }
 
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture) {Delimiter = ";"};
-            using var writer = new StreamWriter("table.csv");
-            using var csv = new CsvWriter(writer, config);
-            csv.WriteHeader<TableRule>();
-            csv.NextRecord();
-            foreach (var rule in tableRules)
-            {
-                csv.WriteRecord(rule);
-                csv.NextRecord();
-            }
+            CsvExport.SaveToCsv(tableRules);
         }
+
+        
     }
 }

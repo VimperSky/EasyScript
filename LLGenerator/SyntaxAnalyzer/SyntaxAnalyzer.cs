@@ -11,7 +11,7 @@ namespace LLGenerator.SyntaxAnalyzer
             var stack = new Stack<int>();
             var inputQ = new Queue<string>(input);
             var index = 1;
-            
+
             var inItem = inputQ.Dequeue();
             while (true)
             {
@@ -19,13 +19,11 @@ namespace LLGenerator.SyntaxAnalyzer
                 if (!tableItem.DirSet.Contains(inItem))
                 {
                     if (tableItem.IsError)
-                    {
-                        throw new Exception("SyntaxAnalyzer error: dirset doesn't contain this char.\n" + 
+                        throw new Exception("SyntaxAnalyzer error: dirset doesn't contain this char.\n" +
                                             $"STATE: Token: [{inItem}], tableItem: [{tableItem}]," +
                                             $"stack: {string.Join(", ", stack)}, " +
                                             $"input: {string.Join("", inputQ)}\n");
-                    }
-                    
+
                     index++;
                     continue;
                 }
@@ -33,20 +31,16 @@ namespace LLGenerator.SyntaxAnalyzer
 
                 if (tableItem.IsShift)
                     if (inputQ.Count == 0)
-                    {
-                        throw new Exception("SyntaxAnalyzer error: we need next token but input is empty\n" + 
+                        throw new Exception("SyntaxAnalyzer error: we need next token but input is empty\n" +
                                             $"STATE: Token: [{inItem}], tableItem: [{tableItem}], " +
                                             $"stack: {string.Join(", ", stack)}, " +
                                             $"input: {string.Join("", inputQ)}\n");
-                    }
                     else
-                    {
                         inItem = inputQ.Dequeue();
-                    }
-                
+
                 if (tableItem.MoveToStack)
                     stack.Push(index + 1);
-                
+
                 if (tableItem.GoTo != null)
                 {
                     index = tableItem.GoTo.Value;
@@ -64,7 +58,6 @@ namespace LLGenerator.SyntaxAnalyzer
                             $"stack: {string.Join(", ", stack)}, " +
                             $"input: {string.Join("", inputQ)}\n");
                 }
-                
             }
         }
     }

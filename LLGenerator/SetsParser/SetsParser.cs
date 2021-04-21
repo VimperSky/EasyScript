@@ -106,25 +106,36 @@ namespace LLGenerator.SetsParser
                             commonIds.Add(i);
                         }
 
+                        // Если не найдено общих элементов то выходим отсюда от греха подальше!!
                         if (commonIds.Count == 1)
                             break;
 
                         var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerminals).ToString();
                         nonTerminals.Add(newNonTerm);
-                        var newItems = rules[0].Items.Take(minCommonLen).ToList();
-                        newItems.Add(new RuleItem(newNonTerm, false));
+                        
+                        var commonFinal = rules[0].Items.Take(minCommonLen).ToList();
+                        commonFinal.Add(new RuleItem(newNonTerm, false));
                         newRules.Add(new Rule
                         {
                             NonTerminal = nonTerminal,
-                            Items = newItems
+                            Items = commonFinal
+                        });
+                        
+                        newRules.Add(new Rule
+                        {
+                            NonTerminal = newNonTerm,
+                            Items = new List<RuleItem> {new RuleItem("e", true)}
                         });
                         foreach (var index in commonIds)
                         {
-                            var truncating  = rules[index].Items.Skip(minCommonLen).ToList();
+                            var rest  = rules[index].Items.Skip(minCommonLen).ToList();
+                            if (rest.Count == 0)
+                                continue;
+                            
                             newRules.Add(new Rule
                             {
                                 NonTerminal = newNonTerm,
-                                Items = truncating.Count == 0 ? new List<RuleItem> {new("e", true)} : truncating
+                                Items = rest
                             });
                         }
 

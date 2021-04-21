@@ -38,10 +38,6 @@ namespace LLGenerator.SyntaxAnalyzer
                     else
                     {
                         inputQ.Dequeue();
-                        if (inputQ.Count == 0)
-                        {
-                            
-                        }
                         inItem = inputQ.Count > 0 ? inputQ.Peek() : null;
                     }
 

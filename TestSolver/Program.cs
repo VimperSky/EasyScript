@@ -12,22 +12,26 @@ namespace TestSolver
         {
             var rulesStream = File.OpenRead("rules.txt");
             var dirRules = SetsParser.DoParse(rulesStream);
+            Console.WriteLine("Rules:");
             foreach (var rule in dirRules)
                 Console.WriteLine(rule);
 
             var tableRules = TableGenerator.Parse(dirRules);
-
+            CsvExport.SaveToCsv(tableRules);
+            var input = File.ReadAllText("input.txt").Split(" ", StringSplitOptions.TrimEntries);
+            Console.WriteLine($"Input: {string.Join(" ", input)}");
             try
             {
-                var input = File.ReadAllText("input.txt").Split(" ", StringSplitOptions.TrimEntries);
                 SyntaxAnalyzer.Analyze(input, tableRules);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Input does not correct: {ex}");
+                Console.WriteLine($"Input file is not correct: {ex}");
+                return;
             }
+            
+            Console.WriteLine("Input is correct!");
 
-            CsvExport.SaveToCsv(tableRules);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace LLGenerator.SyntaxAnalyzer
             var inputQ = new Queue<string>(input);
             var index = 1;
 
-            var inItem = inputQ.Dequeue();
+            var inItem = inputQ.Peek();
             while (true)
             {
                 var tableItem = table[index - 1];
@@ -36,7 +36,14 @@ namespace LLGenerator.SyntaxAnalyzer
                                             $"stack: {string.Join(", ", stack)}, " +
                                             $"input: {string.Join("", inputQ)}\n");
                     else
-                        inItem = inputQ.Dequeue();
+                    {
+                        inputQ.Dequeue();
+                        if (inputQ.Count == 0)
+                        {
+                            
+                        }
+                        inItem = inputQ.Count > 0 ? inputQ.Peek() : null;
+                    }
 
                 if (tableItem.MoveToStack)
                     stack.Push(index + 1);
@@ -49,7 +56,7 @@ namespace LLGenerator.SyntaxAnalyzer
                 {
                     if (stack.Count > 0)
                         index = stack.Pop();
-                    else if (inputQ.Count == 0 && tableItem.IsEnd)
+                    else if (inItem == null && tableItem.IsEnd)
                         break;
                     else
                         throw new Exception(

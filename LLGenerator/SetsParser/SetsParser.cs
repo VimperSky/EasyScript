@@ -51,7 +51,8 @@ namespace LLGenerator.SetsParser
                             r.Items.Add(new RuleItem(newNonTerm, false));
                             newRules.Add(r);
                         }
-
+                        
+                        
                         foreach (var r in similarRules)
                         {
                             var rest = r.Items.Skip(1).ToList();
@@ -121,16 +122,16 @@ namespace LLGenerator.SetsParser
                             Items = commonFinal
                         });
                         
-                        newRules.Add(new Rule
-                        {
-                            NonTerminal = newNonTerm,
-                            Items = new List<RuleItem> {new RuleItem("e", true)}
-                        });
+
+                        var needE = false;
                         foreach (var index in commonIds)
                         {
                             var rest  = rules[index].Items.Skip(minCommonLen).ToList();
                             if (rest.Count == 0)
+                            {
+                                needE = true;
                                 continue;
+                            }
                             
                             newRules.Add(new Rule
                             {
@@ -138,7 +139,14 @@ namespace LLGenerator.SetsParser
                                 Items = rest
                             });
                         }
-
+                        
+                        if (needE)
+                            newRules.Add(new Rule
+                            {
+                                NonTerminal = newNonTerm,
+                                Items = new List<RuleItem> {new("e", true)}
+                            });
+                        
                         foreach (var index in commonIds.OrderByDescending(v => v))
                             rules.RemoveAt(index);
                     }

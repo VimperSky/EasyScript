@@ -26,7 +26,7 @@ namespace TestSolver
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Input file is not correct: {ex}");
+                Console.WriteLine(ex.Message);
                 return;
             }
             

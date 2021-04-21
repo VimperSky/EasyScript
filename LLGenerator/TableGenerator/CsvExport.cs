@@ -10,7 +10,7 @@ namespace LLGenerator.TableGenerator
 {
     public class CsvExport
     {
-        public static void SaveToCsv(List<TableRule> rules)
+        public static void SaveToCsv(IEnumerable<TableRule> rules)
         {
             var newList = rules.Select(r => new RulesForCsvExport
             {

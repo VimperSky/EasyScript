@@ -6,7 +6,7 @@ namespace LLGenerator.SyntaxAnalyzer
 {
     public static class SyntaxAnalyzer
     {
-        public static void Analyze(IEnumerable<string> input, List<TableRule> table)
+        public static void Analyze(string[] input, List<TableRule> table)
         {
             var stack = new Stack<int>();
             var inputQ = new Queue<string>(input);
@@ -19,10 +19,7 @@ namespace LLGenerator.SyntaxAnalyzer
                 if (!tableItem.DirSet.Contains(inItem))
                 {
                     if (tableItem.IsError)
-                        throw new Exception("SyntaxAnalyzer error: dirset doesn't contain this char.\n" +
-                                            $"STATE: Token: [{inItem}], tableItem: [{tableItem}]," +
-                                            $"stack: {string.Join(", ", stack)}, " +
-                                            $"input: {string.Join("", inputQ)}\n");
+                        GenerateException($"DirSet doesn't contain token: {inItem ?? "NULL"}");
 
                     index++;
                     continue;
@@ -31,10 +28,7 @@ namespace LLGenerator.SyntaxAnalyzer
 
                 if (tableItem.IsShift)
                     if (inputQ.Count == 0)
-                        throw new Exception("SyntaxAnalyzer error: we need next token but input is empty\n" +
-                                            $"STATE: Token: [{inItem}], tableItem: [{tableItem}], " +
-                                            $"stack: {string.Join(", ", stack)}, " +
-                                            $"input: {string.Join("", inputQ)}\n");
+                        GenerateException("Input is empty but we need to shift.");
                     else
                     {
                         inputQ.Dequeue();
@@ -55,12 +49,15 @@ namespace LLGenerator.SyntaxAnalyzer
                     else if (inItem == null && tableItem.IsEnd)
                         break;
                     else
-                        throw new Exception(
-                            "SyntaxAnalyzer error: stack is empty but finish conditions are not met.\n" +
-                            $"STATE: Token: [{inItem}], tableItem: [{tableItem}], " +
-                            $"stack: {string.Join(", ", stack)}, " +
-                            $"input: {string.Join("", inputQ)}\n");
+                        GenerateException("GoTo is null, stack is empty but other conditions are not met.");
                 }
+                
+            }
+            
+            void GenerateException(string err)
+            {
+                throw new ArgumentException("[Syntax Analyzer Error] " +  err + $"\nToken Number: {input.Length - inputQ.Count}, " +
+                                    $"Stack: [{string.Join(", ", stack)}], InputQ: [{string.Join(", ", inputQ)}], TableItem: {index}");
             }
         }
     }

@@ -11,16 +11,14 @@ namespace LLGenerator.SetsParser
         public static List<DirRule> DoParse(Stream input)
         {
             var baseRules = ParseInput(input);
+            var noLeftRules = RemoveLeftRecursion(baseRules);
+            var factorizedRules = Factorization(noLeftRules);
+            var dirRules = new DirSetsFinder(factorizedRules.Rules).Find();
 
-            var factorizedRules = Factorization(baseRules);
-
-            var noLeftRules = RemoveLeftRecursion(factorizedRules);
-
-            var dirRules = new DirSetsFinder(noLeftRules).Find();
             return dirRules;
         }
 
-        private static List<Rule> RemoveLeftRecursion(RulesTable rulesTable)
+        private static RulesTable RemoveLeftRecursion(RulesTable rulesTable)
         {
             var newRules = new List<Rule>();
             var oldRules = rulesTable.Rules.ToList();
@@ -76,7 +74,7 @@ namespace LLGenerator.SetsParser
                 newRules.AddRange(rules);
             }
 
-            return newRules;
+            return new RulesTable(newRules, nonTerms);
         }
 
         private static RulesTable Factorization(RulesTable rulesTable)
@@ -90,8 +88,9 @@ namespace LLGenerator.SetsParser
                 var nonTerminal = oldRules[0].NonTerminal;
                 var rules = rulesTable.Rules.Where(x => x.NonTerminal == nonTerminal).ToList();
                 oldRules.RemoveRange(0, rules.Count);
+                var flag = true;
                 if (rules.Count > 1)
-                    while (rules.Count != 0)
+                    while (rules.Count > 0 && flag)
                     {
                         var minLenght = int.MaxValue;
                         var listInt = new List<int>();
@@ -104,24 +103,30 @@ namespace LLGenerator.SetsParser
                             minLenght = common.Count;
                         }
 
-                        listInt.Add(0);
-                        var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerminals).ToString();
-                        nonTerminals.Add(newNonTerm);
-                        var newItems = rules[0].Items.Take(minLenght).ToList();
-                        newItems.Add(new RuleItem(newNonTerm, false));
-
-                        newRules.Add(new Rule
+                        if (listInt.Count > 0)
                         {
-                            NonTerminal = nonTerminal,
-                            Items = newItems
-                        });
-                        foreach (var index in listInt)
+                            listInt.Add(0);
+                            var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerminals).ToString();
+                            nonTerminals.Add(newNonTerm);
+                            var newItems = rules[0].Items.Take(minLenght).ToList();
+                            newItems.Add(new RuleItem(newNonTerm, false));
                             newRules.Add(new Rule
                             {
-                                NonTerminal = newNonTerm,
-                                Items = rules[index].Items.Skip(minLenght).ToList()
+                                NonTerminal = nonTerminal,
+                                Items = newItems
                             });
-                        foreach (var index in listInt.OrderByDescending(v => v)) rules.RemoveAt(index);
+                            foreach (var index in listInt)
+                                newRules.Add(new Rule
+                                {
+                                    NonTerminal = newNonTerm,
+                                    Items = rules[index].Items.Skip(minLenght).ToList()
+                                });
+                            foreach (var index in listInt.OrderByDescending(v => v)) rules.RemoveAt(index);
+                        }
+                        else
+                        {
+                            flag = false;
+                        }
                     }
 
                 newRules.AddRange(rules);

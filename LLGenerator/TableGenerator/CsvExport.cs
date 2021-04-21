@@ -15,7 +15,7 @@ namespace LLGenerator.TableGenerator
             var newList = rules.Select(r => new RulesForCsvExport
             {
                 Id = r.Id,
-                GoTo = r.GoTo,
+                GoTo = r.GoTo == null ? "NULL" : r.GoTo.ToString(),
                 NonTerminal = r.NonTerminal,
                 IsError = r.IsError ? "1" : "0",
                 IsShift = r.IsShift ? "1" : "",
@@ -35,12 +35,12 @@ namespace LLGenerator.TableGenerator
             }
         }
 
-        public class RulesForCsvExport
+        private class RulesForCsvExport
         {
             public int Id { get; init; }
             public string NonTerminal { get; init; }
             public string Dirs { get; init; }
-            public int? GoTo { get; set; }
+            public string? GoTo { get; set; }
             public string IsError { get; init; }
             public string IsShift { get; init; }
             public string MoveToStack { get; init; }
@@ -49,7 +49,7 @@ namespace LLGenerator.TableGenerator
             public override string ToString()
             {
                 return $"Id: {Id}, NonTerm: {NonTerminal}, Dirs: {Dirs}, " +
-                       $"Goto: {(GoTo == null ? "NULL" : GoTo)}, Err: {IsError}, " +
+                       $"Goto: {GoTo}, Err: {IsError}, " +
                        $"Shift: {IsShift}, Stack: {MoveToStack}, End: {IsEnd}";
             }
         }

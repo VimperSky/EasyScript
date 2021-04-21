@@ -30,7 +30,9 @@ namespace LLGenerator.SyntaxAnalyzer
 
                 if (tableItem.IsShift)
                     if (inputQ.Count == 0)
+                    {
                         GenerateException("Input is empty but we need to shift.");
+                    }
                     else
                     {
                         inputQ.Dequeue();
@@ -53,13 +55,13 @@ namespace LLGenerator.SyntaxAnalyzer
                     else
                         GenerateException("GoTo is null, stack is empty but other conditions are not met.");
                 }
-                
             }
-            
+
             void GenerateException(string err)
             {
-                throw new ArgumentException("[Syntax Analyzer Error] " +  err + $"\nToken Number: {input.Length - inputQ.Count}, " +
-                                    $"Stack: [{string.Join(", ", stack)}], InputQ: [{string.Join(", ", inputQ)}], TableItem: {index}\nHistory: [{string.Join(", ", history)}]");
+                throw new ArgumentException("[Syntax Analyzer Error] " + err +
+                                            $"\nToken Number: {input.Length - inputQ.Count}, " +
+                                            $"Stack: [{string.Join(", ", stack)}], InputQ: [{string.Join(", ", inputQ)}], TableItem: {index}\nHistory: [{string.Join(", ", history)}]");
             }
 
             return history;

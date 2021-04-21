@@ -18,8 +18,8 @@ namespace TestSolver
                 Console.WriteLine(rule);
 
             var tableRules = TableGenerator.Parse(dirRules);
-            CsvExport.SaveToCsv(tableRules);
             var input = File.ReadAllText("input.txt").Split(" ", StringSplitOptions.TrimEntries);
+            CsvExport.SaveToCsv(tableRules, input);
             Console.WriteLine($"Input: {string.Join(" ", input)}");
             List<int> history;
             try
@@ -31,9 +31,8 @@ namespace TestSolver
                 Console.WriteLine(ex.Message);
                 return;
             }
-            
-            Console.WriteLine($"Correct! History: [{string.Join(", ", history)}]");
 
+            Console.WriteLine($"Correct! History: [{string.Join(", ", history)}]");
         }
     }
 }

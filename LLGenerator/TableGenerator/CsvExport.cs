@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -8,9 +9,9 @@ using LLGenerator.Entities;
 
 namespace LLGenerator.TableGenerator
 {
-    public class CsvExport
+    public static class CsvExport
     {
-        public static void SaveToCsv(IEnumerable<TableRule> rules)
+        public static void SaveToCsv(IEnumerable<TableRule> rules, IEnumerable<string> input)
         {
             var newList = rules.Select(r => new RulesForCsvExport
             {
@@ -33,9 +34,12 @@ namespace LLGenerator.TableGenerator
                 csv.WriteRecord(rule);
                 csv.NextRecord();
             }
+
+            csv.NextRecord();
+            foreach (var field in input) csv.WriteField(field);
         }
 
-        private class RulesForCsvExport
+        private struct RulesForCsvExport
         {
             public int Id { get; init; }
             public string NonTerminal { get; init; }

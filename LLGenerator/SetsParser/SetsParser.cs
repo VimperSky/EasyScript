@@ -51,8 +51,8 @@ namespace LLGenerator.SetsParser
                             r.Items.Add(new RuleItem(newNonTerm, false));
                             newRules.Add(r);
                         }
-                        
-                        
+
+
                         foreach (var r in similarRules)
                         {
                             var rest = r.Items.Skip(1).ToList();
@@ -113,7 +113,7 @@ namespace LLGenerator.SetsParser
 
                         var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerminals).ToString();
                         nonTerminals.Add(newNonTerm);
-                        
+
                         var commonFinal = rules[0].Items.Take(minCommonLen).ToList();
                         commonFinal.Add(new RuleItem(newNonTerm, false));
                         newRules.Add(new Rule
@@ -121,32 +121,32 @@ namespace LLGenerator.SetsParser
                             NonTerminal = nonTerminal,
                             Items = commonFinal
                         });
-                        
+
 
                         var needE = false;
                         foreach (var index in commonIds)
                         {
-                            var rest  = rules[index].Items.Skip(minCommonLen).ToList();
+                            var rest = rules[index].Items.Skip(minCommonLen).ToList();
                             if (rest.Count == 0)
                             {
                                 needE = true;
                                 continue;
                             }
-                            
+
                             newRules.Add(new Rule
                             {
                                 NonTerminal = newNonTerm,
                                 Items = rest
                             });
                         }
-                        
+
                         if (needE)
                             newRules.Add(new Rule
                             {
                                 NonTerminal = newNonTerm,
                                 Items = new List<RuleItem> {new("e", true)}
                             });
-                        
+
                         foreach (var index in commonIds.OrderByDescending(v => v))
                             rules.RemoveAt(index);
                     }

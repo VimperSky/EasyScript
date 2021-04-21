@@ -2,8 +2,7 @@ using System;
 
 namespace LLGenerator.SyntaxAnalyzer
 {
-    public class SyntaxAnalyzerException: Exception
+    public class SyntaxAnalyzerException : Exception
     {
-        
     }
 }

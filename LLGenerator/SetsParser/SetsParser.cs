@@ -87,8 +87,8 @@ namespace LLGenerator.SetsParser
             {
                 var nonTerminal = oldRules[0].NonTerminal;
                 var rules = rulesTable.Rules.Where(x => x.NonTerminal == nonTerminal).ToList();
-                oldRules.RemoveRange(0, rules.Count);  
-                
+                oldRules.RemoveRange(0, rules.Count);
+
                 if (rules.Count > 1)
                     for (;;)
                     {
@@ -97,17 +97,18 @@ namespace LLGenerator.SetsParser
                         for (var i = 1; i < rules.Count; i++)
                         {
                             var common = rules[0].FindCommon(rules[i]);
-                            if (common.Count == 0) 
+                            if (common.Count == 0)
                                 continue;
-                            
+
                             if (common.Count < minCommonLen)
                                 minCommonLen = common.Count;
-                            
+
                             commonIds.Add(i);
                         }
+
                         if (commonIds.Count == 1)
                             break;
-                        
+
                         var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerminals).ToString();
                         nonTerminals.Add(newNonTerm);
                         var newItems = rules[0].Items.Take(minCommonLen).ToList();
@@ -117,18 +118,20 @@ namespace LLGenerator.SetsParser
                             NonTerminal = nonTerminal,
                             Items = newItems
                         });
-                        
                         foreach (var index in commonIds)
+                        {
+                            var truncating  = rules[index].Items.Skip(minCommonLen).ToList();
                             newRules.Add(new Rule
                             {
                                 NonTerminal = newNonTerm,
-                                Items = rules[index].Items.Skip(minCommonLen).ToList()
+                                Items = truncating.Count == 0 ? new List<RuleItem> {new("e", true)} : truncating
                             });
-                        
-                        foreach (var index in commonIds.OrderByDescending(v => v)) 
+                        }
+
+                        foreach (var index in commonIds.OrderByDescending(v => v))
                             rules.RemoveAt(index);
                     }
-                
+
                 newRules.AddRange(rules);
             }
 

@@ -6,15 +6,17 @@ namespace LLGenerator.SyntaxAnalyzer
 {
     public static class SyntaxAnalyzer
     {
-        public static void Analyze(string[] input, List<TableRule> table)
+        public static List<int> Analyze(string[] input, List<TableRule> table)
         {
             var stack = new Stack<int>();
             var inputQ = new Queue<string>(input);
             var index = 1;
+            var history = new List<int>();
 
             var inItem = inputQ.Peek();
             while (true)
             {
+                history.Add(index);
                 var tableItem = table[index - 1];
                 if (!tableItem.DirSet.Contains(inItem))
                 {
@@ -57,8 +59,10 @@ namespace LLGenerator.SyntaxAnalyzer
             void GenerateException(string err)
             {
                 throw new ArgumentException("[Syntax Analyzer Error] " +  err + $"\nToken Number: {input.Length - inputQ.Count}, " +
-                                    $"Stack: [{string.Join(", ", stack)}], InputQ: [{string.Join(", ", inputQ)}], TableItem: {index}");
+                                    $"Stack: [{string.Join(", ", stack)}], InputQ: [{string.Join(", ", inputQ)}], TableItem: {index}\nHistory: [{string.Join(", ", history)}]");
             }
+
+            return history;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using LLGenerator.SetsParser;
 using LLGenerator.SyntaxAnalyzer;
@@ -20,9 +21,10 @@ namespace TestSolver
             CsvExport.SaveToCsv(tableRules);
             var input = File.ReadAllText("input.txt").Split(" ", StringSplitOptions.TrimEntries);
             Console.WriteLine($"Input: {string.Join(" ", input)}");
+            List<int> history;
             try
             {
-                SyntaxAnalyzer.Analyze(input, tableRules);
+                history = SyntaxAnalyzer.Analyze(input, tableRules);
             }
             catch (Exception ex)
             {
@@ -30,7 +32,7 @@ namespace TestSolver
                 return;
             }
             
-            Console.WriteLine("Input is correct!");
+            Console.WriteLine($"Correct! History: [{string.Join(", ", history)}]");
 
         }
     }

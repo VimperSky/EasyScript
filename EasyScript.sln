@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSolver", "TestSolver\Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLGenerator", "LLGenerator\LLGenerator.csproj", "{33051D2A-5B2B-4CE7-82CB-0E839F94D40E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLGenerator.Tests", "LLGenerator.Tests\LLGenerator.Tests.csproj", "{FE2AA655-2392-41F7-97A3-C001E757984C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{33051D2A-5B2B-4CE7-82CB-0E839F94D40E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33051D2A-5B2B-4CE7-82CB-0E839F94D40E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33051D2A-5B2B-4CE7-82CB-0E839F94D40E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE2AA655-2392-41F7-97A3-C001E757984C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE2AA655-2392-41F7-97A3-C001E757984C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE2AA655-2392-41F7-97A3-C001E757984C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE2AA655-2392-41F7-97A3-C001E757984C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LLGenerator.Entities;
+using LLGenerator.SetsParser.Actions;
 
 namespace LLGenerator.SetsParser
 {
@@ -11,158 +12,18 @@ namespace LLGenerator.SetsParser
         public static List<DirRule> DoParse(Stream input)
         {
             var baseRules = ParseInput(input);
-            var noLeftRules = RemoveLeftRecursion(baseRules);
-            var factorizedRules = Factorization(noLeftRules);
+            var leftRules = LeftRecursionRemover.RemoveLeftRecursion(baseRules);
+            var factorizedRules = Factorization.MakeFactorization(leftRules);
             foreach (var rule in factorizedRules.Rules)
             {
                 Console.WriteLine(rule);
             }
 
             var dirRules = new DirSetsFinder(factorizedRules.Rules).Find();
-
             return dirRules;
         }
 
-        private static RulesTable RemoveLeftRecursion(RulesTable rulesTable)
-        {
-            var newRules = new List<Rule>();
-            var oldRules = rulesTable.Rules.ToList();
-            var nonTerms = rulesTable.NonTerminals;
-
-            while (oldRules.Count > 0)
-            {
-                var nonTerminal = oldRules[0].NonTerminal;
-                var rules = rulesTable.Rules.Where(x => x.NonTerminal == nonTerminal).ToList();
-                oldRules.RemoveRange(0, rules.Count);
-                if (rules.Count > 1)
-                {
-                    var similarRules = new List<Rule>();
-                    var nonSimilarRules = new List<Rule>();
-                    foreach (var rule in rules)
-                        if (rule.Items[0].Value == rule.NonTerminal)
-                            similarRules.Add(rule);
-                        else
-                            nonSimilarRules.Add(rule);
-
-                    if (similarRules.Count > 0)
-                    {
-                        if (nonSimilarRules.Count == 0)
-                            throw new Exception("Infinity recursion");
-
-                        var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms).ToString();
-                        nonTerms.Add(newNonTerm);
-                        foreach (var r in nonSimilarRules)
-                        {
-                            r.Items.Add(new RuleItem(newNonTerm, false));
-                            newRules.Add(r);
-                        }
-
-
-                        foreach (var r in similarRules)
-                        {
-                            var rest = r.Items.Skip(1).ToList();
-                            rest.Add(new RuleItem(newNonTerm, false));
-                            newRules.Add(new Rule {NonTerminal = newNonTerm, Items = rest});
-                        }
-
-                        newRules.Add(new Rule
-                        {
-                            NonTerminal = newNonTerm, Items = new List<RuleItem>
-                            {
-                                new("e", true)
-                            }
-                        });
-
-                        continue;
-                    }
-                }
-
-                newRules.AddRange(rules);
-            }
-
-            return new RulesTable(newRules, nonTerms);
-        }
-
-        private static RulesTable Factorization(RulesTable rulesTable)
-        {
-            var newRules = new List<Rule>();
-            var oldRules = rulesTable.Rules.ToList();
-
-            var nonTerminals = rulesTable.NonTerminals;
-            while (oldRules.Count > 0)
-            {
-                var nonTerminal = oldRules[0].NonTerminal;
-                var rules = rulesTable.Rules.Where(x => x.NonTerminal == nonTerminal).ToList();
-                oldRules.RemoveRange(0, rules.Count);
-
-                if (rules.Count > 1)
-                    for (;;)
-                    {
-                        var minCommonLen = int.MaxValue;
-                        var commonIds = new List<int> {0};
-                        for (var i = 1; i < rules.Count; i++)
-                        {
-                            var common = rules[0].FindCommon(rules[i]);
-                            if (common.Count == 0)
-                                continue;
-
-                            if (common.Count < minCommonLen)
-                                minCommonLen = common.Count;
-
-                            commonIds.Add(i);
-                        }
-
-                        // Если не найдено общих элементов то выходим отсюда от греха подальше!!
-                        if (commonIds.Count == 1)
-                            break;
-
-                        var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerminals).ToString();
-                        nonTerminals.Add(newNonTerm);
-
-                        var commonFinal = rules[0].Items.Take(minCommonLen).ToList();
-                        commonFinal.Add(new RuleItem(newNonTerm, false));
-                        newRules.Add(new Rule
-                        {
-                            NonTerminal = nonTerminal,
-                            Items = commonFinal
-                        });
-
-
-                        var needE = false;
-                        foreach (var index in commonIds)
-                        {
-                            var rest = rules[index].Items.Skip(minCommonLen).ToList();
-                            if (rest.Count == 0)
-                            {
-                                needE = true;
-                                continue;
-                            }
-
-                            newRules.Add(new Rule
-                            {
-                                NonTerminal = newNonTerm,
-                                Items = rest
-                            });
-                        }
-
-                        if (needE)
-                            newRules.Add(new Rule
-                            {
-                                NonTerminal = newNonTerm,
-                                Items = new List<RuleItem> {new("e", true)}
-                            });
-
-                        foreach (var index in commonIds.OrderByDescending(v => v))
-                            rules.RemoveAt(index);
-                    }
-
-                newRules.AddRange(rules);
-            }
-
-            return new RulesTable(newRules, nonTerminals);
-        }
-
-        private static RulesTable ParseInput(Stream input)
+        private static RuleList ParseInput(Stream input)
         {
             using var sr = new StreamReader(input);
             string line;
@@ -187,7 +48,7 @@ namespace LLGenerator.SetsParser
             if (rules[0].Items[^1].Value != Constants.NewLineSymbol)
                 rules[0].Items.Add(new RuleItem(Constants.NewLineSymbol, true));
 
-            return new RulesTable(rules, nonTerminals);
+            return new RuleList(rules, nonTerminals);
         }
     }
 }

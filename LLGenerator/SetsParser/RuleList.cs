@@ -3,12 +3,12 @@ using LLGenerator.Entities;
 
 namespace LLGenerator.SetsParser
 {
-    internal class RulesTable
+    internal class RuleList
     {
         public readonly HashSet<string> NonTerminals;
         public readonly List<Rule> Rules;
 
-        public RulesTable(List<Rule> rules, HashSet<string> nonTerminals)
+        public RuleList(List<Rule> rules, HashSet<string> nonTerminals)
         {
             Rules = rules;
             NonTerminals = nonTerminals;

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LLGenerator.Entities;
 
-namespace LLGenerator.SetsParser
+namespace LLGenerator.SetsParser.Actions
 {
     internal class DirSetsFinder
     {

@@ -28,7 +28,7 @@ namespace LLGenerator.Tests
             foreach (var rule in dirRules)
                 sw.WriteLine(rule);
             const string expected =
-                "F -> function I ( I ) G end $ / function\r\nG -> I := E B / a\r\nB -> ; G / end\r\nB -> e / ;\r\nE -> I A / a\r\nB -> * I A / *\r\nA -> + I A / +\r\nA -> e / end, ;\r\nI -> a / a\r\n";
+                "F -> function I ( I ) G end $ / function\r\nG -> I := E B / a\r\nB -> ; G / ;\r\nB -> e / end\r\nE -> I A / a\r\nA -> * I A / *\r\nA -> + I A / +\r\nA -> e / ;, end\r\nI -> a / a\r\n";
             Assert.Equal(expected, sw.ToString());
         }
         
@@ -59,7 +59,7 @@ namespace LLGenerator.Tests
             var sw = new StringWriter();
             foreach (var rule in dirRules)
                 sw.WriteLine(rule);
-            const string expected = "F -> S $ / x\r\nS -> x B / x\r\nB -> A B / y\r\nB -> e / $\r\nA -> y C / y\r\nC -> S C / x\r\nC -> e / y, $\r\n";
+            const string expected = "F -> S $ / x\r\nS -> x B / x\r\nB -> A B / y\r\nB -> e / $, x, y\r\nA -> y C / y\r\nC -> S C / x\r\nC -> e / y, $, x\r\n";
             Assert.Equal(expected, sw.ToString());
         }
        

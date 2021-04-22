@@ -69,66 +69,31 @@ namespace LLGenerator.SetsParser.Actions
                 }
             }
 
-            var foundNonTerms = new HashSet<string>();
-            foreach (var nonTerm in _nonTerms)
+            for (;;)
             {
-                var allFound = true;
-                for (var i = 0; i < _rules.Count; i++)
-                {
-                    if (_rules[i].NonTerminal != nonTerm)
-                        continue;
-
-                    if (_foundValues[i].Any(x => !x.IsTerm))
-                    {
-                        allFound = false;
-                    }
-                }
-
-                if (allFound)
-                    foundNonTerms.Add(nonTerm);
-            }
-            
-            while (_nonTerms.Count > foundNonTerms.Count + 1)
-            {
+                var somethingChanged = false;
                 foreach (var foundVal in _foundValues)
                 {
                     var nonTerms = foundVal.Where(x => !x.IsTerm).ToList();
-                    if (nonTerms.Count == 0) 
-                        continue;
-                    
+                    if (nonTerms.Count > 0)
+                        somethingChanged = true;
                     foreach (var nonTerm in nonTerms)
                     {
-                        var allFound = true;
-                        for (var j = 0; j < _rules.Count; j++)
-                        {
-                            if (_rules[j].NonTerminal != nonTerm.Value)
-                                continue;
-
-                            if (_foundValues[j].Any(x => !x.IsTerm))
-                            {
-                                allFound = false;
-                            }
-                        }
-
-                        if (allFound)
-                        {
-                            foundNonTerms.Add(nonTerm.Value);
-                            foundVal.Remove(nonTerm);
-                            
-                            for (var j = 0; j < _rules.Count; j++)
-                            {
-                                if (_rules[j].NonTerminal != nonTerm.Value)
-                                    continue;
-
-                                foreach (var item in _foundValues[j])
-                                    foundVal.Add(item);
-                            }
-
-                        }
+                        foundVal.Remove(nonTerm);
+                        var rules = _rules.Select((x, i) => (x, i))
+                            .Where(x => x.x.NonTerminal == nonTerm.Value)
+                            .Select(x => x.i)
+                            .ToList();
+                        foreach (var rule in rules)
+                        foreach (var fVal in _foundValues[rule])
+                            foundVal.Add(fVal);
                     }
                 }
+
+                if (!somethingChanged)
+                    break;
             }
-            
+
             return _rules.Select((t, i) => DirRule.Create(_foundValues[i]
                 .Select(x => x.Value).ToHashSet(), t)).ToList();
         }

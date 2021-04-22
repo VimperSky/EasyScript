@@ -8,6 +8,7 @@ namespace LLGenerator.SetsParser
     {
         private readonly List<HashSet<string>> _foundValues = new();
         private readonly List<Rule> _rules;
+        private readonly List<int> _antiInfLoop = new ();
 
         public DirSetsFinder(List<Rule> rules)
         {
@@ -18,13 +19,21 @@ namespace LLGenerator.SetsParser
 
         public List<DirRule> Find()
         {
-            for (var i = 0; i < _rules.Count; i++) FindN(i, i);
+            for (var i = 0; i < _rules.Count; i++)
+            {
+                FindN(i, i);
+                _antiInfLoop.Clear();
+            }
 
             return _rules.Select((t, i) => DirRule.Create(_foundValues[i], t)).ToList();
         }
 
         private void FindN(int globalIndex, int origRuleId, int localIndex = 0)
         {
+            if (_antiInfLoop.Contains(globalIndex))
+                return;
+            _antiInfLoop.Add(globalIndex);
+            
             var rule = _rules[globalIndex];
             if (rule.Items[localIndex].IsTerminal)
             {
@@ -41,7 +50,7 @@ namespace LLGenerator.SetsParser
             }
         }
 
-        private void FindUp(string nonTerm, int origRuleId, List<string> recursiveNonTerms = null)
+        private void FindUp(string nonTerm, int origRuleId)
         {
             for (var globalIndex = 0; globalIndex < _rules.Count; globalIndex++)
             {
@@ -49,19 +58,17 @@ namespace LLGenerator.SetsParser
                 for (var localIndex = 0; localIndex < rule.Items.Count; localIndex++)
                     if (rule.Items[localIndex].Value == nonTerm)
                     {
+                        if (_antiInfLoop.Contains(globalIndex))
+                            return;
+                        _antiInfLoop.Add(globalIndex);
+                        
                         if (++localIndex < rule.Items.Count)
                         {
                             FindN(globalIndex, origRuleId, localIndex);
                         }
                         else
                         {
-                            recursiveNonTerms ??= new List<string>();
-                            if (recursiveNonTerms.Contains(rule.NonTerminal))
-                                continue;
-
-                            recursiveNonTerms.Add(rule.NonTerminal);
-
-                            FindUp(rule.NonTerminal, origRuleId, recursiveNonTerms);
+                            FindUp(rule.NonTerminal, origRuleId);
                         }
                     }
             }

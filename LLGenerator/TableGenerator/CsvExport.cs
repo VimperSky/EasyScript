@@ -35,8 +35,8 @@ namespace LLGenerator.TableGenerator
                 csv.NextRecord();
             }
 
-            csv.NextRecord();
-            foreach (var field in input) csv.WriteField(field);
+            //csv.NextRecord();
+            //foreach (var field in input) csv.WriteField(field);
         }
 
         private struct RulesForCsvExport

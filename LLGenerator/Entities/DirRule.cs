@@ -13,7 +13,7 @@ namespace LLGenerator.Entities
 
         public override string ToString()
         {
-            return base.ToString() + $" [{string.Join(", ", Dirs)}]";
+            return base.ToString() + $" / {string.Join(", ", Dirs)}";
         }
     }
 }

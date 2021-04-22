@@ -84,8 +84,7 @@ namespace LLGenerator.SetsParser.Actions
                             .Where(x => x.x.NonTerminal == nonTerm.Value)
                             .Select(x => x.i)
                             .ToList();
-                        foreach (var rule in rules)
-                        foreach (var fVal in _foundValues[rule])
+                        foreach (var fVal in rules.SelectMany(rule => _foundValues[rule]))
                             foundVal.Add(fVal);
                     }
                 }

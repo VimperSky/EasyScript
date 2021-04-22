@@ -1,0 +1,3 @@
+F -> S1 $
+S1 -> f S1 | f A | a A | a d | f a
+A -> A a | A b | c

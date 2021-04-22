@@ -3,7 +3,7 @@ using Xunit;
 
 namespace LLGenerator.Tests
 {
-    public class Factorization
+    public class SetsParserTests
     {
         [Fact]
         public void FckingTest1()
@@ -29,6 +29,18 @@ namespace LLGenerator.Tests
                 sw.WriteLine(rule);
             const string expected =
                 "F -> function I ( I ) G end $ / function\r\nG -> I := E B / a\r\nB -> ; G / end\r\nB -> e / ;\r\nE -> I A / a\r\nB -> * I A / *\r\nA -> + I A / +\r\nA -> e / end, ;\r\nI -> a / a\r\n";
+            Assert.Equal(expected, sw.ToString());
+        }
+        
+        [Fact]
+        public void FckingTest3()
+        {
+            var rulesStream = File.OpenRead("../../../test3.txt");
+            var dirRules = SetsParser.SetsParser.DoParse(rulesStream);
+            var sw = new StringWriter();
+            foreach (var rule in dirRules)
+                sw.WriteLine(rule);
+            const string expected = "F -> S1 $ / f, a\r\nS1 -> f C / f\r\nC -> S1 / f, a\r\nC -> A / c\r\nC -> a / a\r\nS1 -> a D / a\r\nD -> A / c\r\nD -> d / d\r\nA -> c B / c\r\nB -> a B / a\r\nB -> b B / b\r\nB -> e / $\r\n";
             Assert.Equal(expected, sw.ToString());
         }
     }

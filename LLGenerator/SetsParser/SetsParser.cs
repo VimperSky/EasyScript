@@ -19,7 +19,7 @@ namespace LLGenerator.SetsParser
                 Console.WriteLine(rule);
             }
 
-            var dirRules = new DirSetsFinder(factorizedRules.Rules).Find();
+            var dirRules = new DirSetsFinder(factorizedRules).Find();
             return dirRules;
         }
 

@@ -64,7 +64,29 @@ namespace LLGenerator.Tests
             var sw = new StringWriter();
             foreach (var rule in dirRules)
                 sw.WriteLine(rule);
-            const string expected = "F -> S $ / (, b\r\nS -> ( S ) A / (\r\nS -> b A / b\r\nA -> a A / a\r\nA -> e / $\r\n";
+            const string expected = "F -> S $ / (, b\r\nS -> ( S ) A / (\r\nS -> b A / b\r\nA -> a A / a\r\nA -> e / $, )\r\n";
+            Assert.Equal(expected, sw.ToString());
+        }
+        
+        /*F -> S $
+        S -> S a | S b | ( S ) | e
+        
+        F -> S $ / (
+        S -> ( S ) A / (
+        S -> e A                тут e исчезает и будет S -> A / a, b
+        A -> a / a
+        A -> b / a
+        A -> e / $        
+        */
+        [Fact]
+        public void FckingTest6()
+        {
+            var rulesStream = File.OpenRead("../../../test6.txt");
+            var dirRules = SetsParser.SetsParser.DoParse(rulesStream);
+            var sw = new StringWriter();
+            foreach (var rule in dirRules)
+                sw.WriteLine(rule);
+            const string expected = "F -> S $ / (\r\nS -> ( S ) A / (\r\nS -> A / a, b\r\nA -> a / a\r\nA -> b / a\r\nA -> e / $\r\n";
             Assert.Equal(expected, sw.ToString());
         }
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using LLGenerator.Entities;
@@ -10,59 +9,48 @@ namespace LLGenerator.SetsParser.Actions
         public static RuleList RemoveLeftRecursion(RuleList ruleList)
         {
             var newRules = new List<Rule>();
-            var oldRules = ruleList.Rules.ToList();
             var nonTerms = ruleList.NonTerminals;
-
-            while (oldRules.Count > 0)
+            var groups = ruleList.Rules.GroupBy(x => x.NonTerminal);
+            foreach (var rules in groups)
             {
-                var nonTerminal = oldRules[0].NonTerminal;
-                var rules = ruleList.Rules.Where(x => x.NonTerminal == nonTerminal).ToList();
-                oldRules.RemoveRange(0, rules.Count);
-                if (rules.Count > 1)
+                var recursionRules = new List<Rule>();
+                var normalRules = new List<Rule>();
+                foreach (var rule in rules)
+                    if (rule.Items[0].Value == rule.NonTerminal)
+                        recursionRules.Add(rule);
+                    else
+                        normalRules.Add(rule);
+
+                if (recursionRules.Count > 0)
                 {
-                    var similarRules = new List<Rule>();
-                    var nonSimilarRules = new List<Rule>();
-                    foreach (var rule in rules)
-                        if (rule.Items[0].Value == rule.NonTerminal)
-                            similarRules.Add(rule);
-                        else
-                            nonSimilarRules.Add(rule);
+                    var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms).ToString();
+                    nonTerms.Add(newNonTerm);
 
-                    if (similarRules.Count > 0)
+                    foreach (var normalRule in normalRules)
                     {
-                        if (nonSimilarRules.Count == 0)
-                            throw new Exception("Infinity recursion");
-
-                        var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms).ToString();
-                        nonTerms.Add(newNonTerm);
-                        foreach (var r in nonSimilarRules)
-                        {
-                            if (r.Items.Count == 1)
-                                if (r.Items[0].Value == "e")
-                                    r.Items.RemoveAt(0);
-                            r.Items.Add(new RuleItem(newNonTerm, false));
-                            newRules.Add(r);
-                        }
-
-                        foreach (var rest in similarRules.Select(r => r.Items.Skip(1).ToList()))
-                        {
-                            rest.Add(new RuleItem(newNonTerm, false));
-                            newRules.Add(new Rule {NonTerminal = newNonTerm, Items = rest});
-                        }
-
-                        newRules.Add(new Rule
-                        {
-                            NonTerminal = newNonTerm, Items = new List<RuleItem>
-                            {
-                                new("e", true)
-                            }
-                        });
-
-                        continue;
+                        if (normalRule.Items[0].Value == "e")
+                            normalRule.Items.RemoveAt(0);
+                        normalRule.Items.Add(new RuleItem(newNonTerm, false));
+                        newRules.Add(normalRule);
                     }
+                    
+                    foreach (var recRule in recursionRules)
+                    {
+                        var items = recRule.Items.Skip(1).ToList();
+                        items.Add(new RuleItem(newNonTerm, false));
+                        newRules.Add(new Rule { NonTerminal = newNonTerm, Items = items});
+                    }
+                    
+                    newRules.Add(new Rule {NonTerminal = newNonTerm, Items = new List<RuleItem>
+                    {
+                        new("e", true)
+                    }});
+                }
+                else
+                {
+                    newRules.AddRange(normalRules);
                 }
 
-                newRules.AddRange(rules);
             }
 
             return new RuleList(newRules, nonTerms);

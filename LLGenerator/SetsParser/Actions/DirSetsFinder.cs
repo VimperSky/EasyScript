@@ -8,13 +8,11 @@ namespace LLGenerator.SetsParser.Actions
     internal class DirSetsFinder
     {
         private readonly List<HashSet<(string Value, bool IsTerm)>> _foundValues = new();
-        private readonly ImmutableHashSet<string> _nonTerms;
         private readonly List<Rule> _rules;
 
         public DirSetsFinder(RuleList ruleList)
         {
             _rules = ruleList.Rules;
-            _nonTerms = ruleList.NonTerminals.ToImmutableHashSet();
 
             for (var i = 0; i < _rules.Count; i++)
                 _foundValues.Add(new HashSet<(string Value, bool IsTerm)>());

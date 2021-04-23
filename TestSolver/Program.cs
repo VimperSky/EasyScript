@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using LLGenerator.SetsParser;
 using LLGenerator.SyntaxAnalyzer;
 using LLGenerator.TableGenerator;
@@ -16,8 +17,10 @@ namespace TestSolver
             Console.WriteLine("Rules:");
             foreach (var rule in dirRules)
                 Console.WriteLine(rule);
-
             
+            if (!SetsParser.IsLLFirst(dirRules))
+                throw new Exception("Not LL");
+
             var tableRules = TableGenerator.Parse(dirRules);
             var input = File.ReadAllText("input.txt").Split(" ", StringSplitOptions.TrimEntries);
             CsvExport.SaveToCsv(tableRules, input);

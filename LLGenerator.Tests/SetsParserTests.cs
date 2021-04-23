@@ -114,6 +114,7 @@ namespace LLGenerator.Tests
         [Fact]
         public void FckingTest7()
         {
+            
             var rulesStream = File.OpenRead("../../../test7.txt");
             var dirRules = SetsParser.SetsParser.DoParse(rulesStream);
             var sw = new StringWriter();

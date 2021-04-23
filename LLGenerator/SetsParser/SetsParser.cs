@@ -15,10 +15,23 @@ namespace LLGenerator.SetsParser
             var factorizedRules = Factorization.MakeFactorization(baseRules);
             var leftRules = LeftRecursionRemover.RemoveLeftRecursion(factorizedRules);
             var dirRules = new DirSetsFinder(leftRules).Find();
-
+            
             return dirRules;
         }
 
+        public static bool IsLLFirst(List<DirRule> dirRules)
+        {
+            var groups = dirRules.GroupBy(x => x.NonTerminal);
+            foreach (var group in groups)
+            {
+                var groupsDirs = group.SelectMany(x => x.Dirs).ToList();
+                if (groupsDirs.Count != groupsDirs.Distinct().Count())
+                    return false;
+            }
+
+            return true;
+        }
+        
         private static RuleList ParseInput(Stream input)
         {
             using var sr = new StreamReader(input);

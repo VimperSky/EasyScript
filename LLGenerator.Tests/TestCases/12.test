@@ -1,4 +1,4 @@
-F -> function I ( I ) G end $
+F -> function I ( I ) G $
 G -> I := E | I := E ; G
 E -> E * I | E + I | I
 I -> a

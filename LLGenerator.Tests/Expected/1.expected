@@ -1,0 +1,6 @@
+F -> S $
+S -> id = E
+S -> while E do S
+E -> id A
+A -> + E A
+A -> e

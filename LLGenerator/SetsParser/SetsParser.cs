@@ -15,11 +15,11 @@ namespace LLGenerator.SetsParser
             var factorizedRules = Factorization.MakeFactorization(baseRules);
             var leftRules = LeftRecursionRemover.RemoveLeftRecursion(factorizedRules);
             var dirRules = new DirSetsFinder(leftRules).Find();
-            
+
             return dirRules;
         }
 
-        public static bool IsLLFirst(List<DirRule> dirRules)
+        public static bool IsLLFirst(IEnumerable<DirRule> dirRules)
         {
             var groups = dirRules.GroupBy(x => x.NonTerminal);
             foreach (var group in groups)
@@ -31,7 +31,7 @@ namespace LLGenerator.SetsParser
 
             return true;
         }
-        
+
         private static RuleList ParseInput(Stream input)
         {
             using var sr = new StreamReader(input);
@@ -51,8 +51,7 @@ namespace LLGenerator.SetsParser
                     Items = rawRule.RightBody.Split(" ", StringSplitOptions.TrimEntries)
                         .Select(x => new RuleItem(x, !nonTerminals.Contains(x)))
                         .ToList()
-                })
-                .ToList();
+                }).ToList();
 
             if (rules[0].Items[^1].Value != Constants.NewLineSymbol)
                 rules[0].Items.Add(new RuleItem(Constants.NewLineSymbol, true));

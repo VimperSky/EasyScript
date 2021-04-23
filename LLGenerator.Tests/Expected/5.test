@@ -1,6 +1,6 @@
-﻿F -> S $
-S -> a A
-S -> ( S )
-S -> b
-A -> S
-A -> e
+﻿F -> S $ / a, (, b
+S -> a A / a
+S -> ( S ) / (
+S -> b / b
+A -> S / a, (, b
+A -> e / $, )

@@ -99,7 +99,7 @@ namespace LLGenerator.Tests
                 "F -> S $ / (, a, b, $, )\r\nS -> ( S ) A / (\r\nS -> A / a, b, $, )\r\nA -> a A / a\r\nA -> b A / b\r\nA -> e / $, )\r\n";
             Assert.Equal(expected, sw.ToString());
         }
-        
+
         /*F -> S $
         S -> id = E | while E do S
         E -> E + E | id
@@ -114,14 +114,13 @@ namespace LLGenerator.Tests
         [Fact]
         public void FckingTest7()
         {
-            
             var rulesStream = File.OpenRead("../../../test7.txt");
             var dirRules = SetsParser.SetsParser.DoParse(rulesStream);
             var sw = new StringWriter();
             foreach (var rule in dirRules)
                 sw.WriteLine(rule);
             const string expected =
-                "F -> S $ / id, while\r\nS -> id = E / id\r\nS -> while E do S / while\r\n" + 
+                "F -> S $ / id, while\r\nS -> id = E / id\r\nS -> while E do S / while\r\n" +
                 "E -> id A / id\r\nA -> + E A / +\r\nA -> e / $, do, +\r\n";
             Assert.Equal(expected, sw.ToString());
         }

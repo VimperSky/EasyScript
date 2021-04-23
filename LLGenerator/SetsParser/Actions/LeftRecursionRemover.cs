@@ -33,24 +33,24 @@ namespace LLGenerator.SetsParser.Actions
                         normalRule.Items.Add(new RuleItem(newNonTerm, false));
                         newRules.Add(normalRule);
                     }
-                    
+
                     foreach (var recRule in recursionRules)
                     {
                         var items = recRule.Items.Skip(1).ToList();
                         items.Add(new RuleItem(newNonTerm, false));
-                        newRules.Add(new Rule { NonTerminal = newNonTerm, Items = items});
+                        newRules.Add(new Rule {NonTerminal = newNonTerm, Items = items});
                     }
-                    
-                    newRules.Add(new Rule {NonTerminal = newNonTerm, Items = new List<RuleItem>
+
+                    newRules.Add(new Rule
                     {
-                        new("e", true)
-                    }});
+                        NonTerminal = newNonTerm, 
+                        Items = new List<RuleItem> {new("e", true)}
+                    });
                 }
                 else
                 {
                     newRules.AddRange(normalRules);
                 }
-
             }
 
             return new RuleList(newRules, nonTerms);

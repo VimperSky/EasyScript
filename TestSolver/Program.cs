@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using LLGenerator.SetsParser;
 using LLGenerator.SyntaxAnalyzer;
 using LLGenerator.TableGenerator;
@@ -15,9 +14,8 @@ namespace TestSolver
             var rulesStream = File.OpenRead("rules.txt");
             var dirRules = SetsParser.DoParse(rulesStream);
             Console.WriteLine("Rules:");
-            foreach (var rule in dirRules)
-                Console.WriteLine(rule);
-            
+            foreach (var rule in dirRules) Console.WriteLine(rule);
+
             if (!SetsParser.IsLLFirst(dirRules))
                 throw new Exception("Not LL");
 

@@ -1,5 +1,5 @@
-﻿F -> S $
-S -> ( S ) A
-S -> b A
-A -> a A
-A -> e
+﻿F -> S $ / (, b
+S -> ( S ) A / (
+S -> b A / b
+A -> a A / a
+A -> e / $, )

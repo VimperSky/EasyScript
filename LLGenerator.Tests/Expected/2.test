@@ -1,0 +1,10 @@
+F -> S $
+S -> if A then S C
+S -> B
+C -> else S
+C -> e 
+A -> id D
+D -> + A D
+D -> e
+B -> id = A
+B -> e

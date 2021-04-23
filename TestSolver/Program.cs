@@ -14,10 +14,8 @@ namespace TestSolver
             var rulesStream = File.OpenRead("rules.txt");
             var dirRules = SetsParser.DoParse(rulesStream);
             Console.WriteLine("Rules:");
-            foreach (var rule in dirRules)
-                Console.WriteLine(rule);
+            foreach (var rule in dirRules) Console.WriteLine(rule);
 
-            
             var tableRules = TableGenerator.Parse(dirRules);
             var input = File.ReadAllText("input.txt").Split(" ", StringSplitOptions.TrimEntries);
             CsvExport.SaveToCsv(tableRules, input);

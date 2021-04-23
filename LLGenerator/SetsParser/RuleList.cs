@@ -3,7 +3,7 @@ using LLGenerator.Entities;
 
 namespace LLGenerator.SetsParser
 {
-    internal class RuleList
+    public class RuleList
     {
         public readonly HashSet<string> NonTerminals;
         public readonly List<Rule> Rules;

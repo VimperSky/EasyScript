@@ -17,6 +17,7 @@ namespace TestSolver
             foreach (var rule in dirRules)
                 Console.WriteLine(rule);
 
+            
             var tableRules = TableGenerator.Parse(dirRules);
             var input = File.ReadAllText("input.txt").Split(" ", StringSplitOptions.TrimEntries);
             CsvExport.SaveToCsv(tableRules, input);

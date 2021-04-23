@@ -12,9 +12,9 @@ namespace LLGenerator.SetsParser
         public static List<DirRule> DoParse(Stream input)
         {
             var baseRules = ParseInput(input);
-            var leftRules = LeftRecursionRemover.RemoveLeftRecursion(baseRules);
-            var factorizedRules = Factorization.MakeFactorization(leftRules);
-            var dirRules = new DirSetsFinder(factorizedRules).Find();
+            var factorizedRules = Factorization.MakeFactorization(baseRules);
+            var leftRules = LeftRecursionRemover.RemoveLeftRecursion(factorizedRules);
+            var dirRules = new DirSetsFinder(leftRules).Find();
 
             return dirRules;
         }

@@ -37,14 +37,15 @@ namespace LLGenerator.SetsParser.Actions
                         nonTerms.Add(newNonTerm);
                         foreach (var r in nonSimilarRules)
                         {
+                            if (r.Items.Count == 1)
+                                if (r.Items[0].Value == "e")
+                                    r.Items.RemoveAt(0);
                             r.Items.Add(new RuleItem(newNonTerm, false));
                             newRules.Add(r);
                         }
 
-
-                        foreach (var r in similarRules)
+                        foreach (var rest in similarRules.Select(r => r.Items.Skip(1).ToList()))
                         {
-                            var rest = r.Items.Skip(1).ToList();
                             rest.Add(new RuleItem(newNonTerm, false));
                             newRules.Add(new Rule {NonTerminal = newNonTerm, Items = rest});
                         }

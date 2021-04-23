@@ -15,7 +15,7 @@ namespace LLGenerator.SetsParser
             var leftRules = LeftRecursionRemover.RemoveLeftRecursion(baseRules);
             var factorizedRules = Factorization.MakeFactorization(leftRules);
             var dirRules = new DirSetsFinder(factorizedRules).Find();
-            
+
             return dirRules;
         }
 

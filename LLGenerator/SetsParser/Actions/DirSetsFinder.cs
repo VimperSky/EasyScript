@@ -8,20 +8,23 @@ namespace LLGenerator.SetsParser.Actions
     internal class DirSetsFinder
     {
         private readonly List<HashSet<(string Value, bool IsTerm)>> _foundValues = new();
-        private readonly List<Rule> _rules;
         private readonly ImmutableHashSet<string> _nonTerms;
+        private readonly List<Rule> _rules;
 
         public DirSetsFinder(RuleList ruleList)
         {
             _rules = ruleList.Rules;
             _nonTerms = ruleList.NonTerminals.ToImmutableHashSet();
 
-            for (var i = 0; i < _rules.Count; i++) 
+            for (var i = 0; i < _rules.Count; i++)
                 _foundValues.Add(new HashSet<(string Value, bool IsTerm)>());
         }
 
-        private HashSet<(string Value, bool IsTerm)> FindUp(string nonTerm) => FindUp(nonTerm, new HashSet<int>());
-        
+        private HashSet<(string Value, bool IsTerm)> FindUp(string nonTerm)
+        {
+            return FindUp(nonTerm, new HashSet<int>());
+        }
+
         private HashSet<(string Value, bool IsTerm)> FindUp(string nonTerm, HashSet<int> history)
         {
             var returns = new HashSet<(string Value, bool IsTerm)>();
@@ -29,7 +32,6 @@ namespace LLGenerator.SetsParser.Actions
             {
                 var rule = _rules[i];
                 for (var j = 0; j < rule.Items.Count; j++)
-                {
                     if (rule.Items[j].Value == nonTerm)
                     {
                         if (++j < rule.Items.Count)
@@ -40,14 +42,13 @@ namespace LLGenerator.SetsParser.Actions
                         {
                             if (history.Contains(i))
                                 return returns;
-                            
+
                             history.Add(i);
                             var nextReturns = FindUp(rule.NonTerminal, history);
                             foreach (var item in nextReturns)
                                 returns.Add(item);
                         }
                     }
-                }
             }
 
             return returns;
@@ -59,14 +60,10 @@ namespace LLGenerator.SetsParser.Actions
             {
                 var rule = _rules[i];
                 if (rule.Items[0].Value == "e")
-                {
-                    foreach (var item in FindUp(rule.NonTerminal)) 
+                    foreach (var item in FindUp(rule.NonTerminal))
                         _foundValues[i].Add(item);
-                }
                 else
-                {
                     _foundValues[i].Add((rule.Items[0].Value, rule.Items[0].IsTerminal));
-                }
             }
 
             for (;;)

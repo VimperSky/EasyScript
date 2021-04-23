@@ -14,9 +14,9 @@ namespace LLGenerator.Tests
             foreach (var rule in dirRules)
                 sw.WriteLine(rule);
             const string expected =
-                "P1 -> Day P2 Keshe $ / Day\r\nP1 -> P2 $ / Svobodu, Piastri, Nu\r\nP2 -> Svobodu A / Svobodu\r\n" + 
-                "P2 -> P3 A / Piastri, Nu\r\nA -> Keshe P3 A / Keshe\r\nA -> e / Keshe, $\r\n" + 
-                "P3 -> Piastri B / Piastri\r\nP3 -> Nu P4 Ti B / Nu\r\nB -> Kashi B / Kashi\r\nB -> e / Keshe, $\r\n" + 
+                "P1 -> Day P2 Keshe $ / Day\r\nP1 -> P2 $ / Svobodu, Piastri, Nu\r\nP2 -> Svobodu A / Svobodu\r\n" +
+                "P2 -> P3 A / Piastri, Nu\r\nA -> Keshe P3 A / Keshe\r\nA -> e / Keshe, $\r\n" +
+                "P3 -> Piastri B / Piastri\r\nP3 -> Nu P4 Ti B / Nu\r\nB -> Kashi B / Kashi\r\nB -> e / Keshe, $\r\n" +
                 "P4 -> oh P1 ugass / oh\r\nP4 -> e / Ti\r\n";
 
             Assert.Equal(expected, sw.ToString());
@@ -31,7 +31,7 @@ namespace LLGenerator.Tests
             foreach (var rule in dirRules)
                 sw.WriteLine(rule);
             const string expected =
-                "F -> function I ( I ) G end $ / function\r\nG -> I := E B / a\r\nB -> ; G / ;\r\nB -> e / end\r\n" + 
+                "F -> function I ( I ) G end $ / function\r\nG -> I := E B / a\r\nB -> ; G / ;\r\nB -> e / end\r\n" +
                 "E -> I A / a\r\nA -> * I A / *\r\nA -> + I A / +\r\nA -> e / ;, end\r\nI -> a / a\r\n";
             Assert.Equal(expected, sw.ToString());
         }
@@ -45,7 +45,7 @@ namespace LLGenerator.Tests
             foreach (var rule in dirRules)
                 sw.WriteLine(rule);
             const string expected =
-                "F -> S1 $ / f, a\r\nS1 -> f C / f\r\nC -> S1 / f, a\r\nC -> A / c\r\nC -> a / a\r\nS1 -> a D / a\r\n" + 
+                "F -> S1 $ / f, a\r\nS1 -> f C / f\r\nC -> S1 / f, a\r\nC -> A / c\r\nC -> a / a\r\nS1 -> a D / a\r\n" +
                 "D -> A / c\r\n" + "D -> d / d\r\nA -> c B / c\r\nB -> a B / a\r\nB -> b B / b\r\nB -> e / $\r\n";
             Assert.Equal(expected, sw.ToString());
         }
@@ -59,7 +59,7 @@ namespace LLGenerator.Tests
             foreach (var rule in dirRules)
                 sw.WriteLine(rule);
             const string expected =
-                "F -> S $ / x\r\nS -> x B / x\r\nB -> A B / y\r\nB -> e / $, x, y\r\nA -> y C / y\r\n" + 
+                "F -> S $ / x\r\nS -> x B / x\r\nB -> A B / y\r\nB -> e / $, x, y\r\nA -> y C / y\r\n" +
                 "C -> S C / x\r\nC -> e / y, $, x\r\n";
             Assert.Equal(expected, sw.ToString());
         }
@@ -80,12 +80,12 @@ namespace LLGenerator.Tests
         /*F -> S $
         S -> S a | S b | ( S ) | e
         
-        F -> S $ / (
+        F -> S $ / (, a, b, $, )
         S -> ( S ) A / (
-        S -> e A                тут e исчезает и будет S -> A / a, b
-        A -> a / a
-        A -> b / a
-        A -> e / $      
+        S -> A / a, b, $, )
+        A -> a A / a
+        A -> b A / b
+        A -> e / $, )      
         ну я скорее всего где-то направляющие нерпавильно определил  
         */
         [Fact]
@@ -97,7 +97,7 @@ namespace LLGenerator.Tests
             foreach (var rule in dirRules)
                 sw.WriteLine(rule);
             const string expected =
-                "F -> S $ / (\r\nS -> ( S ) A / (\r\nS -> A / a, b\r\nA -> a / a\r\nA -> b / a\r\nA -> e / $\r\n";
+                "F -> S $ / (, a, b, $, )\r\nS -> ( S ) A / (\r\nS -> A / a, b, $, )\r\nA -> a A / a\r\nA -> b A / b\r\nA -> e / $, )\r\n";
             Assert.Equal(expected, sw.ToString());
         }
     }

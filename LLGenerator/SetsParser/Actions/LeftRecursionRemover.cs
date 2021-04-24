@@ -9,7 +9,7 @@ namespace LLGenerator.SetsParser.Actions
         public static RuleList RemoveLeftRecursion(RuleList ruleList)
         {
             var newRules = new List<Rule>();
-            var nonTerms = ruleList.NonTerminals;
+            var nonTerms = ruleList.NonTerminals.ToHashSet();
             var groups = ruleList.Rules.GroupBy(x => x.NonTerminal);
             foreach (var rules in groups)
             {

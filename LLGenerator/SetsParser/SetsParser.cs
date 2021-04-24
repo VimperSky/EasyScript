@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using LLGenerator.Entities;
@@ -15,7 +16,6 @@ namespace LLGenerator.SetsParser
             var factorizedRules = Factorization.MakeFactorization(baseRules);
             var leftRules = LeftRecursionRemover.RemoveLeftRecursion(factorizedRules);
             var dirRules = new DirSetsFinder(leftRules).Find();
-
             return dirRules;
         }
 
@@ -26,7 +26,7 @@ namespace LLGenerator.SetsParser
                 .All(groupsDirs => groupsDirs.Count == groupsDirs.Distinct().Count());
         }
 
-        private static RuleList ParseInput(Stream input)
+        private static ImmutableList<Rule> ParseInput(Stream input)
         {
             using var sr = new StreamReader(input);
             string line;
@@ -50,7 +50,7 @@ namespace LLGenerator.SetsParser
             if (rules[0].Items[^1].Value != Constants.NewLineSymbol)
                 rules[0].Items.Add(new RuleItem(Constants.NewLineSymbol, true));
 
-            return new RuleList(rules, nonTerminals);
+            return rules.ToImmutableList();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using LLGenerator.Entities;
 
@@ -6,11 +7,11 @@ namespace LLGenerator.SetsParser.Actions
 {
     internal static class LeftRecursionRemover
     {
-        public static RuleList RemoveLeftRecursion(RuleList ruleList)
+        public static ImmutableList<Rule> RemoveLeftRecursion(ImmutableList<Rule> ruleList)
         {
             var newRules = new List<Rule>();
-            var nonTerms = ruleList.NonTerminals.ToHashSet();
-            var groups = ruleList.Rules.GroupBy(x => x.NonTerminal);
+            var groups = ruleList.GroupBy(x => x.NonTerminal).ToImmutableList();
+            var nonTerms = groups.Select(x => x.Key).ToHashSet();
             foreach (var rules in groups)
             {
                 var recursionRules = new List<Rule>();
@@ -53,7 +54,7 @@ namespace LLGenerator.SetsParser.Actions
                 }
             }
 
-            return new RuleList(newRules, nonTerms);
+            return newRules.ToImmutableList();
         }
     }
 }

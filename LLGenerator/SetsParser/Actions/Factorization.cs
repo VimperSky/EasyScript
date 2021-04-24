@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using LLGenerator.Entities;
 
@@ -6,11 +7,11 @@ namespace LLGenerator.SetsParser.Actions
 {
     internal static class Factorization
     {
-        public static RuleList MakeFactorization(RuleList ruleList)
+        public static ImmutableList<Rule> MakeFactorization(ImmutableList<Rule> ruleList)
         {
             var newRules = new List<Rule>();
-            var nonTerms = ruleList.NonTerminals.ToHashSet();
-            var groups = ruleList.Rules.GroupBy(x => x.NonTerminal);
+            var groups = ruleList.GroupBy(x => x.NonTerminal).ToImmutableList();
+            var nonTerms = groups.Select(x => x.Key).ToHashSet();
             foreach (var rulesGroup in groups)
             {
                 var rules = rulesGroup.ToList();
@@ -78,7 +79,7 @@ namespace LLGenerator.SetsParser.Actions
                 newRules.AddRange(rules);
             }
 
-            return new RuleList(newRules, nonTerms);
+            return newRules.ToImmutableList();
         }
     }
 }

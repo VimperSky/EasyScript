@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using LLGenerator.Entities;
 
@@ -7,21 +8,21 @@ namespace LLGenerator.SetsParser.Actions
     internal class DirSetsFinder
     {
         private readonly List<HashSet<(string Value, bool IsTerm)>> _foundValues = new();
-        private readonly List<Rule> _rules;
+        private readonly ImmutableList<Rule> _rules;
 
-        public DirSetsFinder(RuleList ruleList)
+        public DirSetsFinder(ImmutableList<Rule> ruleList)
         {
-            _rules = ruleList.Rules;
+            _rules = ruleList;
             for (var i = 0; i < _rules.Count; i++)
                 _foundValues.Add(new HashSet<(string Value, bool IsTerm)>());
         }
 
-        private HashSet<(string Value, bool IsTerm)> FindUp(string nonTerm)
+        private IEnumerable<(string Value, bool IsTerm)> FindUp(string nonTerm)
         {
             return FindUp(nonTerm, new HashSet<int>());
         }
 
-        private HashSet<(string Value, bool IsTerm)> FindUp(string nonTerm, HashSet<int> history)
+        private IEnumerable<(string Value, bool IsTerm)> FindUp(string nonTerm, HashSet<int> history)
         {
             var returns = new HashSet<(string Value, bool IsTerm)>();
             for (var i = 0; i < _rules.Count; i++)

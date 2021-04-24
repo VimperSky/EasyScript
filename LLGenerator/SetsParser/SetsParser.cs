@@ -22,14 +22,8 @@ namespace LLGenerator.SetsParser
         public static bool IsLLFirst(IEnumerable<DirRule> dirRules)
         {
             var groups = dirRules.GroupBy(x => x.NonTerminal);
-            foreach (var group in groups)
-            {
-                var groupsDirs = group.SelectMany(x => x.Dirs).ToList();
-                if (groupsDirs.Count != groupsDirs.Distinct().Count())
-                    return false;
-            }
-
-            return true;
+            return groups.Select(group => group.SelectMany(x => x.Dirs).ToList())
+                .All(groupsDirs => groupsDirs.Count == groupsDirs.Distinct().Count());
         }
 
         private static RuleList ParseInput(Stream input)

@@ -15,7 +15,6 @@ namespace LLGenerator.SetsParser.Actions
             {
                 var rules = rulesGroup.ToList();
                 if (rules.Count > 1)
-                {
                     for (;;)
                     {
                         var minCommonLen = int.MaxValue;
@@ -75,7 +74,7 @@ namespace LLGenerator.SetsParser.Actions
                         foreach (var index in commonIds.OrderByDescending(v => v))
                             rules.RemoveAt(index);
                     }
-                }
+
                 newRules.AddRange(rules);
             }
 

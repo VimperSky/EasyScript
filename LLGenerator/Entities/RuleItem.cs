@@ -33,5 +33,10 @@ namespace LLGenerator.Entities
         {
             return HashCode.Combine(Value, IsTerminal);
         }
+
+        public override string ToString()
+        {
+            return $"{Value} {IsTerminal}";
+        }
     }
 }

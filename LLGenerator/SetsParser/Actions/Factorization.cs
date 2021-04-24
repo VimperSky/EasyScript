@@ -9,16 +9,13 @@ namespace LLGenerator.SetsParser.Actions
         public static RuleList MakeFactorization(RuleList ruleList)
         {
             var newRules = new List<Rule>();
-            var oldRules = ruleList.Rules.ToList();
-
-            var nonTerminals = ruleList.NonTerminals;
-            while (oldRules.Count > 0)
+            var nonTerms = ruleList.NonTerminals;
+            var groups = ruleList.Rules.GroupBy(x => x.NonTerminal);
+            foreach (var rulesGroup in groups)
             {
-                var nonTerminal = oldRules[0].NonTerminal;
-                var rules = ruleList.Rules.Where(x => x.NonTerminal == nonTerminal).ToList();
-                oldRules.RemoveRange(0, rules.Count);
-
+                var rules = rulesGroup.ToList();
                 if (rules.Count > 1)
+                {
                     for (;;)
                     {
                         var minCommonLen = int.MaxValue;
@@ -39,14 +36,14 @@ namespace LLGenerator.SetsParser.Actions
                         if (commonIds.Count == 1)
                             break;
 
-                        var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerminals).ToString();
-                        nonTerminals.Add(newNonTerm);
+                        var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms).ToString();
+                        nonTerms.Add(newNonTerm);
 
                         var commonFinal = rules[0].Items.Take(minCommonLen).ToList();
                         commonFinal.Add(new RuleItem(newNonTerm, false));
                         newRules.Add(new Rule
                         {
-                            NonTerminal = nonTerminal,
+                            NonTerminal = rulesGroup.Key,
                             Items = commonFinal
                         });
 
@@ -78,11 +75,11 @@ namespace LLGenerator.SetsParser.Actions
                         foreach (var index in commonIds.OrderByDescending(v => v))
                             rules.RemoveAt(index);
                     }
-
+                }
                 newRules.AddRange(rules);
             }
 
-            return new RuleList(newRules, nonTerminals);
+            return new RuleList(newRules, nonTerms);
         }
     }
 }

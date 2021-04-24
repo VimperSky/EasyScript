@@ -56,7 +56,7 @@ namespace LLGenerator.SetsParser.Actions
             for (var i = 0; i < _rules.Count; i++)
             {
                 var rule = _rules[i];
-                if (rule.Items[0].Value == "e")
+                if (rule.Items[0].Value == Constants.EmptySymbol)
                     foreach (var item in FindUp(rule.NonTerminal))
                         _foundValues[i].Add(item);
                 else

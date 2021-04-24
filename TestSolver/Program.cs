@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using LLGenerator.SetsParser;
@@ -18,7 +17,10 @@ namespace TestSolver
             foreach (var rule in dirRules) Console.WriteLine(rule);
 
             if (!SetsParser.IsLLFirst(dirRules))
-                throw new Exception("Not LL");
+            {
+                Console.WriteLine("Not LL1 grammar");
+                return;
+            }
 
             var tableRules = TableGenerator.Parse(dirRules);
             var input = File.ReadAllText("input.txt").Split(" ", StringSplitOptions.TrimEntries);

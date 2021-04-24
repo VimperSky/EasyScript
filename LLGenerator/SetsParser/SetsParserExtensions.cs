@@ -14,11 +14,12 @@ namespace LLGenerator.SetsParser
         {
             return rules.GroupBy(x => x.NonTerminal).ToImmutableList();
         }
+
         public static HashSet<string> GetNonTerminals(this ImmutableList<IGrouping<string, Rule>> groups)
         {
             return groups.Select(x => x.Key).ToHashSet();
         }
-        
+
         public static char GetNextFreeLetter(HashSet<string> takenLetters)
         {
             var freeLetters = Alphabet.ToList();

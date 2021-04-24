@@ -12,7 +12,6 @@ namespace LLGenerator.SetsParser.Actions
         public DirSetsFinder(RuleList ruleList)
         {
             _rules = ruleList.Rules;
-
             for (var i = 0; i < _rules.Count; i++)
                 _foundValues.Add(new HashSet<(string Value, bool IsTerm)>());
         }

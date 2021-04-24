@@ -10,7 +10,7 @@ namespace LLGenerator.SetsParser
 {
     public static class SetsParser
     {
-        public static List<DirRule> DoParse(Stream input)
+        public static ImmutableList<DirRule> DoParse(Stream input)
         {
             var baseRules = ParseInput(input);
             var factorizedRules = Factorization.MakeFactorization(baseRules);

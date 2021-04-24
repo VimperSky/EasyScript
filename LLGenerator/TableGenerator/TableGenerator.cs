@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using LLGenerator.Entities;
 
@@ -6,7 +7,7 @@ namespace LLGenerator.TableGenerator
 {
     public static class TableGenerator
     {
-        public static List<TableRule> Parse(List<DirRule> dirRules)
+        public static ImmutableList<TableRule> Parse(ImmutableList<DirRule> dirRules)
         {
             var table = new List<TableRule>();
             var globalId = 0;
@@ -72,7 +73,7 @@ namespace LLGenerator.TableGenerator
             }
 
             table.AddRange(addTable);
-            return table;
+            return table.ToImmutableList();
         }
     }
 }

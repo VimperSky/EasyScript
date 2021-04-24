@@ -51,7 +51,7 @@ namespace LLGenerator.SetsParser.Actions
             return returns;
         }
 
-        public List<DirRule> Find()
+        public ImmutableList<DirRule> Find()
         {
             for (var i = 0; i < _rules.Count; i++)
             {
@@ -88,7 +88,7 @@ namespace LLGenerator.SetsParser.Actions
             }
 
             return _rules.Select((t, i) => DirRule.Create(_foundValues[i]
-                .Select(x => x.Value).ToHashSet(), t)).ToList();
+                .Select(x => x.Value).ToHashSet(), t)).ToImmutableList();
         }
     }
 }

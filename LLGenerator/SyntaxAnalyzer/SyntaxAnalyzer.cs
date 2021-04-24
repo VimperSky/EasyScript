@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using LLGenerator.Entities;
 
 namespace LLGenerator.SyntaxAnalyzer
 {
     public static class SyntaxAnalyzer
     {
-        public static List<int> Analyze(string[] input, List<TableRule> table)
+        public static ImmutableList<int> Analyze(string[] input, ImmutableList<TableRule> table)
         {
             var stack = new Stack<int>();
             var inputQ = new Queue<string>(input);
@@ -64,7 +65,7 @@ namespace LLGenerator.SyntaxAnalyzer
                                             $"Stack: [{string.Join(", ", stack)}], InputQ: [{string.Join(", ", inputQ)}], TableItem: {index}\nHistory: [{string.Join(", ", history)}]");
             }
 
-            return history;
+            return history.ToImmutableList();
         }
     }
 }

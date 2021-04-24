@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using LLGenerator.SetsParser;
 using LLGenerator.SyntaxAnalyzer;
@@ -23,7 +24,7 @@ namespace TestSolver
             var input = File.ReadAllText("input.txt").Split(" ", StringSplitOptions.TrimEntries);
             CsvExport.SaveToCsv(tableRules, input);
             Console.WriteLine($"Input: {string.Join(" ", input)}");
-            List<int> history;
+            ImmutableList<int> history;
             try
             {
                 history = SyntaxAnalyzer.Analyze(input, tableRules);

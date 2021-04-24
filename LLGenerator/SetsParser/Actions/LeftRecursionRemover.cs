@@ -10,8 +10,8 @@ namespace LLGenerator.SetsParser.Actions
         public static ImmutableList<Rule> RemoveLeftRecursion(ImmutableList<Rule> ruleList)
         {
             var newRules = new List<Rule>();
-            var groups = ruleList.GroupBy(x => x.NonTerminal).ToImmutableList();
-            var nonTerms = groups.Select(x => x.Key).ToHashSet();
+            var groups = ruleList.GetGroups();
+            var nonTerms = groups.GetNonTerminals();
             foreach (var rules in groups)
             {
                 var recursionRules = new List<Rule>();

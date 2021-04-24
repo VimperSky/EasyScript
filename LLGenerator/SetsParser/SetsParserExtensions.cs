@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using LLGenerator.Entities;
 
@@ -9,6 +10,15 @@ namespace LLGenerator.SetsParser
     {
         private const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+        public static ImmutableList<IGrouping<string, Rule>> GetGroups(this ImmutableList<Rule> rules)
+        {
+            return rules.GroupBy(x => x.NonTerminal).ToImmutableList();
+        }
+        public static HashSet<string> GetNonTerminals(this ImmutableList<IGrouping<string, Rule>> groups)
+        {
+            return groups.Select(x => x.Key).ToHashSet();
+        }
+        
         public static char GetNextFreeLetter(HashSet<string> takenLetters)
         {
             var freeLetters = Alphabet.ToList();

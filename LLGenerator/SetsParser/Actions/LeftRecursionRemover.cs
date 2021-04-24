@@ -43,7 +43,7 @@ namespace LLGenerator.SetsParser.Actions
 
                     newRules.Add(new Rule
                     {
-                        NonTerminal = newNonTerm, 
+                        NonTerminal = newNonTerm,
                         Items = new List<RuleItem> {new(Constants.EmptySymbol, true)}
                     });
                 }

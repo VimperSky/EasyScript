@@ -46,12 +46,12 @@ namespace LLGenerator.SetsParser
 
             var nonTerminals = rawRules.Select(x => x.LeftBody).ToHashSet();
             var rules = rawRules.Select(rawRule => new Rule
-                {
-                    NonTerminal = rawRule.LeftBody,
-                    Items = rawRule.RightBody.Split(" ", StringSplitOptions.TrimEntries)
-                        .Select(x => new RuleItem(x, !nonTerminals.Contains(x)))
-                        .ToList()
-                }).ToList();
+            {
+                NonTerminal = rawRule.LeftBody,
+                Items = rawRule.RightBody.Split(" ", StringSplitOptions.TrimEntries)
+                    .Select(x => new RuleItem(x, !nonTerminals.Contains(x)))
+                    .ToList()
+            }).ToList();
 
             if (rules[0].Items[^1].Value != Constants.NewLineSymbol)
                 rules[0].Items.Add(new RuleItem(Constants.NewLineSymbol, true));

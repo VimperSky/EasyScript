@@ -98,8 +98,8 @@ namespace LLGenerator.SetsParser.Actions
                     {
                         nextRules.Clear();
                         var newNonTermRules = ProcessRulesIteration(ref rules, nonTerms);
-                        nextRules.AddRange(rules);
                         nextRules.AddRange(newNonTermRules);
+                        nextRules.AddRange(rules);
 
                         rules = nextRules.ToList();
                         if (newNonTermRules.Count == 0)

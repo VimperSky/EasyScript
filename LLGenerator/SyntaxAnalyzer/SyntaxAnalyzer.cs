@@ -28,7 +28,6 @@ namespace LLGenerator.SyntaxAnalyzer
                     continue;
                 }
 
-
                 if (tableItem.IsShift)
                     if (inputQ.Count == 0)
                     {

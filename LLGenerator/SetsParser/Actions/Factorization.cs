@@ -32,11 +32,10 @@ namespace LLGenerator.SetsParser.Actions
                             commonIds.Add(i);
                         }
 
-                        // Если не найдено общих элементов то выходим отсюда от греха подальше!!
                         if (commonIds.Count == 1)
                             break;
 
-                        var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms).ToString();
+                        var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms);
                         nonTerms.Add(newNonTerm);
 
                         var commonFinal = rules[0].Items.Take(minCommonLen).ToList();
@@ -46,7 +45,6 @@ namespace LLGenerator.SetsParser.Actions
                             NonTerminal = rulesGroup.Key,
                             Items = commonFinal
                         });
-
 
                         var needE = false;
                         foreach (var index in commonIds)

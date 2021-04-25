@@ -24,20 +24,19 @@ namespace LLGenerator.SetsParser.Actions
 
                 if (recursionRules.Count > 0)
                 {
-                    var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms).ToString();
+                    var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms);
                     nonTerms.Add(newNonTerm);
 
                     foreach (var normalRule in normalRules)
                     {
-                        if (normalRule.Items[0].Value == "e")
+                        if (normalRule.Items[0].Value == Constants.EmptySymbol)
                             normalRule.Items.RemoveAt(0);
                         normalRule.Items.Add(new RuleItem(newNonTerm, false));
                         newRules.Add(normalRule);
                     }
 
-                    foreach (var recRule in recursionRules)
+                    foreach (var items in recursionRules.Select(recRule => recRule.Items.Skip(1).ToList()))
                     {
-                        var items = recRule.Items.Skip(1).ToList();
                         items.Add(new RuleItem(newNonTerm, false));
                         newRules.Add(new Rule {NonTerminal = newNonTerm, Items = items});
                     }

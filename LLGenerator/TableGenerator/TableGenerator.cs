@@ -47,8 +47,7 @@ namespace LLGenerator.TableGenerator
                     int? ptr = null;
                     if (item.IsTerminal)
                     {
-                        if (!isLast)
-                            ptr = globalId + 1;
+                        if (!isLast) ptr = globalId + 1;
                     }
                     else
                     {

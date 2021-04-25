@@ -23,8 +23,9 @@ namespace TestSolver
             }
 
             var tableRules = TableGenerator.Parse(dirRules);
+            CsvExport.SaveToCsv(tableRules);
+
             var input = File.ReadAllText("input.txt").Split(" ", StringSplitOptions.TrimEntries);
-            CsvExport.SaveToCsv(tableRules, input);
             Console.WriteLine($"Input: {string.Join(" ", input)}");
             ImmutableList<int> history;
             try

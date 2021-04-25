@@ -11,7 +11,7 @@ namespace LLGenerator.TableGenerator
 {
     public static class CsvExport
     {
-        public static void SaveToCsv(IEnumerable<TableRule> rules, IEnumerable<string> input)
+        public static void SaveToCsv(IEnumerable<TableRule> rules)
         {
             var newList = rules.Select(r => new RulesForCsvExport
             {
@@ -34,9 +34,6 @@ namespace LLGenerator.TableGenerator
                 csv.WriteRecord(rule);
                 csv.NextRecord();
             }
-
-            csv.NextRecord();
-            foreach (var field in input) csv.WriteField(field);
         }
 
         private struct RulesForCsvExport

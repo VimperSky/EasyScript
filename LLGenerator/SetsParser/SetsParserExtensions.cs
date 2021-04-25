@@ -20,11 +20,11 @@ namespace LLGenerator.SetsParser
             return groups.Select(x => x.Key).ToHashSet();
         }
 
-        public static char GetNextFreeLetter(HashSet<string> takenLetters)
+        public static string GetNextFreeLetter(HashSet<string> takenLetters)
         {
             var freeLetters = Alphabet.ToList();
             freeLetters.RemoveAll(x => takenLetters.Contains(x.ToString()));
-            return freeLetters.First();
+            return freeLetters.First().ToString();
         }
 
         public static List<RuleItem> FindCommon(this Rule a, Rule b)

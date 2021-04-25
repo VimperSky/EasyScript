@@ -7,7 +7,8 @@ namespace LLGenerator.SetsParser.Actions
 {
     internal static class Factorization
     {
-        private static IEnumerable<Rule> GenerateNewRules(IList<Rule> commonRules, int commonLen, HashSet<string> nonTerms)
+        private static IEnumerable<Rule> GenerateNewRules(IList<Rule> commonRules, int commonLen,
+            HashSet<string> nonTerms)
         {
             var newRules = new List<Rule>();
             var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms);
@@ -44,7 +45,7 @@ namespace LLGenerator.SetsParser.Actions
                     NonTerminal = newNonTerm,
                     Items = new List<RuleItem> {new(Constants.EmptySymbol, true)}
                 });
-            
+
             return newRules;
         }
 
@@ -55,12 +56,12 @@ namespace LLGenerator.SetsParser.Actions
             {
                 var minCommonLen = int.MaxValue;
                 var commonIds = new List<int>();
-                            
+
                 for (var i = 0; i < rules.Count; i++)
                 {
                     if (rules[i].NonTerminal != rules[j].NonTerminal)
                         continue;
-                    
+
                     var common = rules[j].FindCommon(rules[i]);
                     if (common.Count == 0)
                         continue;
@@ -82,7 +83,7 @@ namespace LLGenerator.SetsParser.Actions
 
             return iterRules;
         }
-        
+
         public static ImmutableList<Rule> MakeFactorization(ImmutableList<Rule> ruleList)
         {
             var newRules = new List<Rule>();
@@ -106,6 +107,7 @@ namespace LLGenerator.SetsParser.Actions
                             break;
                     }
                 }
+
                 newRules.AddRange(rules);
             }
 

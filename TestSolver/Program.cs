@@ -15,7 +15,6 @@ namespace TestSolver
             var dirRules = SetsParser.DoParse(rulesStream);
             Console.WriteLine("Rules:");
             foreach (var rule in dirRules) Console.WriteLine(rule);
-
             if (!SetsParser.IsLLFirst(dirRules))
             {
                 Console.WriteLine("Not LL1 grammar");
@@ -24,7 +23,6 @@ namespace TestSolver
 
             var tableRules = TableGenerator.Parse(dirRules);
             CsvExport.SaveToCsv(tableRules);
-
             var input = File.ReadAllText("input.txt").Split(" ", StringSplitOptions.TrimEntries);
             Console.WriteLine($"Input: {string.Join(" ", input)}");
             ImmutableList<int> history;

@@ -32,7 +32,6 @@ namespace LLGenerator.Tests
         {
             var input = File.OpenRead($"../../../TestCases/{id}.test");
             var dirRules = DoParse(input);
-
             var expected = File.ReadAllLines($"../../../Expected/{id}.test");
             Assert.Equal(expected, dirRules.Select(x => x.ToString()));
         }

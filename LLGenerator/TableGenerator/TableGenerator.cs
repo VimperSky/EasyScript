@@ -14,7 +14,6 @@ namespace LLGenerator.TableGenerator
             for (; globalId < dirRules.Count; globalId++)
             {
                 var dRule = dirRules[globalId];
-
                 table.Add(new TableRule
                 {
                     Id = globalId + 1, NonTerminal = dRule.NonTerminal, DirSet = dRule.Dirs,
@@ -65,7 +64,6 @@ namespace LLGenerator.TableGenerator
                         MoveToStack = !item.IsTerminal && !isLast,
                         IsEnd = item.Value == Constants.NewLineSymbol
                     });
-
                     if (index == 0)
                         table[i].GoTo = newRuleId;
                 }

@@ -35,7 +35,6 @@ namespace LLGenerator.SetsParser
             {
                 if (!a.Items[i].Equals(b.Items[i]))
                     break;
-
                 common.Add(a.Items[i]);
             }
 

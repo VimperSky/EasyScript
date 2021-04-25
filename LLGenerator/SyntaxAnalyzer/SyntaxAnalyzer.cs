@@ -13,7 +13,6 @@ namespace LLGenerator.SyntaxAnalyzer
             var inputQ = new Queue<string>(input);
             var index = 1;
             var history = new List<int>();
-
             var inItem = inputQ.Peek();
             while (true)
             {
@@ -23,7 +22,6 @@ namespace LLGenerator.SyntaxAnalyzer
                 {
                     if (tableItem.IsError)
                         GenerateException($"DirSet doesn't contain token: {inItem ?? "NULL"}");
-
                     index++;
                     continue;
                 }
@@ -41,7 +39,6 @@ namespace LLGenerator.SyntaxAnalyzer
 
                 if (tableItem.MoveToStack)
                     stack.Push(index + 1);
-
                 if (tableItem.GoTo != null)
                 {
                     index = tableItem.GoTo.Value;

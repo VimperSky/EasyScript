@@ -16,7 +16,6 @@ namespace LLGenerator.SetsParser
             var factorizedRules = Factorization.MakeFactorization(baseRules);
             var leftRules = LeftRecursionRemover.RemoveLeftRecursion(factorizedRules);
             var dirRules = new DirSetsFinder(leftRules).Find();
-
             return dirRules;
         }
 
@@ -47,10 +46,8 @@ namespace LLGenerator.SetsParser
                     .Select(x => new RuleItem(x, !nonTerminals.Contains(x)))
                     .ToList()
             }).ToList();
-
             if (rules[0].Items[^1].Value != Constants.NewLineSymbol)
                 rules[0].Items.Add(new RuleItem(Constants.NewLineSymbol, true));
-
             return rules.ToImmutableList();
         }
     }

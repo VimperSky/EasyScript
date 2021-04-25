@@ -37,9 +37,7 @@ namespace LLGenerator.SetsParser.Actions
                         }
                         else
                         {
-                            if (history.Contains(i))
-                                return returns;
-
+                            if (history.Contains(i)) return returns;
                             history.Add(i);
                             var nextReturns = FindUp(rule.NonTerminal, history);
                             foreach (var item in nextReturns)
@@ -83,8 +81,7 @@ namespace LLGenerator.SetsParser.Actions
                     }
                 }
 
-                if (!somethingChanged)
-                    break;
+                if (!somethingChanged) break;
             }
 
             return _rules.Select((t, i) => DirRule.Create(_foundValues[i]

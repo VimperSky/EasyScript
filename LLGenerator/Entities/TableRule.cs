@@ -9,8 +9,6 @@ namespace LLGenerator.Entities
         public HashSet<string> DirSet { get; init; }
         public int? GoTo { get; set; }
         public bool IsError { get; init; }
-
-        // Дополнительные поля
         public bool IsShift { get; init; }
         public bool MoveToStack { get; init; }
         public bool IsEnd { get; init; }

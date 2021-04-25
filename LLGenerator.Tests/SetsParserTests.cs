@@ -26,6 +26,8 @@ namespace LLGenerator.Tests
         [InlineData("16")]
         [InlineData("17")]
         [InlineData("18")]
+        [InlineData("19")]
+        [InlineData("20")]
         public void RunTests(string id)
         {
             var input = File.OpenRead($"../../../TestCases/{id}.test");

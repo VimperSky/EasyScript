@@ -7,30 +7,31 @@ namespace LLGenerator.SetsParser.Actions
 {
     internal static class Factorization
     {
-        private static void AddToCommon(ICollection<Rule> listToAdd, List<Rule> rules,  IReadOnlyCollection<int> commonIds, int minCommonLen, HashSet<string> nonTerms)
+        private static IEnumerable<Rule> GenerateNewRules(IList<Rule> commonRules, int commonLen, HashSet<string> nonTerms)
         {
+            var newRules = new List<Rule>();
             var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms);
             nonTerms.Add(newNonTerm);
 
-            var commonFinal = rules[0].Items.Take(minCommonLen).ToList();
+            var commonFinal = commonRules[0].Items.Take(commonLen).ToList();
             commonFinal.Add(new RuleItem(newNonTerm, false));
-            listToAdd.Add(new Rule
+            newRules.Add(new Rule
             {
-                NonTerminal = rulesGroup.Key,
+                NonTerminal = commonRules[0].NonTerminal,
                 Items = commonFinal
             });
 
             var needE = false;
-            foreach (var index in commonIds)
+            foreach (var t in commonRules)
             {
-                var rest = rules[index].Items.Skip(minCommonLen).ToList();
+                var rest = t.Items.Skip(commonLen).ToList();
                 if (rest.Count == 0)
                 {
                     needE = true;
                     continue;
                 }
 
-                listToAdd.Add(new Rule
+                newRules.Add(new Rule
                 {
                     NonTerminal = newNonTerm,
                     Items = rest
@@ -38,14 +39,13 @@ namespace LLGenerator.SetsParser.Actions
             }
 
             if (needE)
-                listToAdd.Add(new Rule
+                newRules.Add(new Rule
                 {
                     NonTerminal = newNonTerm,
                     Items = new List<RuleItem> {new(Constants.EmptySymbol, true)}
                 });
-
-            foreach (var index in commonIds.OrderByDescending(v => v))
-                rules.RemoveAt(index);
+            
+            return newRules;
         }
         
         public static ImmutableList<Rule> MakeFactorization(ImmutableList<Rule> ruleList)
@@ -57,35 +57,35 @@ namespace LLGenerator.SetsParser.Actions
             {
                 var rules = rulesGroup.ToList();
                 if (rules.Count > 1)
-                    for (;;)
+                {
+                    var iterRules = new List<Rule>();
+                    for (var j = 0; j < rules.Count; j++)
                     {
-
-                        for (var j = 0; j < rules.Count; j++)
-                        {
-                            var minCommonLen = int.MaxValue;
-                            var commonIds = new List<int> {0};
+                        var minCommonLen = int.MaxValue;
+                        var commonIds = new List<int>();
                             
-                            for (var i = 0; i < rules.Count; i++)
-                            {
-                                if (i == j)
-                                    continue;
-                                
-                                var common = rules[0].FindCommon(rules[i]);
-                                if (common.Count == 0)
-                                    continue;
+                        for (var i = 0; i < rules.Count; i++)
+                        {
+                            var common = rules[j].FindCommon(rules[i]);
+                            if (common.Count == 0)
+                                continue;
 
-                                if (common.Count < minCommonLen)
-                                    minCommonLen = common.Count;
+                            if (common.Count < minCommonLen)
+                                minCommonLen = common.Count;
 
-                                commonIds.Add(i);
-                            }
+                            commonIds.Add(i);
+                        }
 
-                            if (commonIds.Count > 0)
-                            {
-                                AddToCommon();
-                            }
+                        if (commonIds.Count > 1)
+                        {
+                            var commonRules = rules.Where((_, i) => commonIds.Contains(i)).ToList();
+                            rules = rules.Except(commonRules).ToList();
+                            var tempRules = GenerateNewRules(commonRules, minCommonLen, nonTerms);
+                            iterRules.AddRange(tempRules);
                         }
                     }
+                    newRules.AddRange(iterRules);
+                }
 
                 newRules.AddRange(rules);
             }

@@ -43,9 +43,12 @@ namespace LLGenerator.SetsParser
             {
                 NonTerminal = rawRule.LeftBody,
                 Items = rawRule.RightBody.Split(" ", StringSplitOptions.TrimEntries)
-                    .Select(x => new RuleItem(x, !nonTerminals.Contains(x)))
-                    .ToList()
+                    .Select(x => new RuleItem(x, !nonTerminals.Contains(x))).ToList()
             }).ToList();
+            if (rules[0].Items[^1].Value != Constants.EndSymbol)
+                foreach (var rule in rules.Where(rule => rules[0].NonTerminal == rule.NonTerminal))
+                    rule.Items.Add(new RuleItem(Constants.EndSymbol, true));
+
             return rules.ToImmutableList();
         }
     }

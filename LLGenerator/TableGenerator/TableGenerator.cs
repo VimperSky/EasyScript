@@ -62,7 +62,7 @@ namespace LLGenerator.TableGenerator
                         IsError = true,
                         IsShift = item.IsTerminal && item.Value != Constants.EmptySymbol,
                         MoveToStack = !item.IsTerminal && !isLast,
-                        IsEnd = item.Value == Constants.NewLineSymbol
+                        IsEnd = item.Value == Constants.EndSymbol
                     });
                     if (index == 0)
                         table[i].GoTo = newRuleId;

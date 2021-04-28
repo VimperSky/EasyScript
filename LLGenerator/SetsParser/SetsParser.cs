@@ -45,9 +45,15 @@ namespace LLGenerator.SetsParser
                 Items = rawRule.RightBody.Split(" ", StringSplitOptions.TrimEntries)
                     .Select(x => new RuleItem(x, !nonTerminals.Contains(x))).ToList()
             }).ToList();
-            if (rules[0].Items[^1].Value != Constants.EndSymbol)
-                foreach (var rule in rules.Where(rule => rules[0].NonTerminal == rule.NonTerminal))
-                    rule.Items.Add(new RuleItem(Constants.EndSymbol, true));
+
+            if (rules[0].Items[^1].Value != Constants.EndSymbol &&
+                rules.Select(x => x.NonTerminal == rules[0].NonTerminal).Count() > 1)
+                rules.Insert(0, new Rule
+                {
+                    NonTerminal = SetsParserExtensions.GetNextFreeLetter(rules.GroupBy(x => x.NonTerminal)
+                        .Select(k => k.Key).ToHashSet()),
+                    Items = new List<RuleItem> {new(rules[0].NonTerminal, false), new(Constants.EndSymbol, true)}
+                });
 
             return rules.ToImmutableList();
         }

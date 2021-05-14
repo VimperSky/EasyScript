@@ -86,7 +86,7 @@ namespace Lexer.Tests.Operators
 
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.NotEquals, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.Int, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyInt, lexer.GetNextToken().Type);
         }
     }
 }

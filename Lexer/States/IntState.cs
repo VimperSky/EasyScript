@@ -17,7 +17,7 @@ namespace Lexer.States
             // 5;
             if (machine.IsServiceStart)
             {
-                machine.GenerateToken(TokenType.Int);
+                machine.GenerateToken(TokenType.AnyInt);
                 return machine.SetServiceOrComment();
             }
 

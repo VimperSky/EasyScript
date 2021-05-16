@@ -59,7 +59,7 @@ namespace Lexer.Types
         And, // &
         Or, // |
         
-        // Ключевые слово (let, if, for ...)
+        // Ключевые слова
         Const = 100,
         Let = 101,
         If = 102,
@@ -69,14 +69,12 @@ namespace Lexer.Types
         True = 106,
         False = 107,
         Say = 108,
-        Says = 109,
         Ask = 110,
-        Asks = 111,
         Fun = 112,
         Ret = 113,
         Int = 114,
         Float = 115,
         Bool = 116,
-        String = 117,
+        Str = 117,
     }
 }

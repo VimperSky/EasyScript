@@ -98,9 +98,9 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("if; else; flex;");
 
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.If, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Semicolon, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.Else, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Semicolon, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Semicolon, lexer.GetNextToken().Type);

@@ -85,13 +85,8 @@ namespace Lexer.LexerMachine
         public LexerMachine GenerateKeyWord()
         {
             if (KeyWords.Keys.Contains(_value))
-            {
                 return GenerateToken(KeyWords[_value]);
-            }
-            else
-            {
-                throw new Exception($"KeyWord {_value} doesn't exist!");
-            }
+            throw new Exception($"KeyWord {_value} doesn't exist!");
         }
 
         public LexerMachine GenerateServiceSymbol()

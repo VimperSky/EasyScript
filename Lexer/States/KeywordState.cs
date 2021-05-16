@@ -1,6 +1,4 @@
-﻿using Lexer.Types;
-
-namespace Lexer.States
+﻿namespace Lexer.States
 {
     public class KeywordState : ILexerState
     {

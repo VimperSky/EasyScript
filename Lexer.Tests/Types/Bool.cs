@@ -10,8 +10,8 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("true false");
 
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.True, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.False, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -20,7 +20,7 @@ namespace Lexer.Tests.Types
             var lexer = new TestLexer("some false");
 
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.False, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("false some");
 
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.False, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
         }
     }

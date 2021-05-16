@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Lexer.Types
+﻿namespace Lexer.Types
 {
-    public enum TokenType: byte
+    public enum TokenType : byte
     {
         Space,
         EndLine,
@@ -58,7 +56,7 @@ namespace Lexer.Types
         // Операторы условия
         And, // &
         Or, // |
-        
+
         // Ключевые слова
         Const = 100,
         Let,
@@ -77,6 +75,6 @@ namespace Lexer.Types
         Int,
         Float,
         Bool,
-        Str,
+        Str
     }
 }

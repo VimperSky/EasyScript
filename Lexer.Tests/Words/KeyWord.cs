@@ -5,68 +5,18 @@ namespace Lexer.Tests.Words
 {
     public class KeyWord
     {
-        [Fact]
-        public void Let()
+        private readonly TokenType[] _tokenTypes =
         {
-            var lexer = new TestLexer("let");
-
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
-        }
+            TokenType.Ask, TokenType.Askl, TokenType.Const, TokenType.Else, TokenType.For, TokenType.Fun, TokenType.If,
+            TokenType.Say, TokenType.Sayl, TokenType.While
+        };
 
         [Fact]
-        public void For()
+        public void DefaultKeywords()
         {
-            var lexer = new TestLexer("for");
+            var lexer = new TestLexer("ask askl const else for fun if say sayl while");
 
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
-        }
-
-        [Fact]
-        public void While()
-        {
-            var lexer = new TestLexer("while");
-
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
-        }
-
-        [Fact]
-        public void Fun()
-        {
-            var lexer = new TestLexer("fun");
-
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
-        }
-
-        [Fact]
-        public void Print()
-        {
-            var lexer = new TestLexer("print");
-
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
-        }
-
-        [Fact]
-        public void Read()
-        {
-            var lexer = new TestLexer("read");
-
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
-        }
-
-        [Fact]
-        public void If()
-        {
-            var lexer = new TestLexer("if");
-
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
-        }
-
-        [Fact]
-        public void Else()
-        {
-            var lexer = new TestLexer("else");
-
-            Assert.Equal(TokenType.KeyWord, lexer.GetNextToken().Type);
+            foreach (var token in _tokenTypes) Assert.Equal(token, lexer.GetNextToken().Type);
         }
 
         [Fact]

@@ -9,17 +9,17 @@ namespace Lexer.Tests
         public void Default()
         {
             // fun sum(int a, int br)
-            //   return a + br; 
+            //   ret a + br; 
             //
             // const maxNum = 41; 
             // for (let i =0; i < maxNum; i++) // печать чётных чисел
             //   if (i/ 2 == 0) {
-            //     print("Even");
+            //     sayl("Even");
             //   }
-            // let firstNumber = read(); // read
+            // let firstNumber = ask(); // read
             // let firstSum = sum(firstNumber + maxNum);
             // let _str = "Hello";
-            // prints(_str);
+            // sayl(_str);
             // /* comment
             // many
             // much */

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Lexer.States;
 using Lexer.Types;
 using static Lexer.Constants;
@@ -79,6 +80,18 @@ namespace Lexer.LexerMachine
             var newToken = new Token(tokenType, _value, _startLine, _startPos);
             _tokens.Enqueue(newToken);
             return Reset();
+        }
+
+        public LexerMachine GenerateKeyWord()
+        {
+            if (KeyWords.Keys.Contains(_value))
+            {
+                return GenerateToken(KeyWords[_value]);
+            }
+            else
+            {
+                throw new Exception($"KeyWord {_value} doesn't exist!");
+            }
         }
 
         public LexerMachine GenerateServiceSymbol()

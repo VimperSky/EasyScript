@@ -13,7 +13,7 @@ namespace Lexer.States
             // 5.; .5; 
             if (machine.IsServiceStart && machine.IsFloatConstructed)
             {
-                machine.GenerateToken(TokenType.Float);
+                machine.GenerateToken(TokenType.AnyFloat);
                 return machine.SetServiceOrComment();
             }
 

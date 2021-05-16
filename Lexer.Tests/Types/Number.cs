@@ -10,7 +10,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("5");
 
-            Assert.Equal(TokenType.Int, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyInt, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -18,7 +18,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("52");
 
-            Assert.Equal(TokenType.Int, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyInt, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("5.222");
 
-            Assert.Equal(TokenType.Float, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyFloat, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer(".222");
 
-            Assert.Equal(TokenType.Float, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyFloat, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("5.");
 
-            Assert.Equal(TokenType.Float, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyFloat, lexer.GetNextToken().Type);
         }
 
         [Fact]

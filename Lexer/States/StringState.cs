@@ -8,7 +8,7 @@ namespace Lexer.States
         {
             // End of string
             if (machine.IsStringSymbol)
-                return machine.GenerateToken(TokenType.String);
+                return machine.GenerateToken(TokenType.AnyString);
 
             if (machine.IsEof)
                 return machine.SetError();

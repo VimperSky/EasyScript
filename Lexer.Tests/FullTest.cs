@@ -48,7 +48,7 @@ namespace Lexer.Tests
             Assert.Equal(new Token(TokenType.KeyWord, "const", 3, 0).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Identifier, "maxNum", 3, 6).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Assign, "=", 3, 13).ToString(), lexer.GetNextToken().ToString());
-            Assert.Equal(new Token(TokenType.Int, "41", 3, 15).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.AnyInt, "41", 3, 15).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Semicolon, ";", 3, 17).ToString(), lexer.GetNextToken().ToString());
 
             Assert.Equal(new Token(TokenType.KeyWord, "for", 4, 0).ToString(), lexer.GetNextToken().ToString());
@@ -56,7 +56,7 @@ namespace Lexer.Tests
             Assert.Equal(new Token(TokenType.KeyWord, "let", 4, 5).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Identifier, "i", 4, 9).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Assign, "=", 4, 11).ToString(), lexer.GetNextToken().ToString());
-            Assert.Equal(new Token(TokenType.Int, "0", 4, 12).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.AnyInt, "0", 4, 12).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Semicolon, ";", 4, 13).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Identifier, "i", 4, 15).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.LessEquals, "<=", 4, 17).ToString(), lexer.GetNextToken().ToString());
@@ -72,15 +72,15 @@ namespace Lexer.Tests
             Assert.Equal(new Token(TokenType.OpenBracket, "(", 5, 5).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Identifier, "i", 5, 6).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.DivOp, "/", 5, 7).ToString(), lexer.GetNextToken().ToString());
-            Assert.Equal(new Token(TokenType.Int, "2", 5, 9).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.AnyInt, "2", 5, 9).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Equals, "==", 5, 11).ToString(), lexer.GetNextToken().ToString());
-            Assert.Equal(new Token(TokenType.Int, "0", 5, 14).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.AnyInt, "0", 5, 14).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.CloseBracket, ")", 5, 15).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.OpenBrace, "{", 5, 17).ToString(), lexer.GetNextToken().ToString());
 
             Assert.Equal(new Token(TokenType.KeyWord, "print", 6, 4).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.OpenBracket, "(", 6, 9).ToString(), lexer.GetNextToken().ToString());
-            Assert.Equal(new Token(TokenType.String, "Even", 6, 10).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.AnyString, "Even", 6, 10).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.CloseBracket, ")", 6, 16).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Semicolon, ";", 6, 17).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.CloseBrace, "}", 7, 2).ToString(), lexer.GetNextToken().ToString());
@@ -110,7 +110,7 @@ namespace Lexer.Tests
             Assert.Equal(new Token(TokenType.KeyWord, "let", 10, 0).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Identifier, "_str", 10, 4).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Assign, "=", 10, 9).ToString(), lexer.GetNextToken().ToString());
-            Assert.Equal(new Token(TokenType.String, "Hello", 10, 11).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.AnyString, "Hello", 10, 11).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Semicolon, ";", 10, 18).ToString(), lexer.GetNextToken().ToString());
 
             Assert.Equal(new Token(TokenType.KeyWord, "prints", 11, 0).ToString(), lexer.GetNextToken().ToString());

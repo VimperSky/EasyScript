@@ -36,9 +36,9 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("12,32");
 
-            Assert.Equal(TokenType.Int, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyInt, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Comma, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.Int, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyInt, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("\"so;me%^\"");
 
-            Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyString, lexer.GetNextToken().Type);
         }
 
         [Fact]

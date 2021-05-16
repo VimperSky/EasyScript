@@ -10,7 +10,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("\"some string\"");
 
-            Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyString, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -18,7 +18,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("\"some\nstring\"");
 
-            Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyString, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("\"some string\"^");
 
-            Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyString, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
 
@@ -44,7 +44,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("\"let while string\"^");
 
-            Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyString, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
 
@@ -53,7 +53,7 @@ namespace Lexer.Tests.Types
         {
             var lexer = new TestLexer("\"let while string\"\"");
 
-            Assert.Equal(TokenType.String, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.AnyString, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Error, lexer.GetNextToken().Type);
         }
 

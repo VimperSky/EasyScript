@@ -1,9 +1,12 @@
-﻿namespace Lexer.Types
+﻿using System;
+
+namespace Lexer.Types
 {
-    public enum TokenType
+    public enum TokenType: byte
     {
         Space,
         EndLine,
+        EoF,
 
         // Ошибка
         Error,
@@ -12,7 +15,7 @@
         OpenBracket, // (
         CloseBracket, // )
 
-        // Фигурные скоюки
+        // Фигурные скобки
         OpenBrace, // {
         CloseBrace, // }
 
@@ -20,16 +23,13 @@
         Comment, // //
         MultiComment, // /* */
 
-        // Ключевые слово (let, if, for ...)
-        KeyWord,
-
         // Название переменной
         Identifier,
 
         // Типы данных
-        Int, // 32 bit integer
-        Float, // 32 bit floating point
-        String, // "
+        AnyInt, // 32 bit integer
+        AnyFloat, // 32 bit floating point
+        AnyString, // "
 
         // Точка с запятой
         Semicolon, // ;
@@ -58,7 +58,25 @@
         // Операторы условия
         And, // &
         Or, // |
-
-        EoF // End of Line
+        
+        // Ключевые слово (let, if, for ...)
+        Const = 100,
+        Let = 101,
+        If = 102,
+        Else = 103,
+        For = 104,
+        While = 105,
+        True = 106,
+        False = 107,
+        Say = 108,
+        Says = 109,
+        Ask = 110,
+        Asks = 111,
+        Fun = 112,
+        Ret = 113,
+        Int = 114,
+        Float = 115,
+        Bool = 116,
+        String = 117,
     }
 }

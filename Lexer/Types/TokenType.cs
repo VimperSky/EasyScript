@@ -77,6 +77,6 @@ namespace Lexer.Types
         Int = 114,
         Float = 115,
         Bool = 116,
-        String = 117
+        String = 117,
     }
 }

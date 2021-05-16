@@ -15,7 +15,7 @@ namespace Lexer.States
             // let; let" let/
             if (machine.IsExpectedValueAchieved)
             {
-                machine.GenerateToken(TokenType.KeyWord);
+                machine.GenerateKeyWord();
 
                 if (machine.IsServiceStart)
                     return machine.SetServiceOrComment();

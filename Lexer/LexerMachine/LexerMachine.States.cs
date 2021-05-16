@@ -16,7 +16,7 @@ namespace Lexer.LexerMachine
 
         public LexerMachine SetKeywordState()
         {
-            _expectedValues = KeyWords.Where(x => x.StartsWith(_curChar)).ToArray();
+            _expectedValues = KeyWords.Keys.Where(x => x.StartsWith(_curChar)).ToArray();
             _lexerState = new KeywordState();
             return this;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Lexer.Types;
 
@@ -58,15 +59,14 @@ namespace Lexer
             {"||", TokenType.Or}
         };
 
-        public static readonly string[] KeyWords =
-        {
-            "let", "const", "if", "else", "for", "while", "true", "false", "int", "float", "bool", "string",
-            "print", "prints", "read", "reads", "fun", "return"
-        };
+        public static readonly Dictionary<string, TokenType> KeyWords = Enum.GetValues<TokenType>()
+            .Where(x => (byte) x >= 100)
+            .ToDictionary(x => x.ToString().ToLower());
+        
 
         public static bool IsKeywordStart(char ch)
         {
-            return KeyWords.Any(x => x.StartsWith(ch));
+            return KeyWords.Any(x => x.Key.StartsWith(ch));
         }
 
         public static bool IsServiceSymbolStart(char ch)

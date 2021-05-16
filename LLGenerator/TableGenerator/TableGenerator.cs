@@ -64,8 +64,7 @@ namespace LLGenerator.TableGenerator
                         MoveToStack = !item.IsTerminal && !isLast,
                         IsEnd = item.Value == Constants.EndSymbol
                     });
-                    if (index == 0)
-                        table[i].GoTo = newRuleId;
+                    if (index == 0) table[i].GoTo = newRuleId;
                 }
             }
 

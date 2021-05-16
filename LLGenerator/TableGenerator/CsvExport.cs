@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,15 +17,14 @@ namespace LLGenerator.TableGenerator
                 Id = r.Id,
                 GoTo = r.GoTo == null ? "NULL" : r.GoTo.Value.ToString(),
                 NonTerminal = r.NonTerminal,
-                IsError = r.IsError ? "1" : "0",
+                IsError = r.IsError ? "1" : "",
                 IsShift = r.IsShift ? "1" : "",
                 MoveToStack = r.MoveToStack ? "1" : "",
                 IsEnd = r.IsEnd ? "1" : "",
                 Dirs = string.Join(", ", r.DirSet)
             }).ToList();
             var config = new CsvConfiguration(CultureInfo.InvariantCulture) {Delimiter = ";"};
-            using var writer = new StreamWriter("table.csv");
-            using var csv = new CsvWriter(writer, config);
+            using var csv = new CsvWriter(new StreamWriter("table.csv"), config);
             csv.WriteHeader<RulesForCsvExport>();
             csv.NextRecord();
             foreach (var rule in newList)
@@ -46,13 +44,6 @@ namespace LLGenerator.TableGenerator
             public string IsShift { get; init; }
             public string MoveToStack { get; init; }
             public string IsEnd { get; init; }
-
-            public override string ToString()
-            {
-                return $"Id: {Id}, NonTerm: {NonTerminal}, Dirs: {Dirs}, " +
-                       $"Goto: {GoTo}, Err: {IsError}, " +
-                       $"Shift: {IsShift}, Stack: {MoveToStack}, End: {IsEnd}";
-            }
         }
     }
 }

@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using LLGenerator.Entities;
 
-namespace LLGenerator.SetsParser.Actions
+namespace LLGenerator.SetsParser
 {
     internal class DirSetsFinder
     {

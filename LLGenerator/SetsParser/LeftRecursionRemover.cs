@@ -1,9 +1,10 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Lexer.Types;
 using LLGenerator.Entities;
 
-namespace LLGenerator.SetsParser.Actions
+namespace LLGenerator.SetsParser
 {
     internal static class LeftRecursionRemover
     {
@@ -31,20 +32,20 @@ namespace LLGenerator.SetsParser.Actions
                     {
                         if (normalRule.Items[0].Value == Constants.EmptySymbol)
                             normalRule.Items.RemoveAt(0);
-                        normalRule.Items.Add(new RuleItem(newNonTerm, false));
+                        normalRule.Items.Add(new RuleItem(newNonTerm));
                         newRules.Add(normalRule);
                     }
 
                     foreach (var items in recursionRules.Select(recRule => recRule.Items.Skip(1).ToList()))
                     {
-                        items.Add(new RuleItem(newNonTerm, false));
+                        items.Add(new RuleItem(newNonTerm));
                         newRules.Add(new Rule {NonTerminal = newNonTerm, Items = items});
                     }
 
                     newRules.Add(new Rule
                     {
                         NonTerminal = newNonTerm,
-                        Items = new List<RuleItem> {new(Constants.EmptySymbol, true)}
+                        Items = new List<RuleItem> {new(TokenType.Empty)}
                     });
                 }
                 else

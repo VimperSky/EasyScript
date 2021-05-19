@@ -1,9 +1,10 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Lexer.Types;
 using LLGenerator.Entities;
 
-namespace LLGenerator.SetsParser.Actions
+namespace LLGenerator.SetsParser
 {
     internal static class Factorization
     {
@@ -15,7 +16,7 @@ namespace LLGenerator.SetsParser.Actions
             nonTerms.Add(newNonTerm);
 
             var commonFinal = commonRules[0].Items.Take(commonLen).ToList();
-            commonFinal.Add(new RuleItem(newNonTerm, false));
+            commonFinal.Add(new RuleItem(newNonTerm));
             newRules.Add(new Rule
             {
                 NonTerminal = commonRules[0].NonTerminal,
@@ -43,7 +44,7 @@ namespace LLGenerator.SetsParser.Actions
                 newRules.Add(new Rule
                 {
                     NonTerminal = newNonTerm,
-                    Items = new List<RuleItem> {new(Constants.EmptySymbol, true)}
+                    Items = new List<RuleItem> {new(TokenType.Empty)}
                 });
 
             return newRules;

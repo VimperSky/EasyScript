@@ -5,9 +5,9 @@ using System.Linq;
 using CsvHelper;
 using CsvHelper.Configuration;
 
-namespace Lexer.RulesParser
+namespace LLGenerator.SetsParser
 {
-    internal class CsvParser
+    internal class CsvImport
     {
         private class Record
         {   
@@ -16,14 +16,14 @@ namespace Lexer.RulesParser
             public string RightBody { get; set; }
         }
         
-        public static List<(string NonTerminal, string RightBody)> Parse()
+        public static List<(string NonTerminal, string RightBody)> Parse(Stream stream)
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 Delimiter = ";"
             };
 
-            using var reader = new StreamReader("rules.csv");
+            using var reader = new StreamReader(stream);
             using var csv = new CsvReader(reader, config);
             var records = csv.GetRecords<Record>().ToList();
             return records.Select(record => (record.NonTerminal, record.RightBody)).ToList();

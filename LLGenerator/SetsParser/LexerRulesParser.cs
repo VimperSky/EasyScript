@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Lexer.Types;
+using LLGenerator.Entities;
 using static Lexer.Constants;
 
-namespace Lexer.RulesParser
+namespace LLGenerator.SetsParser
 {
-    public class LexerRulesParser
+    public static class LexerRulesParser
     {
-        private readonly Dictionary<string, TokenType> _tokenTypes;
+        private static readonly Dictionary<string, TokenType> TokenTypes;
 
-        private readonly Dictionary<string, TokenType> _parserTypes = new()
+        private static readonly Dictionary<string, TokenType> ParserTypes = new()
         {
             {"end", TokenType.End},
             {"e", TokenType.Empty},
@@ -22,45 +24,44 @@ namespace Lexer.RulesParser
             {"!|", TokenType.Or},
         };
 
-        public LexerRulesParser()
+        static LexerRulesParser()
         {
-            _tokenTypes = ServiceSymbols.Concat(KeyWords).Concat(_parserTypes)
+            TokenTypes = ServiceSymbols.Concat(KeyWords).Concat(ParserTypes)
                 .ToDictionary(x => x.Key, x => x.Value);
         }
-        public List<LexerRule> Parse()
+        public static ImmutableList<Rule> Parse(IEnumerable<(string NonTerminal, string RightBody)> rules)
         {
-            var rules = CsvParser.Parse();
-            var lexerRules = new List<LexerRule>();
+            var lexerRules = new List<Rule>();
             foreach (var (nonTerminal, rightBody) in 
                 rules.Where(x => !string.IsNullOrWhiteSpace(x.NonTerminal)))
             {
-                var tempTokens = new List<LexerToken>();
+                var tempTokens = new List<RuleItem>();
                 foreach (var item in rightBody.Split(" ", StringSplitOptions.RemoveEmptyEntries))
                 {
                     if (item == "|")
                     {
-                        lexerRules.Add(new LexerRule {NonTerminal = nonTerminal, Tokens = tempTokens});
-                        tempTokens = new List<LexerToken>();
+                        lexerRules.Add(new Rule {NonTerminal = nonTerminal, Items = tempTokens});
+                        tempTokens = new List<RuleItem>();
                         continue;
                     }
 
                     if (item.StartsWith("<") && item.EndsWith(">"))
                     {
-                        tempTokens.Add(new LexerToken {NonTerminal = item});
+                        tempTokens.Add(new RuleItem(item));
                     }
-                    else if (_tokenTypes.ContainsKey(item))
+                    else if (TokenTypes.ContainsKey(item))
                     {
-                        tempTokens.Add(new LexerToken {TokenType = _tokenTypes[item]});
+                        tempTokens.Add(new RuleItem(TokenTypes[item]));
                     }
                     else
                     {
                         throw new ArgumentException($"TokenType is not correct. {item}");
                     }
                 }
-                lexerRules.Add(new LexerRule {NonTerminal = nonTerminal, Tokens = tempTokens});
+                lexerRules.Add(new Rule {NonTerminal = nonTerminal, Items = tempTokens});
             }
 
-            return lexerRules;
+            return lexerRules.ToImmutableList();
         }
     }
 }

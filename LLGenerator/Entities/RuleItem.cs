@@ -1,42 +1,34 @@
-#nullable enable
-using System;
+﻿using System;
+using Lexer.Types;
 
 namespace LLGenerator.Entities
 {
-    public class RuleItem : IEquatable<RuleItem>
+    public class RuleItem
     {
-        public readonly bool IsTerminal;
-        public readonly string Value;
+        public string NonTerminal { get; }
+        public TokenType? TokenType { get;}
 
-        public RuleItem(string value, bool isTerminal)
+        public string Value => ToString();
+
+        public bool IsTerminal => NonTerminal == null;
+
+        public RuleItem(string value)
         {
-            Value = value;
-            IsTerminal = isTerminal;
+            NonTerminal = value;
         }
 
-        public bool Equals(RuleItem? other)
+        public RuleItem(TokenType value)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Value == other.Value && IsTerminal == other.IsTerminal;
+            TokenType = value;
         }
-
-        public override bool Equals(object? obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((RuleItem) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Value, IsTerminal);
-        }
-
+        
         public override string ToString()
         {
-            return $"{Value} {IsTerminal}";
+            if (NonTerminal == null && TokenType == null)
+            {
+                throw new ArgumentException("Both NonTerminal and TokenType can't be null!");
+            }
+            return NonTerminal ?? TokenType.ToString();
         }
     }
 }

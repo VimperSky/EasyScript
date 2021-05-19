@@ -3,10 +3,10 @@ using Lexer.Types;
 
 namespace LLGenerator.Entities
 {
-    public class RuleItem
+    public class RuleItem: IEquatable<RuleItem>
     {
-        public string NonTerminal { get; }
-        public TokenType? TokenType { get;}
+        private string NonTerminal { get; }
+        private TokenType? TokenType { get;}
 
         public string Value => ToString();
 
@@ -29,6 +29,26 @@ namespace LLGenerator.Entities
                 throw new ArgumentException("Both NonTerminal and TokenType can't be null!");
             }
             return NonTerminal ?? TokenType.ToString();
+        }
+        
+        public bool Equals(RuleItem? other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Value == other.Value && IsTerminal == other.IsTerminal;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((RuleItem) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Value, IsTerminal);
         }
     }
 }

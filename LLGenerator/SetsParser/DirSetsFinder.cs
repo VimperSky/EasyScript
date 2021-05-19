@@ -22,7 +22,7 @@ namespace LLGenerator.SetsParser
             return FindUp(nonTerm, new HashSet<int>());
         }
 
-        private IEnumerable<(string Value, bool IsTerm)> FindUp(string nonTerm, HashSet<int> history)
+        private IEnumerable<(string Value, bool IsTerm)> FindUp(string nonTerm, ISet<int> history)
         {
             var returns = new HashSet<(string Value, bool IsTerm)>();
             for (var i = 0; i < _rules.Count; i++)

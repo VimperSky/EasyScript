@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Lexer.Types;
 using LLGenerator.Entities;
 
 namespace LLGenerator.SetsParser
@@ -54,7 +55,7 @@ namespace LLGenerator.SetsParser
             for (var i = 0; i < _rules.Count; i++)
             {
                 var rule = _rules[i];
-                if (rule.Items[0].Value == Constants.EmptySymbol)
+                if (rule.Items[0].TokenType == TokenType.Empty)
                     foreach (var item in FindUp(rule.NonTerminal))
                         _foundValues[i].Add(item);
                 else

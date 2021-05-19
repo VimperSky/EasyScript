@@ -8,7 +8,7 @@ namespace LLGenerator.SetsParser
 {
     internal static class Factorization
     {
-        private static IEnumerable<Rule> GenerateNewRules(IList<Rule> commonRules, int commonLen,
+        private static IEnumerable<Rule> GenerateNewRules(IList<Rule> commonRules, int commonLen, 
             HashSet<string> nonTerms)
         {
             var newRules = new List<Rule>();

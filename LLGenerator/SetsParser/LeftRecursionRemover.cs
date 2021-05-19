@@ -30,7 +30,7 @@ namespace LLGenerator.SetsParser
 
                     foreach (var normalRule in normalRules)
                     {
-                        if (normalRule.Items[0].Value == Constants.EmptySymbol)
+                        if (normalRule.Items[0].TokenType == TokenType.Empty)
                             normalRule.Items.RemoveAt(0);
                         normalRule.Items.Add(new RuleItem(newNonTerm));
                         newRules.Add(normalRule);

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Lexer.Types;
 using LLGenerator.Entities;
 
 namespace LLGenerator.TableGenerator
@@ -32,7 +33,7 @@ namespace LLGenerator.TableGenerator
                     var dirSet = new HashSet<string>();
                     if (item.IsTerminal)
                     {
-                        if (item.Value == Constants.EmptySymbol)
+                        if (item.TokenType == TokenType.Empty)
                             dirSet = dRule.Dirs;
                         else
                             dirSet.Add(item.Value);
@@ -60,9 +61,9 @@ namespace LLGenerator.TableGenerator
                         DirSet = dirSet,
                         GoTo = ptr,
                         IsError = true,
-                        IsShift = item.IsTerminal && item.Value != Constants.EmptySymbol,
+                        IsShift = item.IsTerminal && item.TokenType != TokenType.Empty,
                         MoveToStack = !item.IsTerminal && !isLast,
-                        IsEnd = item.Value == Constants.EndSymbol
+                        IsEnd = item.TokenType == TokenType.End
                     });
                     if (index == 0) table[i].GoTo = newRuleId;
                 }

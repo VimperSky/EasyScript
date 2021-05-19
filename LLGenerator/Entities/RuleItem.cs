@@ -6,7 +6,7 @@ namespace LLGenerator.Entities
     public class RuleItem: IEquatable<RuleItem>
     {
         private string NonTerminal { get; }
-        private TokenType? TokenType { get;}
+        public TokenType? TokenType { get;}
 
         public string Value => ToString();
 

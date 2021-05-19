@@ -21,7 +21,7 @@ namespace LLGenerator.SetsParser
             {"!float", TokenType.AnyFloat},
             {"!str", TokenType.AnyString},
             {"!int", TokenType.AnyInt},
-            {"!|", TokenType.Or},
+            {"!|", TokenType.Or}
         };
 
         static LexerRulesParser()

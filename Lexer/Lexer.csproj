@@ -14,8 +14,4 @@
       <PackageReference Include="CsvHelper" Version="26.1.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="RulesParser" />
-    </ItemGroup>
-
 </Project>

@@ -13,8 +13,7 @@ namespace Lexer
         public const char CommentSymbol = '/';
         public const char MultiCommentSymbol = '*';
 
-        public const string MultiCommentStart = "/*";
-        public const string MultiCommentEnd = "*/";
+        private const string MultiCommentStart = "/*";
         public const string SingleComment = "//";
 
         public const char EndLine = '\n';
@@ -24,12 +23,12 @@ namespace Lexer
         private const byte MaxIntSize = 19; // long = 19 characters
         private const byte MaxFloatSize = 38;
 
-        public static readonly List<TokenType> SkipTokens = new() {TokenType.Space, TokenType.EndLine};
+        public static readonly List<TokenType> SkipTokens = new() {TokenType.Space, TokenType.NewLine};
 
         public static readonly Dictionary<string, TokenType> ServiceSymbols = new()
         {
             {Space.ToString(), TokenType.Space},
-            {EndLine.ToString(), TokenType.EndLine},
+            {EndLine.ToString(), TokenType.NewLine},
 
             {"(", TokenType.OpenBracket},
             {")", TokenType.CloseBracket},
@@ -55,14 +54,15 @@ namespace Lexer
             {"++", TokenType.Increment},
             {"--", TokenType.Decrement},
 
-            {"&&", TokenType.And},
-            {"||", TokenType.Or}
+            {"&", TokenType.And},
+            {"|", TokenType.Or},
         };
 
+        
         public static readonly Dictionary<string, TokenType> KeyWords = Enum.GetValues<TokenType>()
             .Where(x => (byte) x >= 100)
             .ToDictionary(x => x.ToString().ToLower1());
-
+        
 
         public static bool IsKeywordStart(char ch)
         {

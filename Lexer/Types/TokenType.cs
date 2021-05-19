@@ -3,8 +3,9 @@
     public enum TokenType : byte
     {
         Space,
-        EndLine,
-        EoF,
+        NewLine,
+        End,
+        Empty,
 
         // Ошибка
         Error,
@@ -28,6 +29,7 @@
         AnyInt, // 32 bit integer
         AnyFloat, // 32 bit floating point
         AnyString, // "
+        AnyBool, // true or false
 
         // Точка с запятой
         Semicolon, // ;

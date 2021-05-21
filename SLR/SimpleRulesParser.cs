@@ -30,14 +30,23 @@ namespace SLR
             }).ToList();
 
             
-            if (rules[0].Items[^1] == Constants.EndSymbol 
-                && rules.Select(x => x.NonTerminal == rules[0].NonTerminal).Count() > 1)
-                rules.Insert(0, new Rule
+            if (rules[0].Items[^1] != Constants.EndSymbol)
+            {
+                if (rules.Count(x => x.NonTerminal == rules[0].NonTerminal) > 1)
                 {
-                    NonTerminal = Extensions.GetNextFreeLetter(rules.GroupBy(x => x.NonTerminal)
-                        .Select(k => k.Key).ToHashSet()),
-                    Items = new List<RuleItem> {new(rules[0].NonTerminal), new(Constants.EndSymbol, true)}
-                });
+                    rules.Insert(0, new Rule
+                    {
+                        NonTerminal = Extensions.GetNextFreeLetter(rules.GroupBy(x => x.NonTerminal)
+                            .Select(k => k.Key).ToHashSet()),
+                        Items = new List<RuleItem> {new(rules[0].NonTerminal), new(Constants.EndSymbol, true)}
+                    });
+                }
+                else
+                {
+                    rules[0].Items.Add(new RuleItem(Constants.EndSymbol, true));
+                }
+            }
+                
 
             return rules.ToImmutableList();
         }

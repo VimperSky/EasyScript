@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLGenerator", "LLGenerator\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLGenerator.Tests", "LLGenerator.Tests\LLGenerator.Tests.csproj", "{FE2AA655-2392-41F7-97A3-C001E757984C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLR", "SLR\SLR.csproj", "{0CEC9439-9229-43EF-966B-5DE74029BC56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{FE2AA655-2392-41F7-97A3-C001E757984C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE2AA655-2392-41F7-97A3-C001E757984C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE2AA655-2392-41F7-97A3-C001E757984C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CEC9439-9229-43EF-966B-5DE74029BC56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CEC9439-9229-43EF-966B-5DE74029BC56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CEC9439-9229-43EF-966B-5DE74029BC56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CEC9439-9229-43EF-966B-5DE74029BC56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

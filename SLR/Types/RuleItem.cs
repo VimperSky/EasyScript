@@ -6,8 +6,7 @@ namespace SLR.Types
     {
         private readonly string _nonTerminal;
         private readonly string _terminal;
-        private (int RuleId, int ItemId) _id;
-        
+
         public RuleItem(string value, bool isTerminal = false)
         {
             if (isTerminal)
@@ -22,16 +21,16 @@ namespace SLR.Types
             }
         }
 
-        public void SetId((int, int) id)
-        {
-            _id = id;
-        }
         
+        public string Value => _nonTerminal ?? (_terminal ??
+                                                throw new Exception("Both NonTerminal and Terminal can't be null!"));
+
+        public RuleItemId Id { get; set; }
+        
+
         public override string ToString()
         {
-            var value = _nonTerminal ?? (_terminal ??
-                                            throw new Exception("Both NonTerminal and Terminal can't be null!"));
-            return value + _id;
+            return Value + Id;
         }
         
         public static bool operator ==(RuleItem ruleItem, string value)
@@ -57,20 +56,20 @@ namespace SLR.Types
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return _nonTerminal == other._nonTerminal && Equals(_terminal, other._terminal);
+            return _nonTerminal.Equals(other._nonTerminal) && _terminal.Equals(other._terminal) && Id.Equals(other.Id);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((RuleItem) obj);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(_nonTerminal, _terminal);
+            return HashCode.Combine(_nonTerminal, _terminal, Id);
         }
     }
 }

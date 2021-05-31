@@ -53,7 +53,7 @@ namespace SLR
                 rules[0].Items.Add(new RuleItem(Constants.EndSymbol, true));
             }
             if (rules[0].Items.Any(x => x == rules[0].NonTerminal))
-            {
+            { 
                 InsertRuleAtStart(rules);
             }
 
@@ -61,7 +61,7 @@ namespace SLR
             {
                 for (var j = 0; j < rules[i].Items.Count; j++)
                 {
-                    rules[i].Items[j].SetId((i + 1, j + 1));
+                    rules[i].Items[j].Id = new RuleItemId(i, j);
                 }
             }
             

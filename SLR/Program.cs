@@ -8,7 +8,7 @@ namespace SLR
         static void Main(string[] args)
         {
             var rules = SimpleRulesParser.Parse(File.OpenRead("rules.txt"));
-            Console.WriteLine(rules);
+            TableBuilder.CreateTable(rules);
         }
     }
 }

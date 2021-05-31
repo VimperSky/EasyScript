@@ -6,6 +6,7 @@ namespace SLR.Types
     {
         private readonly string _nonTerminal;
         private readonly string _terminal;
+        private (int RuleId, int ItemId) _id;
         
         public RuleItem(string value, bool isTerminal = false)
         {
@@ -20,11 +21,17 @@ namespace SLR.Types
                 _nonTerminal = value;
             }
         }
+
+        public void SetId((int, int) id)
+        {
+            _id = id;
+        }
         
         public override string ToString()
         {
-            return _nonTerminal ?? (_terminal ?? 
-                                    throw new Exception("Both NonTerminal and Terminal can't be null!"));
+            var value = _nonTerminal ?? (_terminal ??
+                                            throw new Exception("Both NonTerminal and Terminal can't be null!"));
+            return value + _id;
         }
         
         public static bool operator ==(RuleItem ruleItem, string value)

@@ -15,10 +15,10 @@ namespace SLR
             {
                 NonTerminal = Extensions.GetNextFreeLetter(rules.GroupBy(x => x.NonTerminal)
                     .Select(k => k.Key).ToHashSet()),
-                Items = new List<RuleItem> {new (rules[0].NonTerminal)}
+                Items = new List<RuleItem> {new(rules[0].NonTerminal)}
             });
         }
-        
+
         public static ImmutableList<Rule> Parse(Stream stream)
         {
             using var sr = new StreamReader(stream);
@@ -46,26 +46,19 @@ namespace SLR
 
             if (rules[0].Items[^1] != Constants.EndSymbol)
             {
-                if (rules.Count(x => x.NonTerminal == rules[0].NonTerminal) > 1)
-                {
-                    InsertRuleAtStart(rules);
-                }
+                if (rules.Count(x => x.NonTerminal == rules[0].NonTerminal) > 1) InsertRuleAtStart(rules);
                 rules[0].Items.Add(new RuleItem(Constants.EndSymbol, true));
             }
-            if (rules[0].Items.Any(x => x == rules[0].NonTerminal))
-            { 
-                InsertRuleAtStart(rules);
-            }
+
+            if (rules[0].Items.Any(x => x == rules[0].NonTerminal)) InsertRuleAtStart(rules);
 
             for (var i = 0; i < rules.Count; i++)
-            {
-                for (var j = 0; j < rules[i].Items.Count; j++)
-                {
-                    rules[i].Items[j].Id = new RuleItemId(i, j);
-                }
-            }
-            
-            
+            for (var j = 0; j < rules[i].Items.Count; j++)
+                rules[i].Items[j].Id = new RuleItemId(i, j);
+
+            foreach (var item in rules) Console.WriteLine(item);
+            Console.WriteLine();
+
             return rules.ToImmutableList();
         }
     }

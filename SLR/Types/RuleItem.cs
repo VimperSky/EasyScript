@@ -2,7 +2,7 @@
 
 namespace SLR.Types
 {
-    public class RuleItem: IEquatable<RuleItem>
+    public class RuleItem : IEquatable<RuleItem>
     {
         private readonly string _nonTerminal;
         private readonly string _terminal;
@@ -20,21 +20,30 @@ namespace SLR.Types
                 _nonTerminal = value;
             }
         }
-        
-        
+
+        public bool IsTerminal => _terminal != null;
+
         public string Value => _nonTerminal ?? (_terminal ??
                                                 throw new Exception("Both NonTerminal and Terminal can't be null!"));
 
         public RuleItemId Id { get; set; }
-        
+
+        public bool Equals(RuleItem other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(_nonTerminal, other._nonTerminal) && Equals(_terminal, other._terminal) &&
+                   Equals(Id, other.Id);
+        }
+
 
         public override string ToString()
         {
             return Value + Id;
         }
-        
+
         public static bool operator ==(RuleItem ruleItem, string value)
-        { 
+        {
             if (!ReferenceEquals(null, ruleItem))
             {
                 if (ruleItem._nonTerminal != null)
@@ -50,13 +59,6 @@ namespace SLR.Types
         public static bool operator !=(RuleItem ruleItem, string value)
         {
             return !(ruleItem == value);
-        }
-
-        public bool Equals(RuleItem other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(_nonTerminal, other._nonTerminal) && Equals(_terminal, other._terminal) && Equals(Id, other.Id);
         }
 
         public override bool Equals(object obj)

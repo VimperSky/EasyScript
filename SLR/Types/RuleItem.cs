@@ -20,7 +20,7 @@ namespace SLR.Types
                 _nonTerminal = value;
             }
         }
-
+        
         
         public string Value => _nonTerminal ?? (_terminal ??
                                                 throw new Exception("Both NonTerminal and Terminal can't be null!"));
@@ -56,7 +56,7 @@ namespace SLR.Types
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return _nonTerminal.Equals(other._nonTerminal) && _terminal.Equals(other._terminal) && Id.Equals(other.Id);
+            return Equals(_nonTerminal, other._nonTerminal) && Equals(_terminal, other._terminal) && Equals(Id, other.Id);
         }
 
         public override bool Equals(object obj)

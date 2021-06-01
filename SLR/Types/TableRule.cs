@@ -19,5 +19,11 @@ namespace SLR.Types
             if (Values.ContainsKey(ruleItem.Value))
                 Values[ruleItem.Value].Add(ruleItem);
         }
+
+        public override string ToString()
+        {
+            return $"{Key} | {string.Join(" ", Values.Select(x => x.Value))}";
+        }
+        
     }
 }

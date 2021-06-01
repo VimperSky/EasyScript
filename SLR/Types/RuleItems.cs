@@ -25,5 +25,11 @@ namespace SLR.Types
         {
             return string.Join("", this).GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return string.Join(", ", this);
+        }
     }
+    
 }

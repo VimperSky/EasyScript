@@ -7,7 +7,8 @@ namespace SLR
 {
     public static class Extensions
     {
-        private const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        // Without R
+        private const string Alphabet = "ABCDEFGHIJKLMNOPQSTUVWXYZ";
         
         public static HashSet<string> GetNonTerminals(this ImmutableList<IGrouping<string, Rule>> groups)
         {

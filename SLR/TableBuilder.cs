@@ -62,8 +62,13 @@ namespace SLR
                         var nextItems = FindNextRecursive(item.Value);
                         foreach (var nextItem in nextItems)
                         {
-                            tableRule.Values[nextItem.Value].Add(new RuleItem("R" + item.Id.RuleIndex) {Id = nextItem.Id});
+                            tableRule.Values[nextItem.Value].Add(new RuleItem("R" + (item.Id.RuleIndex+1)));
                         }
+                        tableRules.Add(tableRule);
+                    }
+                    else if (_rules[item.Id.RuleIndex].Items[^1].Value == Constants.EndSymbol)
+                    {
+                        tableRule.Values[Constants.EndSymbol].Add(new RuleItem("R" + (item.Id.RuleIndex+1)));
                     }
                     else // элемент не последний, добавляем следующий в строку
                     {
@@ -73,19 +78,33 @@ namespace SLR
                 }
                 AddToQueue(tableRule);
             }
-
-            
             Console.WriteLine($"   | {string.Join("   ", _valueKeys)}");
             Console.WriteLine(string.Join("\r\n", tableRules));
+            
             return tableRules.ToImmutableHashSet();
             
             void AddNext(TableRule tableRule, RuleItemId itemId)
             {
+                // Комментарии остались в старой версии, гиткракен их съел
+                // Я лучше на словах объясню
                 var next = _rules[itemId.RuleIndex].Items[itemId.ItemIndex + 1];
                 tableRule.QuickAdd(next);
                 foreach (var rule in _rules.Where(x => x.NonTerminal == next.Value))
                 {
-                    tableRule.QuickAdd(rule.Items[0]);
+                    if (next.Value != rule.Items[0].Value && !rule.Items[0].IsTerminal)
+                    {
+                        AddNext(tableRule, new RuleItemId(rule.Items[0].Id.RuleIndex, rule.Items[0].Id.ItemIndex - 1));
+                    }
+                    else if (rule.Items[0].Value == Constants.EmptySymbol)
+                    {
+                        var niggers = FindNextRecursive(rule.Items[0].Value);
+                        foreach (var nigga in niggers)
+                        {
+                            tableRule.Values[nigga.Value].Add(new RuleItem("R" + (rule.Items[0].Id.RuleIndex+1)));
+                        }
+                    }
+                    else
+                        tableRule.QuickAdd(rule.Items[0]);
                 }
             }
 
@@ -95,7 +114,7 @@ namespace SLR
                     .Where(x => x.Value.Count > 0))
                 {
                     var value = item.Value;
-                    if (!queueBlackList.Contains(value))
+                    if (!queueBlackList.Contains(value) && !value[0].Value.Contains("R"))
                         keyQueue.Enqueue(value);
                 }
             }

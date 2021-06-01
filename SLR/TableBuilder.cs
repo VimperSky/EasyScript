@@ -31,7 +31,7 @@ namespace SLR
 
         public ImmutableHashSet<TableRule> CreateTable() 
         {
-            var tableRules = new List<TableRule>();
+            var tableRules = new HashSet<TableRule>();
             var keyQueue = new Queue<RuleItems>();
             var queueBlackList = new HashSet<RuleItems>();
             {
@@ -68,10 +68,10 @@ namespace SLR
                     else // элемент не последний, добавляем следующий в строку
                     {
                         AddNext(tableRule, item.Id);
+                        tableRules.Add(tableRule);
                     }
                 }
                 AddToQueue(tableRule);
-                tableRules.Add(tableRule);
             }
 
             

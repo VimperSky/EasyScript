@@ -26,6 +26,7 @@ namespace SLR.Types
         public string Value => _nonTerminal ?? (_terminal ??
                                                 throw new Exception("Both NonTerminal and Terminal can't be null!"));
 
+
         public RuleItemId Id { get; set; }
 
         public bool Equals(RuleItem other)

@@ -36,22 +36,22 @@ namespace SLR
 
         public void Analyze()
         {
-            var left = new Stack();
-            var right = new Stack();
-            var inputStack = new Stack();
+            var left = new Stack<string>();
+            var right = new Stack<string>();
+            var inputStack = new Stack<string>();
             foreach (var input in _input.Reverse()) inputStack.Push(input);
             right.Push(_tableRules.First().Key);
             while (true)
             {
                 var character = "";
-                if (inputStack.Count > 0) character = (string) inputStack.Pop();
-                var row = _tableRules.Where(x => x.Key == (string) right.Peek());
+                if (inputStack.Count > 0) character = inputStack.Pop();
+                var row = _tableRules.Where(x => x.Key == right.Peek());
                 var rows = row.First().Values;
                 var cell = character == ""
-                    ? rows.Where(x => x.Key == Constants.EndSymbol)
-                    : rows.Where(x => x.Key == character);
+                    ? rows.Where(x => x.Key == Constants.EndSymbol).ToList()
+                    : rows.Where(x => x.Key == character).ToList();
 
-                if (cell.ToList().Count == 0)
+                if (cell.Count == 0)
                 {
                     Console.WriteLine("\nError");
                     return;

@@ -45,9 +45,13 @@ namespace SLR
                 var items = keyQueue.Dequeue();
                 queueBlackList.Add(items);
                 var key = string.Join("", items.Select(x => x.ToString()));
-                if (tableRules.Any(x => x.Key == key)) continue;
+                if (tableRules.Any(x => x.Key == key)) 
+                    continue;
+                
                 var tableRule = new TableRule(key, _valueKeys);
                 foreach (var item in items)
+                {
+                    // Последний элемент
                     if (_rules[item.Id.RuleIndex].Items.Count <= item.Id.ItemIndex + 1)
                     {
                         var nextItems = FindNextRecursive(item.Value);
@@ -55,15 +59,18 @@ namespace SLR
                             tableRule.Values[nextItem.Value].Add(new RuleItem("R" + (item.Id.RuleIndex + 1)));
                         tableRules.Add(tableRule);
                     }
+                    // Конец цепочки
                     else if (_rules[item.Id.RuleIndex].Items[^1].Value == Constants.EndSymbol)
                     {
                         tableRule.Values[Constants.EndSymbol].Add(new RuleItem("R" + (item.Id.RuleIndex + 1)));
                     }
+                    // Не последний элемент
                     else
                     {
                         AddNext(tableRule, item.Id);
                         tableRules.Add(tableRule);
                     }
+                }
 
                 AddToQueue(tableRule);
             }
@@ -84,9 +91,9 @@ namespace SLR
                     }
                     else if (rule.Items[0].Value == Constants.EmptySymbol)
                     {
-                        var niggers = FindNextRecursive(rule.Items[0].Value);
-                        foreach (var nigga in niggers)
-                            tableRule.Values[nigga.Value].Add(new RuleItem("R" + (rule.Items[0].Id.RuleIndex + 1)));
+                        var nextItems = FindNextRecursive(rule.Items[0].Value);
+                        foreach (var nItem in nextItems)
+                            tableRule.Values[nItem.Value].Add(new RuleItem("R" + (rule.Items[0].Id.RuleIndex + 1)));
                     }
                     else
                     {

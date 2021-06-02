@@ -9,7 +9,11 @@ namespace SLR
             var rules = SimpleRulesParser.Parse(File.OpenRead("rules.txt"));
 
             var tableBuilder = new TableBuilder(rules);
-            tableBuilder.CreateTable();
+            var tableRules = tableBuilder.CreateTable();
+
+            var input = File.OpenRead("input.txt");
+            var analyzer = new Analyzer(input, tableRules, rules);
+            analyzer.Analyze();
         }
     }
 }

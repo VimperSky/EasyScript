@@ -9,7 +9,7 @@ namespace SLR
     {
         // Without R
         private const string Alphabet = "ABCDEFGHIJKLMNOPQSTUVWXYZ";
-        
+
         public static HashSet<string> GetNonTerminals(this ImmutableList<IGrouping<string, Rule>> groups)
         {
             return groups.Select(x => x.Key).ToHashSet();
@@ -21,6 +21,5 @@ namespace SLR
             freeLetters.RemoveAll(x => takenLetters.Contains(x.ToString()));
             return freeLetters.First().ToString();
         }
-
     }
 }

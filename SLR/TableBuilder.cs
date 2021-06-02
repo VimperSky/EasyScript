@@ -10,6 +10,7 @@ namespace SLR
     {
         private readonly ImmutableList<Rule> _rules;
         private readonly ImmutableHashSet<string> _valueKeys;
+
         public TableBuilder(ImmutableList<Rule> rules)
         {
             _rules = rules;
@@ -17,19 +18,15 @@ namespace SLR
             foreach (var rule in rules)
             {
                 valueKeys.Add(rule.NonTerminal);
-                foreach (var ruleItem in rule.Items)
-                {
-                    if (ruleItem != Constants.EmptySymbol && ruleItem != Constants.EndSymbol)
-                    {
-                        valueKeys.Add(ruleItem.Value);
-                    }
-                }
+                foreach (var ruleItem in rule.Items.Where(ruleItem => ruleItem != Constants.EmptySymbol && ruleItem != Constants.EndSymbol))
+                    valueKeys.Add(ruleItem.Value);
             }
+
             valueKeys.Add(Constants.EndSymbol);
             _valueKeys = valueKeys.ToImmutableHashSet();
         }
 
-        public ImmutableHashSet<TableRule> CreateTable() 
+        public ImmutableHashSet<TableRule> CreateTable()
         {
             var tableRules = new HashSet<TableRule>();
             var keyQueue = new Queue<RuleItems>();
@@ -48,49 +45,39 @@ namespace SLR
                 var items = keyQueue.Dequeue();
                 queueBlackList.Add(items);
                 var key = string.Join("", items.Select(x => x.ToString()));
-                if (tableRules.Any(x => x.Key == key))
-                {
-                    continue;
-                }
+                if (tableRules.Any(x => x.Key == key)) continue;
                 var tableRule = new TableRule(key, _valueKeys);
                 foreach (var item in items)
-                {
-                    // Последний элемент, делаем свертку
                     if (_rules[item.Id.RuleIndex].Items.Count <= item.Id.ItemIndex + 1)
                     {
-                        // Ищем всё, где встречается данный элемент
                         var nextItems = FindNextRecursive(item.Value);
                         foreach (var nextItem in nextItems)
-                        {
-                            tableRule.Values[nextItem.Value].Add(new RuleItem("R" + (item.Id.RuleIndex+1)));
-                        }
+                            tableRule.Values[nextItem.Value].Add(new RuleItem("R" + (item.Id.RuleIndex + 1)));
                         tableRules.Add(tableRule);
                     }
                     else if (_rules[item.Id.RuleIndex].Items[^1].Value == Constants.EndSymbol)
                     {
-                        tableRule.Values[Constants.EndSymbol].Add(new RuleItem("R" + (item.Id.RuleIndex+1)));
+                        tableRule.Values[Constants.EndSymbol].Add(new RuleItem("R" + (item.Id.RuleIndex + 1)));
                     }
-                    else // элемент не последний, добавляем следующий в строку
+                    else
                     {
                         AddNext(tableRule, item.Id);
                         tableRules.Add(tableRule);
                     }
-                }
+
                 AddToQueue(tableRule);
             }
+
             Console.WriteLine($"   | {string.Join("   ", _valueKeys)}");
             Console.WriteLine(string.Join("\r\n", tableRules));
-            
+
             return tableRules.ToImmutableHashSet();
-            
+
             void AddNext(TableRule tableRule, RuleItemId itemId)
             {
-                // Комментарии остались в старой версии, гиткракен их съел
-                // Я лучше на словах объясню
                 var next = _rules[itemId.RuleIndex].Items[itemId.ItemIndex + 1];
                 tableRule.QuickAdd(next);
                 foreach (var rule in _rules.Where(x => x.NonTerminal == next.Value))
-                {
                     if (next.Value != rule.Items[0].Value && !rule.Items[0].IsTerminal)
                     {
                         AddNext(tableRule, new RuleItemId(rule.Items[0].Id.RuleIndex, rule.Items[0].Id.ItemIndex - 1));
@@ -99,13 +86,12 @@ namespace SLR
                     {
                         var niggers = FindNextRecursive(rule.Items[0].Value);
                         foreach (var nigga in niggers)
-                        {
-                            tableRule.Values[nigga.Value].Add(new RuleItem("R" + (rule.Items[0].Id.RuleIndex+1)));
-                        }
+                            tableRule.Values[nigga.Value].Add(new RuleItem("R" + (rule.Items[0].Id.RuleIndex + 1)));
                     }
                     else
+                    {
                         tableRule.QuickAdd(rule.Items[0]);
-                }
+                    }
             }
 
             void AddToQueue(TableRule tableRule)
@@ -119,7 +105,7 @@ namespace SLR
                 }
             }
         }
-        
+
         private IEnumerable<RuleItem> FindNextRecursive(string nonTerm)
         {
             return FindUp(nonTerm, new HashSet<int>());
@@ -136,7 +122,7 @@ namespace SLR
                     {
                         if (++j < rule.Items.Count)
                         {
-                            returns.Add((rule.Items[j]));
+                            returns.Add(rule.Items[j]);
                         }
                         else
                         {

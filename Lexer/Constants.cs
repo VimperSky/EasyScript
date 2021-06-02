@@ -55,14 +55,14 @@ namespace Lexer
             {"--", TokenType.Decrement},
 
             {"&", TokenType.And},
-            {"|", TokenType.Or},
+            {"|", TokenType.Or}
         };
 
-        
+
         public static readonly Dictionary<string, TokenType> KeyWords = Enum.GetValues<TokenType>()
             .Where(x => (byte) x >= 100)
             .ToDictionary(x => x.ToString().ToLower1());
-        
+
 
         public static bool IsKeywordStart(char ch)
         {

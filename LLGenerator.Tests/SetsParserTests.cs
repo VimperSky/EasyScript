@@ -1,7 +1,5 @@
 using System.IO;
-using System.Linq;
 using Xunit;
-using static LLGenerator.SetsParser.SetsParser;
 
 namespace LLGenerator.Tests
 {

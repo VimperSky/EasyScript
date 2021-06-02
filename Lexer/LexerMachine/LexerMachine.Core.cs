@@ -21,7 +21,7 @@ namespace Lexer.LexerMachine
         private int _startLine;
         private int _startPos;
         private string _value;
-        
+
         public LexerMachine()
         {
             Reset();

@@ -27,7 +27,7 @@ namespace LLGenerator
             return groups.Select(group => group.SelectMany(x => x.Dirs).ToList())
                 .All(groupsDirs => groupsDirs.Count == groupsDirs.Distinct().Count());
         }
-        
+
         private static void Main()
         {
             var rulesStream = File.OpenRead("rules.csv");

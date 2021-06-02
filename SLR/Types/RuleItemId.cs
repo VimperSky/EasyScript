@@ -2,10 +2,10 @@
 
 namespace SLR.Types
 {
-    public class RuleItemId: IEquatable<RuleItemId>
+    public class RuleItemId : IEquatable<RuleItemId>
     {
-        public readonly int RuleIndex;
         public readonly int ItemIndex;
+        public readonly int RuleIndex;
 
         public RuleItemId(int ruleRuleIndex, int ruleItemIndex)
         {
@@ -13,16 +13,16 @@ namespace SLR.Types
             ItemIndex = ruleItemIndex;
         }
 
-        public override string ToString()
-        {
-            return $"{RuleIndex+1}{ItemIndex+1}";
-        }
-
         public bool Equals(RuleItemId other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             return RuleIndex == other.RuleIndex && ItemIndex == other.ItemIndex;
+        }
+
+        public override string ToString()
+        {
+            return $"{RuleIndex + 1}{ItemIndex + 1}";
         }
 
         public override bool Equals(object obj)

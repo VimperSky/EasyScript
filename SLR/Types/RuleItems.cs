@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SLR.Types
 {
-    public class RuleItems: List<RuleItem>, IEquatable<RuleItems>
+    public class RuleItems : List<RuleItem>, IEquatable<RuleItems>
     {
         public bool Equals(RuleItems other)
         {
@@ -20,7 +20,7 @@ namespace SLR.Types
             if (obj.GetType() != GetType()) return false;
             return Equals((RuleItems) obj);
         }
-        
+
         public override int GetHashCode()
         {
             return string.Join("", this).GetHashCode();
@@ -31,5 +31,4 @@ namespace SLR.Types
             return string.Join(", ", this);
         }
     }
-    
 }

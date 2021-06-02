@@ -5,14 +5,14 @@ namespace SLR.Types
 {
     public class TableRule
     {
-        public string Key { get; }
-        public Dictionary<string, RuleItems> Values { get; }
-        
         public TableRule(string key, IEnumerable<string> keys)
         {
             Key = key;
             Values = keys.ToDictionary(x => x, _ => new RuleItems());
         }
+
+        public string Key { get; }
+        public Dictionary<string, RuleItems> Values { get; }
 
         public void QuickAdd(RuleItem ruleItem)
         {
@@ -24,6 +24,5 @@ namespace SLR.Types
         {
             return $"{Key} | {string.Join(" ", Values.Select(x => x.Value))}";
         }
-        
     }
 }

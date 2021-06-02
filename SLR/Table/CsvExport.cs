@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -16,10 +15,7 @@ namespace SLR.Table
             var config = new CsvConfiguration(CultureInfo.InvariantCulture) {Delimiter = ";"};
             using var csv = new CsvWriter(new StreamWriter("table.csv"), config);
             csv.WriteField("");
-            foreach (var item in rules.First().Values)
-            {
-                csv.WriteField(item.Key);
-            }
+            foreach (var item in rules.First().Values) csv.WriteField(item.Key);
             csv.NextRecord();
             var okFlag = false;
             foreach (var rule in rules)
@@ -33,11 +29,12 @@ namespace SLR.Table
                         csv.WriteField("OK");
                         continue;
                     }
+
                     csv.WriteField(value.Value.ToString());
                 }
+
                 csv.NextRecord();
             }
         }
-        
     }
 }

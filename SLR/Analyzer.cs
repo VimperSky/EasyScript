@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -34,20 +33,18 @@ namespace SLR
 
             return split;
         }
-        
-        
+
 
         public void Analyze()
         {
             var left = new Stack<string>();
             var right = new Stack<string>();
             var inputStack = new Stack<string>();
-            foreach (var input in _input.Reverse()) 
+            foreach (var input in _input.Reverse())
                 inputStack.Push(input);
-            
+
             right.Push(_tableRules.First().Key);
             while (true)
-            {
                 try
                 {
                     var character = "";
@@ -57,22 +54,20 @@ namespace SLR
                         ? values.Where(x => x.Key == Constants.EndSymbol).ToList()
                         : values.Where(x => x.Key == character).ToList();
 
-                    if (items.Count == 0)
-                    {
+                    if (items.Count == 0) 
                         throw new Exception("Items are empty");
-                    }
 
                     var elements = items.First().Value;
                     // Если свертка
                     if (elements.First().Value.StartsWith("R"))
                     {
-                        if (character != "") 
+                        if (character != "")
                             inputStack.Push(character);
 
                         // номер свертки
-                        var rNumber = int.Parse(elements.First().Value.Substring(1, elements.First().Value.Length - 1)) - 1;
-                        var rule = _rules[rNumber];
-                    
+                        var ruleNumber = int.Parse(elements.First().Value.Substring(1, elements.First().Value.Length - 1)) - 1;
+                        var rule = _rules[ruleNumber];
+
                         if (rule.Items[0].Value != Constants.EmptySymbol)
                             for (var i = 0; i < rule.Items.Count; i++)
                             {
@@ -82,10 +77,7 @@ namespace SLR
 
                         if (right.Count == 1 && left.Count == 0 && inputStack.Count == 0)
                         {
-                            
-                            Console.WriteLine($"Left [{string.Join(", ", left.ToArray())}]" +
-                                              $" Input [{string.Join(" ", inputStack.ToArray())}]" +
-                                              $" Right [{string.Join(", ", right.ToArray())}]");
+                            Console.WriteLine("Analyzer correct!");
                             return;
                         }
 
@@ -98,17 +90,17 @@ namespace SLR
                         left.Push(character);
                     }
 
+                    Console.WriteLine($"Left [{string.Join(", ", left.ToArray())}]" +
+                                      $" Input [{string.Join(" ", inputStack.ToArray())}]" +
+                                      $" Right [{string.Join(", ", right.ToArray())}]");
                 }
                 catch (Exception e)
                 {
-                    throw new ArgumentException("[Syntax Analyzer Error] " + e  +"\r\n*** Analyzer State ***" +
-                                                $"\r\nLeft [{string.Join(", ", left.ToArray())}]" + 
-                                                $"\r\nInput [{string.Join(" ", inputStack.ToArray())}]" + 
+                    throw new ArgumentException("[Syntax Analyzer Error] " + e + "\r\n*** Analyzer State ***" +
+                                                $"\r\nLeft [{string.Join(", ", left.ToArray())}]" +
+                                                $"\r\nInput [{string.Join(" ", inputStack.ToArray())}]" +
                                                 $"\r\nRight [{string.Join(", ", right.ToArray())}]");
-                    
                 }
-            }
-            
         }
     }
 }

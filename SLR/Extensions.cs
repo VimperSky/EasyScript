@@ -7,7 +7,7 @@ namespace SLR
     {
         // Without R
         private const string Alphabet = "ABCDEFGHIJKLMNOPQSTUVWXYZ";
-        
+
         public static string GetNextFreeLetter(HashSet<string> takenLetters)
         {
             var freeLetters = Alphabet.ToList();

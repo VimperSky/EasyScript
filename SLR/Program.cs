@@ -6,7 +6,7 @@ namespace SLR
 {
     internal static class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
             var rules = SimpleRulesParser.Parse(File.OpenRead("rules.txt"));
 
@@ -19,7 +19,6 @@ namespace SLR
             try
             {
                 analyzer.Analyze();
-                Console.WriteLine("Analyzer correct!");
             }
             catch (Exception ex)
             {

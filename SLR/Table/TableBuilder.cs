@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using SLR.Types;
@@ -18,7 +17,8 @@ namespace SLR.Table
             foreach (var rule in rules)
             {
                 valueKeys.Add(rule.NonTerminal);
-                foreach (var ruleItem in rule.Items.Where(ruleItem => ruleItem != Constants.EmptySymbol && ruleItem != Constants.EndSymbol))
+                foreach (var ruleItem in rule.Items.Where(ruleItem =>
+                    ruleItem != Constants.EmptySymbol && ruleItem != Constants.EndSymbol))
                     valueKeys.Add(ruleItem.Value);
             }
 
@@ -45,9 +45,9 @@ namespace SLR.Table
                 var items = keyQueue.Dequeue();
                 queueBlackList.Add(items);
                 var key = string.Join("", items.Select(x => x.ToString()));
-                if (tableRules.Any(x => x.Key == key)) 
+                if (tableRules.Any(x => x.Key == key))
                     continue;
-                
+
                 var tableRule = new TableRule(key, _valueKeys);
                 foreach (var item in items)
                 {
@@ -74,9 +74,6 @@ namespace SLR.Table
 
                 AddToQueue(tableRule);
             }
-
-            Console.WriteLine($"   | {string.Join("   ", _valueKeys)}");
-            Console.WriteLine(string.Join("\r\n", tableRules));
 
             return tableRules.ToImmutableList();
 

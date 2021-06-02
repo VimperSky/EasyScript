@@ -12,9 +12,9 @@ namespace SLR
     {
         private readonly string[] _input;
         private readonly ImmutableList<Rule> _rules;
-        private readonly ImmutableHashSet<TableRule> _tableRules;
+        private readonly ImmutableList<TableRule> _tableRules;
 
-        public Analyzer(Stream stream, ImmutableHashSet<TableRule> table, ImmutableList<Rule> rules)
+        public Analyzer(Stream stream, ImmutableList<TableRule> table, ImmutableList<Rule> rules)
         {
             _input = InputParser(stream);
             _tableRules = table;

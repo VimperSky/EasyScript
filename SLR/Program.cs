@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using SLR.Table;
 
 namespace SLR
 {
@@ -11,6 +12,7 @@ namespace SLR
 
             var tableBuilder = new TableBuilder(rules);
             var tableRules = tableBuilder.CreateTable();
+            CsvExport.SaveToCsv(tableRules);
 
             var input = File.OpenRead("input.txt");
             var analyzer = new Analyzer(input, tableRules, rules);

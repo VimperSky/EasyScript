@@ -4,12 +4,12 @@ using System.Collections.Immutable;
 using System.Linq;
 using SLR.Types;
 
-namespace SLR
+namespace SLR.Table
 {
     public class TableBuilder
     {
         private readonly ImmutableList<Rule> _rules;
-        private readonly ImmutableHashSet<string> _valueKeys;
+        private readonly ImmutableList<string> _valueKeys;
 
         public TableBuilder(ImmutableList<Rule> rules)
         {
@@ -23,12 +23,12 @@ namespace SLR
             }
 
             valueKeys.Add(Constants.EndSymbol);
-            _valueKeys = valueKeys.ToImmutableHashSet();
+            _valueKeys = valueKeys.ToImmutableList();
         }
 
-        public ImmutableHashSet<TableRule> CreateTable()
+        public ImmutableList<TableRule> CreateTable()
         {
-            var tableRules = new HashSet<TableRule>();
+            var tableRules = new List<TableRule>();
             var keyQueue = new Queue<RuleItems>();
             var queueBlackList = new HashSet<RuleItems>();
             {
@@ -78,7 +78,7 @@ namespace SLR
             Console.WriteLine($"   | {string.Join("   ", _valueKeys)}");
             Console.WriteLine(string.Join("\r\n", tableRules));
 
-            return tableRules.ToImmutableHashSet();
+            return tableRules.ToImmutableList();
 
             void AddNext(TableRule tableRule, RuleItemId itemId)
             {

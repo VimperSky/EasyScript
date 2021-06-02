@@ -50,19 +50,16 @@ namespace SLR.Table
 
                 var tableRule = new TableRule(key, _valueKeys);
                 foreach (var item in items)
-                {
                     // Последний элемент
                     if (_rules[item.Id.RuleIndex].Items.Count <= item.Id.ItemIndex + 1)
                     {
-                        var nextItems = FindNextRecursive(item.Value);
+                        var nextItems = FindNextRecursive(_rules[item.Id.RuleIndex].NonTerminal);
                         foreach (var nextItem in nextItems)
-                        {
                             // Добавление элементов, чтобы не повторялись в одной ячейке
                             tableRule.QuickFold(nextItem, new RuleItem("R" + (item.Id.RuleIndex + 1)));
-                        }
                     }
                     // Конец цепочки
-                    else if (_rules[item.Id.RuleIndex].Items[item.Id.ItemIndex+1].Value == Constants.EndSymbol)
+                    else if (_rules[item.Id.RuleIndex].Items[item.Id.ItemIndex + 1].Value == Constants.EndSymbol)
                     {
                         tableRule.Values[Constants.EndSymbol].Add(new RuleItem("R" + (item.Id.RuleIndex + 1)));
                     }
@@ -71,7 +68,6 @@ namespace SLR.Table
                     {
                         AddNext(tableRule, item.Id);
                     }
-                }
 
                 tableRules.Add(tableRule);
                 AddToQueue(tableRule);

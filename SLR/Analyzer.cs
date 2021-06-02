@@ -54,7 +54,7 @@ namespace SLR
                         ? values.Where(x => x.Key == Constants.EndSymbol).ToList()
                         : values.Where(x => x.Key == character).ToList();
 
-                    if (items.Count == 0) 
+                    if (items.Count == 0)
                         throw new Exception("Items are empty");
 
                     var elements = items.First().Value;
@@ -65,7 +65,8 @@ namespace SLR
                             inputStack.Push(character);
 
                         // номер свертки
-                        var ruleNumber = int.Parse(elements.First().Value.Substring(1, elements.First().Value.Length - 1)) - 1;
+                        var ruleNumber =
+                            int.Parse(elements.First().Value.Substring(1, elements.First().Value.Length - 1)) - 1;
                         var rule = _rules[ruleNumber];
 
                         if (rule.Items[0].Value != Constants.EmptySymbol)

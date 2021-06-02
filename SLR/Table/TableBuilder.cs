@@ -56,11 +56,13 @@ namespace SLR.Table
                     {
                         var nextItems = FindNextRecursive(item.Value);
                         foreach (var nextItem in nextItems)
-                            tableRule.Values[nextItem.Value].Add(new RuleItem("R" + (item.Id.RuleIndex + 1)));
-                        tableRules.Add(tableRule);
+                        {
+                            // Добавление элементов, чтобы не повторялись в одной ячейке
+                            tableRule.QuickFold(nextItem, new RuleItem("R" + (item.Id.RuleIndex + 1)));
+                        }
                     }
                     // Конец цепочки
-                    else if (_rules[item.Id.RuleIndex].Items[^1].Value == Constants.EndSymbol)
+                    else if (_rules[item.Id.RuleIndex].Items[item.Id.ItemIndex+1].Value == Constants.EndSymbol)
                     {
                         tableRule.Values[Constants.EndSymbol].Add(new RuleItem("R" + (item.Id.RuleIndex + 1)));
                     }
@@ -68,10 +70,10 @@ namespace SLR.Table
                     else
                     {
                         AddNext(tableRule, item.Id);
-                        tableRules.Add(tableRule);
                     }
                 }
 
+                tableRules.Add(tableRule);
                 AddToQueue(tableRule);
             }
 

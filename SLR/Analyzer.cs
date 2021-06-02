@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -48,17 +47,16 @@ namespace SLR
                 if (inputStack.Count > 0) character = (string) inputStack.Pop();
                 var row = _tableRules.Where(x => x.Key == (string) right.Peek());
                 var rows = row.First().Values;
-                IEnumerable<KeyValuePair<string, RuleItems>> cell;
-                if (character == "")
-                    cell = rows.Where(x => x.Key == Constants.EndSymbol);
-                else
-                    cell = rows.Where(x => x.Key == character);
+                var cell = character == ""
+                    ? rows.Where(x => x.Key == Constants.EndSymbol)
+                    : rows.Where(x => x.Key == character);
 
                 if (cell.ToList().Count == 0)
                 {
-                    Console.WriteLine("Vse ploho");
+                    Console.WriteLine("\nError");
                     return;
                 }
+
                 var element = cell.First().Value;
                 if (element.First().Value.Contains("R"))
                 {
@@ -75,7 +73,7 @@ namespace SLR
 
                     if (right.Count == 1 && left.Count == 0 && inputStack.Count == 0)
                     {
-                        Console.WriteLine("Zaebis, niggeri goyat v saraye");
+                        Console.WriteLine("Correct");
                         return;
                     }
 
@@ -86,6 +84,9 @@ namespace SLR
                     right.Push(string.Join("", element));
                     left.Push(character);
                 }
+
+                Console.WriteLine(
+                    $"Left [{string.Join(", ", left.ToArray())}] Input [{string.Join(" ", inputStack.ToArray())}] Right [{string.Join(", ", right.ToArray())}]");
             }
         }
     }

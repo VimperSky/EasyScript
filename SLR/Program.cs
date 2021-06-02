@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace SLR
 {
@@ -13,7 +14,15 @@ namespace SLR
 
             var input = File.OpenRead("input.txt");
             var analyzer = new Analyzer(input, tableRules, rules);
-            analyzer.Analyze();
+            try
+            {
+                analyzer.Analyze();
+                Console.WriteLine("Analyzer correct!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

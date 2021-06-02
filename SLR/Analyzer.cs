@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -33,61 +34,81 @@ namespace SLR
 
             return split;
         }
+        
+        
 
         public void Analyze()
         {
             var left = new Stack<string>();
             var right = new Stack<string>();
             var inputStack = new Stack<string>();
-            foreach (var input in _input.Reverse()) inputStack.Push(input);
+            foreach (var input in _input.Reverse()) 
+                inputStack.Push(input);
+            
             right.Push(_tableRules.First().Key);
             while (true)
             {
-                var character = "";
-                if (inputStack.Count > 0) character = inputStack.Pop();
-                var row = _tableRules.Where(x => x.Key == right.Peek());
-                var rows = row.First().Values;
-                var cell = character == ""
-                    ? rows.Where(x => x.Key == Constants.EndSymbol).ToList()
-                    : rows.Where(x => x.Key == character).ToList();
-
-                if (cell.Count == 0)
+                try
                 {
-                    Console.WriteLine("\nError");
-                    return;
-                }
+                    var character = "";
+                    if (inputStack.Count > 0) character = inputStack.Pop();
+                    var values = _tableRules.First(x => x.Key == right.Peek()).Values;
+                    var items = character == ""
+                        ? values.Where(x => x.Key == Constants.EndSymbol).ToList()
+                        : values.Where(x => x.Key == character).ToList();
 
-                var element = cell.First().Value;
-                if (element.First().Value.Contains("R"))
-                {
-                    if (character != "") inputStack.Push(character);
-
-                    var number = int.Parse(element.First().Value.Substring(1, element.First().Value.Length - 1)) - 1;
-                    var rule = _rules[number];
-                    if (rule.Items[0].Value != Constants.EmptySymbol)
-                        for (var i = 0; i < rule.Items.Count; i++)
-                        {
-                            left.Pop();
-                            right.Pop();
-                        }
-
-                    if (right.Count == 1 && left.Count == 0 && inputStack.Count == 0)
+                    if (items.Count == 0)
                     {
-                        Console.WriteLine("Correct");
-                        return;
+                        throw new Exception("Items are empty");
                     }
 
-                    inputStack.Push(rule.NonTerminal);
-                }
-                else
-                {
-                    right.Push(string.Join("", element));
-                    left.Push(character);
-                }
+                    var elements = items.First().Value;
+                    // Если свертка
+                    if (elements.First().Value.StartsWith("R"))
+                    {
+                        if (character != "") 
+                            inputStack.Push(character);
 
-                Console.WriteLine(
-                    $"Left [{string.Join(", ", left.ToArray())}] Input [{string.Join(" ", inputStack.ToArray())}] Right [{string.Join(", ", right.ToArray())}]");
+                        // номер свертки
+                        var rNumber = int.Parse(elements.First().Value.Substring(1, elements.First().Value.Length - 1)) - 1;
+                        var rule = _rules[rNumber];
+                    
+                        if (rule.Items[0].Value != Constants.EmptySymbol)
+                            for (var i = 0; i < rule.Items.Count; i++)
+                            {
+                                left.Pop();
+                                right.Pop();
+                            }
+
+                        if (right.Count == 1 && left.Count == 0 && inputStack.Count == 0)
+                        {
+                            
+                            Console.WriteLine($"Left [{string.Join(", ", left.ToArray())}]" +
+                                              $" Input [{string.Join(" ", inputStack.ToArray())}]" +
+                                              $" Right [{string.Join(", ", right.ToArray())}]");
+                            return;
+                        }
+
+                        inputStack.Push(rule.NonTerminal);
+                    }
+                    // Иначе
+                    else
+                    {
+                        right.Push(elements.ToString());
+                        left.Push(character);
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    throw new ArgumentException("[Syntax Analyzer Error] " + e  +"\r\n*** Analyzer State ***" +
+                                                $"\r\nLeft [{string.Join(", ", left.ToArray())}]" + 
+                                                $"\r\nInput [{string.Join(" ", inputStack.ToArray())}]" + 
+                                                $"\r\nRight [{string.Join(", ", right.ToArray())}]");
+                    
+                }
             }
+            
         }
     }
 }

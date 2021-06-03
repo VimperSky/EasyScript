@@ -48,13 +48,13 @@ namespace SLR
                 })
                 .ToList();
 
-            if (rules[0].Items[^1] != Constants.EndSymbol)
+            if (rules[0].Items[^1].Value != Constants.EndSymbol)
             {
                 if (rules.Count(x => x.NonTerminal == rules[0].NonTerminal) > 1) InsertRuleAtStart(rules);
                 rules[0].Items.Add(new RuleItem(Constants.EndSymbol, ElementType.End));
             }
 
-            if (rules[0].Items.Any(x => x == rules[0].NonTerminal)) InsertRuleAtStart(rules);
+            if (rules[0].Items.Any(x => x.Value == rules[0].NonTerminal)) InsertRuleAtStart(rules);
 
             for (var i = 0; i < rules.Count; i++)
             for (var j = 0; j < rules[i].Items.Count; j++)

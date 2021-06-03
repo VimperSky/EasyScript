@@ -38,7 +38,7 @@ namespace SLR.Table
             
             { // Начальный проход с первого нетерминала
                 var tableRule = CreateTableRule(_rules[0].NonTerminal);
-                ProcessFirst(tableRule, GetItem(0, 0));
+                ProcessFirst(tableRule, _rules[0].NonTerminal);
                 UpdatePendingItems(tableRule);
                 tableRules.Add(tableRule);
             }
@@ -80,42 +80,28 @@ namespace SLR.Table
             }
         }
         
-        /// <summary>
-        /// Обрабатывает данный элемент и добавляет его и все его first в таблицу
-        /// </summary>
-        /// <param name="tableRule"></param>
-        /// <param name="ruleItem"></param>
-        private void ProcessFirst(TableRule tableRule, RuleItem ruleItem)
+        private void ProcessFirst(TableRule tableRule, string nonTerm)
         {
-            if (ruleItem.Type == ElementType.Empty)
-                return;
-            
-            tableRule.QuickAdd(ruleItem);
-            if (ruleItem.Type != ElementType.NonTerminal)
-                return;
-            
-            // Если нетерминал то мы ищем все места, где он используется
-            foreach (var rule in _rules.Where(x => x.NonTerminal == ruleItem.Value))
+            foreach (var rules in _rules.Where(x => x.NonTerminal == nonTerm))
             {
-                var first = rule.Items[0];
-                if (ruleItem.Type == ElementType.Terminal)
+                var first = rules.Items[0];
+                if (first.Type is ElementType.Terminal or ElementType.NonTerminal)
                 {
-                    if (first == Constants.EmptySymbol)
+                    tableRule.QuickAdd(first);
+                    if (first.Type is ElementType.NonTerminal && nonTerm != first.Value)
                     {
-                        var nextItems = FindNextRecursive(rule.NonTerminal);
-                        foreach (var nextItem in nextItems)
-                        {
-                            ProcessFollow(tableRule, nextItem);
-                        }
+                        ProcessFirst(tableRule, first.Value);
                     }
-                    else
-                    {
-                        tableRule.QuickAdd(first);
-                    }
+                    continue;
                 }
-                else if (first.ToString() != ruleItem.ToString())
+                
+                if (first.Type == ElementType.Empty)
                 {
-                    ProcessFirst(tableRule, first);
+                    var next = FindNextRecursive(nonTerm);
+                    foreach (var nextItem in next)
+                    {
+                        ProcessFollow(tableRule, nextItem);
+                    }
                 }
             }
         }
@@ -144,9 +130,10 @@ namespace SLR.Table
             }
             else
             {
-                ProcessFirst(tableRule, item);
+                ProcessFirst(tableRule, item.Value);
             }
         }
+
         
         
         private IEnumerable<RuleItem> FindNextRecursive(string nonTerm)

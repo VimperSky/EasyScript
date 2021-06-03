@@ -33,24 +33,12 @@ namespace SLR.Types
 
         public override string ToString()
         {
+            if (Type == ElementType.Fold)
+                return Value;
+            
             return Value + (RuleIndex + 1) + (ItemIndex + 1);
         }
-
-        public static bool operator ==(RuleItem ruleItem, string value)
-        {
-            if (!ReferenceEquals(null, ruleItem))
-            {
-                return ruleItem.Value == value;
-            }
-
-            return false;
-        }
-
-        public static bool operator !=(RuleItem ruleItem, string value)
-        {
-            return !(ruleItem == value);
-        }
-
+        
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;

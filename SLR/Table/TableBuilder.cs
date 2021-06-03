@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using SLR.Types;
@@ -86,7 +87,7 @@ namespace SLR.Table
                     }
                     else if (rule.Items[0].Value == Constants.EmptySymbol)
                     {
-                        var nextItems = FindNextRecursive(rule.Items[0].Value);
+                        var nextItems = FindNextRecursive(rule.NonTerminal);
                         foreach (var nItem in nextItems)
                             tableRule.Values[nItem.Value].Add(new RuleItem("R" + (rule.Items[0].Id.RuleIndex + 1)));
                     }

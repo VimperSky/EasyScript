@@ -19,7 +19,7 @@ namespace SLR.Table
             {
                 valueKeys.Add(rule.NonTerminal);
                 foreach (var ruleItem in rule.Items.Where(ruleItem =>
-                    ruleItem != Constants.EmptySymbol && ruleItem != Constants.EndSymbol))
+                    ruleItem.Type != ElementType.Empty && ruleItem.Type != ElementType.End))
                     valueKeys.Add(ruleItem.Value);
             }
 
@@ -27,96 +27,128 @@ namespace SLR.Table
             _valueKeys = valueKeys.ToImmutableList();
         }
 
+        private TableRule CreateTableRule(string key) => new(key, _valueKeys);
+        private RuleItem GetItem(int ruleIndex, int itemIndex) => _rules[ruleIndex].Items[itemIndex];
+
         public ImmutableList<TableRule> CreateTable()
         {
+            // Таблица и список правил на разбор и добавление в таблицу
             var tableRules = new List<TableRule>();
             var pendingItems = new Queue<RuleItems>();
-            {
-                var itemId = new RuleItemId(0, -1);
-                var tableRule = new TableRule(_rules[itemId.RuleIndex].NonTerminal, _valueKeys);
-
-                AddNext(tableRule, itemId);
+            
+            { // Начальный проход с первого нетерминала
+                var tableRule = CreateTableRule(_rules[0].NonTerminal);
+                ProcessFirst(tableRule, GetItem(0, 0));
                 UpdatePendingItems(tableRule);
                 tableRules.Add(tableRule);
             }
-
+            
+            // Проход по остальным правилам, берем последовательно с очереди
             while (pendingItems.Count > 0)
             {
                 var items = pendingItems.Dequeue();
                 var key = string.Join("", items.Select(x => x.ToString()));
                 if (tableRules.Any(x => x.Key == key))
                     continue;
-
-                var tableRule = new TableRule(key, _valueKeys);
+            
+                var tableRule = CreateTableRule(key);
                 foreach (var item in items)
-                    // Последний элемент
-                    if (_rules[item.Id.RuleIndex].Items.Count <= item.Id.ItemIndex + 1)
-                    {
-                        var nextItems = FindNextRecursive(_rules[item.Id.RuleIndex].NonTerminal);
-                        foreach (var nextItem in nextItems)
-                            // Добавление элементов, чтобы не повторялись в одной ячейке
-                            tableRule.QuickFold(nextItem, new RuleItem("R" + (item.Id.RuleIndex + 1)));
-                    }
-                    // Конец цепочки
-                    else if (_rules[item.Id.RuleIndex].Items[item.Id.ItemIndex + 1].Value == Constants.EndSymbol)
-                    {
-                        tableRule.Values[Constants.EndSymbol].Add(new RuleItem("R" + (item.Id.RuleIndex + 1)));
-                    }
-                    // Не последний элемент
-                    else
-                    {
-                        AddNext(tableRule, item.Id);
-                    }
-
+                {
+                    ProcessFollow(tableRule, item);
+                }
+            
                 tableRules.Add(tableRule);
                 UpdatePendingItems(tableRule);
             }
 
             return tableRules.ToImmutableList();
-
-            void AddNext(TableRule tableRule, RuleItemId itemId)
-            {
-                var next = _rules[itemId.RuleIndex].Items[itemId.ItemIndex + 1];
-                tableRule.QuickAdd(next);
-                foreach (var rule in _rules.Where(x => x.NonTerminal == next.Value))
-                    if (next.Value != rule.Items[0].Value && !rule.Items[0].IsTerminal)
-                    {
-                        AddNext(tableRule, new RuleItemId(rule.Items[0].Id.RuleIndex, rule.Items[0].Id.ItemIndex - 1));
-                    }
-                    else if (rule.Items[0].Value == Constants.EmptySymbol)
-                    {
-                        Console.WriteLine(rule.Items[0].ToString());
-                        var nextItems = FindNextRecursive(rule.NonTerminal);
-                        foreach (var nItem in nextItems)
-                        {
-                            if (nItem.IsTerminal)
-                            {
-                                tableRule.Values[nItem.Value].Add(new RuleItem("R" + (rule.Items[0].Id.RuleIndex + 1)));
-                            }
-                            else
-                            {
-                                // TODO: Добавить новую функцию
-                            }
-                        }
-                    }
-                    else
-                    {
-                        tableRule.QuickAdd(rule.Items[0]);
-                    }
-            }
-
+            
             void UpdatePendingItems(TableRule tableRule)
             {
                 foreach (var item in tableRule.Values
                     .Where(x => x.Value.Count > 0))
                 {
                     var value = item.Value;
-                    if (tableRules.All(x => x.Key != value.ToString()) && !value[0].Value.Contains("R"))
-                        pendingItems.Enqueue(value);
+                    if (tableRules.Any(x => x.Key == value.ToString()))
+                        continue;
+                    
+                    if (value.Any(x => x.Value.StartsWith("R")))
+                        continue;
+                    
+                    pendingItems.Enqueue(value);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Обрабатывает данный элемент и добавляет его и все его first в таблицу
+        /// </summary>
+        /// <param name="tableRule"></param>
+        /// <param name="ruleItem"></param>
+        private void ProcessFirst(TableRule tableRule, RuleItem ruleItem)
+        {
+            if (ruleItem.Type == ElementType.Empty)
+                return;
+            
+            tableRule.QuickAdd(ruleItem);
+            if (ruleItem.Type != ElementType.NonTerminal)
+                return;
+            
+            // Если нетерминал то мы ищем все места, где он используется
+            foreach (var rule in _rules.Where(x => x.NonTerminal == ruleItem.Value))
+            {
+                var first = rule.Items[0];
+                if (ruleItem.Type == ElementType.Terminal)
+                {
+                    if (first == Constants.EmptySymbol)
+                    {
+                        var nextItems = FindNextRecursive(rule.NonTerminal);
+                        foreach (var nextItem in nextItems)
+                        {
+                            ProcessFollow(tableRule, nextItem);
+                        }
+                    }
+                    else
+                    {
+                        tableRule.QuickAdd(first);
+                    }
+                }
+                else if (first.ToString() != ruleItem.ToString())
+                {
+                    ProcessFirst(tableRule, first);
                 }
             }
         }
 
+        /// <summary>
+        /// Обрабатывает все элементы, идущие после нетерминала из которого выводится e
+        /// </summary>
+        /// <param name="tableRule"></param>
+        /// <param name="item"></param>
+        private void ProcessFollow(TableRule tableRule, RuleItem item)
+        {
+            // Это последний элемент в правиле
+            if (item.ItemIndex >= _rules[item.RuleIndex].Items.Count - 1)
+            {
+                var nextItems = FindNextRecursive(_rules[item.RuleIndex].NonTerminal);
+                foreach (var nextItem in nextItems)
+                    // Добавление элементов, чтобы не повторялись в одной ячейке
+                    tableRule.QuickFold(nextItem.Value, item.RuleIndex + 1);
+                return;
+            }
+            
+            var next = GetItem(item.RuleIndex, item.ItemIndex + 1);
+            if (next.Value == Constants.EndSymbol)
+            {
+                tableRule.QuickFold(Constants.EndSymbol, item.RuleIndex + 1);
+            }
+            else
+            {
+                ProcessFirst(tableRule, item);
+            }
+        }
+        
+        
         private IEnumerable<RuleItem> FindNextRecursive(string nonTerm)
         {
             return FindUp(nonTerm, new HashSet<int>());

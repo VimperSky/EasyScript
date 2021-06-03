@@ -15,7 +15,7 @@ namespace SLR
             {
                 NonTerminal = Extensions.GetNextFreeLetter(rules.GroupBy(x => x.NonTerminal)
                     .Select(k => k.Key).ToHashSet()),
-                Items = new List<RuleItem> {new(rules[0].NonTerminal)}
+                Items = new List<RuleItem> {new(rules[0].NonTerminal, ElementType.NonTerminal)}
             });
         }
 
@@ -38,8 +38,12 @@ namespace SLR
                     NonTerminal = rawRule.LeftBody,
                     Items = rawRule.RightBody.Split(" ", StringSplitOptions.TrimEntries)
                         .Select(x => nonTerminals.Contains(x)
-                            ? new RuleItem(x)
-                            : new RuleItem(x, true))
+                            ? new RuleItem(x, ElementType.NonTerminal)
+                            : x == Constants.EmptySymbol
+                                ? new RuleItem(x, ElementType.Empty)
+                                : x == Constants.EndSymbol
+                                    ? new RuleItem(x, ElementType.End)
+                                    : new RuleItem(x, ElementType.Terminal))
                         .ToList()
                 })
                 .ToList();
@@ -47,14 +51,16 @@ namespace SLR
             if (rules[0].Items[^1] != Constants.EndSymbol)
             {
                 if (rules.Count(x => x.NonTerminal == rules[0].NonTerminal) > 1) InsertRuleAtStart(rules);
-                rules[0].Items.Add(new RuleItem(Constants.EndSymbol, true));
+                rules[0].Items.Add(new RuleItem(Constants.EndSymbol, ElementType.End));
             }
 
             if (rules[0].Items.Any(x => x == rules[0].NonTerminal)) InsertRuleAtStart(rules);
 
             for (var i = 0; i < rules.Count; i++)
             for (var j = 0; j < rules[i].Items.Count; j++)
-                rules[i].Items[j].Id = new RuleItemId(i, j);
+            {
+                rules[i].Items[j].SetIndex(i, j);
+            }
 
             foreach (var item in rules) Console.WriteLine(item);
             Console.WriteLine();

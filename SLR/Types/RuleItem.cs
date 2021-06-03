@@ -4,54 +4,43 @@ namespace SLR.Types
 {
     public class RuleItem : IEquatable<RuleItem>
     {
-        private readonly string _nonTerminal;
-        private readonly string _terminal;
+        public readonly string Value;
+        public readonly ElementType Type;
 
-        public RuleItem(string value, bool isTerminal = false)
+        public RuleItem(string value, ElementType type)
         {
-            if (isTerminal)
-            {
-                _terminal = value;
-                _nonTerminal = null;
-            }
-            else
-            {
-                _terminal = null;
-                _nonTerminal = value;
-            }
+            Value = value;
+            Type = type;
         }
 
-        public bool IsTerminal => _terminal != null;
+        
+        public int RuleIndex { get; private set; }
+        public int ItemIndex { get; private set; }
 
-        public string Value => _nonTerminal ?? (_terminal ??
-                                                throw new Exception("Both NonTerminal and Terminal can't be null!"));
-
-
-        public RuleItemId Id { get; set; }
+        public void SetIndex(int ruleId, int itemId)
+        {
+            RuleIndex = ruleId;
+            ItemIndex = itemId;
+        }
 
         public bool Equals(RuleItem other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Equals(_nonTerminal, other._nonTerminal) && Equals(_terminal, other._terminal) &&
-                   Equals(Id, other.Id);
+            return Equals(Value, other.Value) && Equals(RuleIndex, other.RuleIndex) && Equals(ItemIndex, other.ItemIndex);
         }
 
 
         public override string ToString()
         {
-            return Value + Id;
+            return Value + (RuleIndex + 1) + (ItemIndex + 1);
         }
 
         public static bool operator ==(RuleItem ruleItem, string value)
         {
             if (!ReferenceEquals(null, ruleItem))
             {
-                if (ruleItem._nonTerminal != null)
-                    return ruleItem._nonTerminal == value;
-
-                if (ruleItem._terminal != null)
-                    return ruleItem._terminal == value;
+                return ruleItem.Value == value;
             }
 
             return false;
@@ -72,7 +61,7 @@ namespace SLR.Types
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(_nonTerminal, _terminal, Id);
+            return HashCode.Combine(Value, RuleIndex, ItemIndex);
         }
     }
 }

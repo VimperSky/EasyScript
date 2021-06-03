@@ -23,12 +23,12 @@ namespace SLR.Types
 
         public override int GetHashCode()
         {
-            return string.Join("", this).GetHashCode();
+            return ToString().GetHashCode();
         }
 
         public override string ToString()
         {
-            return string.Join("", this);
+            return string.Join(", ", this);
         }
     }
 }

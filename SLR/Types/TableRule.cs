@@ -36,7 +36,9 @@ namespace SLR.Types
                 throw new ArgumentException("Wrong ruleItem index! " + key);
 
             if (Values[key].Any(x => x.Type == ElementType.Fold))
-                throw new ArgumentException($"Trying to fold by key which already folded: {key}");
+                return;
+                // throw new ArgumentException($"Trying to fold by key which already folded." +
+                //                             $"\r\n[Info] key: {key}, index: {index}");
 
             Values[key].Add(new RuleItem($"R{index}", ElementType.Fold));
         }

@@ -30,7 +30,6 @@ namespace SLR.Types
             return Equals(Value, other.Value) && Equals(RuleIndex, other.RuleIndex) && Equals(ItemIndex, other.ItemIndex);
         }
 
-
         public override string ToString()
         {
             if (Type == ElementType.Fold)

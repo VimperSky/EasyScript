@@ -7,19 +7,24 @@ using SLR.Types;
 
 namespace SLR
 {
-    public static class SimpleRulesParser
+    public class SimpleRulesParser
     {
-        private static void InsertRuleAtStart(IList<Rule> rules)
+        private readonly LettersProvider _lettersProvider;
+        public SimpleRulesParser()
+        {
+            _lettersProvider = new LettersProvider();
+        }
+        
+        private void InsertRuleAtStart(IList<Rule> rules, bool letterFromEnd = false)
         {
             rules.Insert(0, new Rule
             {
-                NonTerminal = Extensions.GetNextFreeLetter(rules.GroupBy(x => x.NonTerminal)
-                    .Select(k => k.Key).ToHashSet()),
+                NonTerminal = _lettersProvider.GetNextFreeLetter(letterFromEnd).ToString(),
                 Items = new List<RuleItem> {new(rules[0].NonTerminal, ElementType.NonTerminal)}
             });
         }
 
-        public static ImmutableList<Rule> Parse(Stream stream)
+        public ImmutableList<Rule> Parse(Stream stream)
         {
             using var sr = new StreamReader(stream);
             string line;
@@ -50,11 +55,11 @@ namespace SLR
 
             if (rules[0].Items[^1].Value != Constants.EndSymbol)
             {
-                if (rules.Count(x => x.NonTerminal == rules[0].NonTerminal) > 1) InsertRuleAtStart(rules);
+                if (rules.Count(x => x.NonTerminal == rules[0].NonTerminal) > 1) InsertRuleAtStart(rules, true);
                 rules[0].Items.Add(new RuleItem(Constants.EndSymbol, ElementType.End));
             }
 
-            if (rules[0].Items.Any(x => x.Value == rules[0].NonTerminal)) InsertRuleAtStart(rules);
+            if (rules[0].Items.Any(x => x.Value == rules[0].NonTerminal)) InsertRuleAtStart(rules, true);
 
             for (var i = 0; i < rules.Count; i++)
             for (var j = 0; j < rules[i].Items.Count; j++)

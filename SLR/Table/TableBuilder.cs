@@ -55,8 +55,8 @@ namespace SLR.Table
                     {
                         var nextItems = FindNextRecursive(_rules[item.Id.RuleIndex].NonTerminal);
                         foreach (var nextItem in nextItems)
-                            // Добавление элементов, чтобы не повторялись в одной ячейке
-                            tableRule.QuickFold(nextItem, new RuleItem("R" + (item.Id.RuleIndex + 1)));
+                            AddFold(tableRule, new RuleItemId(nextItem.Id.RuleIndex, nextItem.Id.ItemIndex - 1),
+                                new RuleItem("R" + (item.Id.RuleIndex + 1)));
                     }
                     // Конец цепочки
                     else if (_rules[item.Id.RuleIndex].Items[item.Id.ItemIndex + 1].Value == Constants.EndSymbol)
@@ -86,13 +86,43 @@ namespace SLR.Table
                     }
                     else if (rule.Items[0].Value == Constants.EmptySymbol)
                     {
-                        var nextItems = FindNextRecursive(rule.Items[0].Value);
+                        var nextItems = FindNextRecursive(rule.NonTerminal);
                         foreach (var nItem in nextItems)
-                            tableRule.Values[nItem.Value].Add(new RuleItem("R" + (rule.Items[0].Id.RuleIndex + 1)));
+                            if (nItem.IsTerminal)
+                                tableRule.Values[nItem.Value].Add(new RuleItem("R" + (rule.Items[0].Id.RuleIndex + 1)));
+                            else
+                                AddFold(tableRule, new RuleItemId(nItem.Id.RuleIndex, nItem.Id.ItemIndex - 1),
+                                    new RuleItem("R" + (rule.Items[0].Id.RuleIndex + 1)));
                     }
                     else
                     {
                         tableRule.QuickAdd(rule.Items[0]);
+                    }
+            }
+
+            void AddFold(TableRule tableRule, RuleItemId itemId, RuleItem ruleItem)
+            {
+                var next = _rules[itemId.RuleIndex].Items[itemId.ItemIndex + 1];
+                tableRule.QuickFold(next, ruleItem);
+                foreach (var rule in _rules.Where(x => x.NonTerminal == next.Value))
+                    if (next.Value != rule.Items[0].Value && !rule.Items[0].IsTerminal)
+                    {
+                        AddFold(tableRule, new RuleItemId(rule.Items[0].Id.RuleIndex, rule.Items[0].Id.ItemIndex - 1),
+                            ruleItem);
+                    }
+                    else if (rule.Items[0].Value == Constants.EmptySymbol)
+                    {
+                        var nextItems = FindNextRecursive(rule.NonTerminal);
+                        foreach (var nItem in nextItems)
+                            if (nItem.IsTerminal)
+                                tableRule.Values[nItem.Value].Add(ruleItem);
+                            else
+                                AddFold(tableRule, new RuleItemId(nItem.Id.RuleIndex, nItem.Id.ItemIndex - 1),
+                                    ruleItem);
+                    }
+                    else
+                    {
+                        tableRule.QuickFold(rule.Items[0], ruleItem);
                     }
             }
 

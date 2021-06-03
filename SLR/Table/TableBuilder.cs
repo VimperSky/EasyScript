@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using SLR.Types;
@@ -88,8 +87,14 @@ namespace SLR.Table
             {
                 var nextItems = FindNextRecursive(_rules[item.RuleIndex].NonTerminal);
                 foreach (var nextItem in nextItems)
-                    // Добавление элементов, чтобы не повторялись в одной ячейке
-                    tableRule.QuickFold(nextItem.Value, item.RuleIndex + 1);
+                {
+                    tableRule.QuickCollapse(nextItem.Value, item.RuleIndex + 1);
+                    if (nextItem.Type is ElementType.NonTerminal)
+                    {
+                        FirstCollapse(tableRule, nextItem.Value, item.RuleIndex + 1);
+                    }
+                }
+
                 return;
             }
             
@@ -97,19 +102,34 @@ namespace SLR.Table
             var next = GetItem(item.RuleIndex, item.ItemIndex + 1);
             if (next.Type == ElementType.End)
             {
-                tableRule.QuickFold(Constants.EndSymbol, item.RuleIndex + 1);
+                tableRule.QuickCollapse(Constants.EndSymbol, item.RuleIndex + 1);
                 return;
             }
-            
-            
+
             tableRule.QuickAdd(next);
             if (next.Type == ElementType.NonTerminal)
             {
                 First(tableRule, next.Value);
             }
         }
+
+        private void FirstCollapse(TableRule tableRule, string nonTerm, int collapseIndex)
+        {
+            foreach (var rules in _rules.Where(x => x.NonTerminal == nonTerm))
+            {
+                var first = rules.Items[0];
+                if (first.Type is ElementType.Terminal or ElementType.End)
+                {
+                    tableRule.QuickCollapse(first.Value, collapseIndex);
+                }
+                else if (first.Type is ElementType.NonTerminal && nonTerm != first.Value)
+                {
+                    FirstCollapse(tableRule, first.Value, collapseIndex);
+                }
+            }
+        }
         
-        private void First(TableRule tableRule, string nonTerm)
+        private void First(TableRule tableRule, string nonTerm) 
         {
             foreach (var rules in _rules.Where(x => x.NonTerminal == nonTerm))
             {
@@ -124,9 +144,7 @@ namespace SLR.Table
                 }
             }
         }
-
-
-
+        
         private IEnumerable<RuleItem> FindNextRecursive(string nonTerm)
         {
             return FindUp(nonTerm, new HashSet<int>());

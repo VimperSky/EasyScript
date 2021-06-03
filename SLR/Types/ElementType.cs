@@ -4,7 +4,7 @@
     {
         Terminal,
         NonTerminal,
-        Fold,
+        Collapse,
         Empty,
         End
     }

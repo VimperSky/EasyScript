@@ -32,7 +32,7 @@ namespace SLR.Types
 
         public override string ToString()
         {
-            if (Type == ElementType.Fold)
+            if (Type == ElementType.Collapse)
                 return Value;
             
             return Value + (RuleIndex + 1) + (ItemIndex + 1);

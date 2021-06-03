@@ -31,7 +31,6 @@ namespace SLR.Table
         {
             var tableRules = new List<TableRule>();
             var keyQueue = new Queue<RuleItems>();
-            var queueBlackList = new HashSet<RuleItems>();
             {
                 var itemId = new RuleItemId(0, -1);
                 var tableRule = new TableRule(_rules[itemId.RuleIndex].NonTerminal, _valueKeys);
@@ -44,7 +43,6 @@ namespace SLR.Table
             while (keyQueue.Count > 0)
             {
                 var items = keyQueue.Dequeue();
-                queueBlackList.Add(items);
                 var key = string.Join("", items.Select(x => x.ToString()));
                 if (tableRules.Any(x => x.Key == key))
                     continue;
@@ -111,7 +109,7 @@ namespace SLR.Table
                     .Where(x => x.Value.Count > 0))
                 {
                     var value = item.Value;
-                    if (!queueBlackList.Contains(value) && !value[0].Value.Contains("R"))
+                    if (tableRules.All(x => x.Key != value.ToString()) && !value[0].Value.Contains("R"))
                         keyQueue.Enqueue(value);
                 }
             }

@@ -11,7 +11,7 @@ namespace LLGenerator
 {
     public static class Program
     {
-        private static ImmutableList<DirRule> DoParse(Stream input)
+        public static ImmutableList<DirRule> DoParse(Stream input)
         {
             var inputRules = CsvImport.Parse(input);
             var baseRules = LexerRulesParser.Parse(inputRules);

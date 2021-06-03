@@ -59,7 +59,7 @@ namespace SLR
 
                     var elements = items.First().Value;
                     // Если свертка
-                    if (elements.First().Value.StartsWith("R"))
+                    if (elements.First().Type is ElementType.Collapse)
                     {
                         if (character != "")
                             inputStack.Push(character);
@@ -69,7 +69,7 @@ namespace SLR
                             int.Parse(elements.First().Value.Substring(1, elements.First().Value.Length - 1)) - 1;
                         var rule = _rules[ruleNumber];
 
-                        if (rule.Items[0].Value != Constants.EmptySymbol)
+                        if (rule.Items[0].Type != ElementType.Empty)
                             for (var i = 0; i < rule.Items.Count; i++)
                             {
                                 left.Pop();

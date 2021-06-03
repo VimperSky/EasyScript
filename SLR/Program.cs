@@ -10,9 +10,14 @@ namespace SLR
         {
             var rules = new SimpleRulesParser().Parse(File.OpenRead("rules.txt"));
             
-            var noEmptyRules = new EmptyRemover().RemoveEmpty(rules);
+            var noEmptyRules = new EmptyRemover(rules).RemoveEmpty();
+
+            var fixedRules = new RulesFixer().SetIndexes(noEmptyRules);
+
+            foreach (var item in fixedRules) Console.WriteLine(item);
+            Console.WriteLine();
             
-            var tableRules = new TableBuilder(noEmptyRules).CreateTable();
+            var tableRules = new TableBuilder(fixedRules).CreateTable();
             
             CsvExport.SaveToCsv(tableRules);
             

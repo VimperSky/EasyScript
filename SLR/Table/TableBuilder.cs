@@ -30,19 +30,19 @@ namespace SLR.Table
         public ImmutableList<TableRule> CreateTable()
         {
             var tableRules = new List<TableRule>();
-            var keyQueue = new Queue<RuleItems>();
+            var pendingItems = new Queue<RuleItems>();
             {
                 var itemId = new RuleItemId(0, -1);
                 var tableRule = new TableRule(_rules[itemId.RuleIndex].NonTerminal, _valueKeys);
 
                 AddNext(tableRule, itemId);
-                AddToQueue(tableRule);
+                UpdatePendingItems(tableRule);
                 tableRules.Add(tableRule);
             }
 
-            while (keyQueue.Count > 0)
+            while (pendingItems.Count > 0)
             {
-                var items = keyQueue.Dequeue();
+                var items = pendingItems.Dequeue();
                 var key = string.Join("", items.Select(x => x.ToString()));
                 if (tableRules.Any(x => x.Key == key))
                     continue;
@@ -69,7 +69,7 @@ namespace SLR.Table
                     }
 
                 tableRules.Add(tableRule);
-                AddToQueue(tableRule);
+                UpdatePendingItems(tableRule);
             }
 
             return tableRules.ToImmutableList();
@@ -90,7 +90,9 @@ namespace SLR.Table
                         foreach (var nItem in nextItems)
                         {
                             if (nItem.IsTerminal)
+                            {
                                 tableRule.Values[nItem.Value].Add(new RuleItem("R" + (rule.Items[0].Id.RuleIndex + 1)));
+                            }
                             else
                             {
                                 // TODO: Добавить новую функцию
@@ -103,14 +105,14 @@ namespace SLR.Table
                     }
             }
 
-            void AddToQueue(TableRule tableRule)
+            void UpdatePendingItems(TableRule tableRule)
             {
                 foreach (var item in tableRule.Values
                     .Where(x => x.Value.Count > 0))
                 {
                     var value = item.Value;
                     if (tableRules.All(x => x.Key != value.ToString()) && !value[0].Value.Contains("R"))
-                        keyQueue.Enqueue(value);
+                        pendingItems.Enqueue(value);
                 }
             }
         }

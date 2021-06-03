@@ -87,9 +87,17 @@ namespace SLR.Table
                     }
                     else if (rule.Items[0].Value == Constants.EmptySymbol)
                     {
+                        Console.WriteLine(rule.Items[0].ToString());
                         var nextItems = FindNextRecursive(rule.NonTerminal);
                         foreach (var nItem in nextItems)
-                            tableRule.Values[nItem.Value].Add(new RuleItem("R" + (rule.Items[0].Id.RuleIndex + 1)));
+                        {
+                            if (nItem.IsTerminal)
+                                tableRule.Values[nItem.Value].Add(new RuleItem("R" + (rule.Items[0].Id.RuleIndex + 1)));
+                            else
+                            {
+                                // TODO: Добавить новую функцию
+                            }
+                        }
                     }
                     else
                     {

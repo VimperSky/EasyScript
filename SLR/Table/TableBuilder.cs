@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using SLR.Types;
@@ -30,19 +29,21 @@ namespace SLR.Table
         public ImmutableList<TableRule> CreateTable()
         {
             var tableRules = new List<TableRule>();
-            var pendingItems = new Queue<RuleItems>();
+            var keyQueue = new Queue<RuleItems>();
+            var queueBlackList = new HashSet<RuleItems>();
             {
                 var itemId = new RuleItemId(0, -1);
                 var tableRule = new TableRule(_rules[itemId.RuleIndex].NonTerminal, _valueKeys);
 
                 AddNext(tableRule, itemId);
-                UpdatePendingItems(tableRule);
+                AddToQueue(tableRule);
                 tableRules.Add(tableRule);
             }
 
-            while (pendingItems.Count > 0)
+            while (keyQueue.Count > 0)
             {
-                var items = pendingItems.Dequeue();
+                var items = keyQueue.Dequeue();
+                queueBlackList.Add(items);
                 var key = string.Join("", items.Select(x => x.ToString()));
                 if (tableRules.Any(x => x.Key == key))
                     continue;
@@ -69,7 +70,7 @@ namespace SLR.Table
                     }
 
                 tableRules.Add(tableRule);
-                UpdatePendingItems(tableRule);
+                AddToQueue(tableRule);
             }
 
             return tableRules.ToImmutableList();
@@ -131,8 +132,8 @@ namespace SLR.Table
                     .Where(x => x.Value.Count > 0))
                 {
                     var value = item.Value;
-                    if (tableRules.All(x => x.Key != value.ToString()) && !value[0].Value.Contains("R"))
-                        pendingItems.Enqueue(value);
+                    if (!queueBlackList.Contains(value) && !value[0].Value.Contains("R"))
+                        keyQueue.Enqueue(value);
                 }
             }
         }

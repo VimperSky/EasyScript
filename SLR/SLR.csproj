@@ -9,8 +9,4 @@
       <ProjectReference Include="..\Lexer\Lexer.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="RulesWrappers" />
-    </ItemGroup>
-
 </Project>

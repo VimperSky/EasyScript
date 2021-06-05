@@ -13,7 +13,6 @@ namespace SLR
             _rules = rules.ToList();
         }
         
-
         public ImmutableList<Rule> RemoveEmpty()
         {
             var foundEmpty = true;

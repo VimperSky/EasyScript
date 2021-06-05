@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -51,7 +52,14 @@ namespace LLGenerator.TableGenerator
                     }
                     else
                     {
-                        ptr = table.First(x => x.NonTerminal == item.Value).Id;
+                        try
+                        {
+                            ptr = table.First(x => x.NonTerminal == item.Value).Id;
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception(item.ToString(), e);
+                        }
                     }
 
                     addTable.Add(new TableRule

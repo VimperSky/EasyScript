@@ -9,8 +9,7 @@ namespace SLR
 {
     public class SimpleRulesParser
     {
-
-        public ImmutableList<Rule> Parse(Stream stream)
+        public static ImmutableList<Rule> Parse(Stream stream)
         {
             using var sr = new StreamReader(stream);
             string line;

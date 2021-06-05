@@ -6,9 +6,11 @@ namespace SLR
 {
     internal static class Program
     {
-        private static void Main()
+        private static void Main(string[] args)
         {
-            var rules = new SimpleRulesParser().Parse(File.OpenRead("rules.txt"));
+            var isLexerMode = args.Length > 0;
+            var rules = isLexerMode ? CsvImport.Parse(File.OpenRead("rules.csv"))
+                : SimpleRulesParser.Parse(File.OpenRead("rules.txt"));
             
             var noEmptyRules = new EmptyRemover(rules).RemoveEmpty();
 

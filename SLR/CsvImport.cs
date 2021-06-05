@@ -7,7 +7,7 @@ using SLR.Types;
 
 namespace SLR
 {
-    public class LexerRulesParser
+    public class CsvImport
     {
         public static ImmutableList<Rule> Parse(Stream stream)
         {

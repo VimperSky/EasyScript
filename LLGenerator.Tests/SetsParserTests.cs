@@ -1,6 +1,8 @@
 using System.IO;
 using System.Linq;
-using LLGenerator.Processors;
+using Generator.InputParsing;
+using Generator.RulesParsing;
+using Generator.RulesProcessing;
 using Xunit;
 
 namespace LLGenerator.Tests
@@ -30,10 +32,14 @@ namespace LLGenerator.Tests
         [InlineData("20")]
         public void RunTests(string id)
         {
-            var input = File.OpenRead($"../../../TestCases/{id}.test");
-            var dirRules = new SimpleProcessor().Process(input);
-            var expected = File.ReadAllLines($"../../../Expected/{id}.test");
-            Assert.Equal(expected, dirRules.Select(x => x.ToString()));
+            var processor = new Processor(new TxtRulesParser($"../../../TestCases/{id}.txt"), 
+                new SimpleRulesProcessor(), new SimpleRulesParser("input.txt"));
+
+            var keeper = new RulesKeeper();
+            processor.Process(keeper, false);
+            
+            var expected = File.ReadAllLines($"../../../Expected/{id}.txt");
+            Assert.Equal(expected.ToList(), keeper.DirRules.Select(x => x.ToString()).ToList());
         }
     }
 }

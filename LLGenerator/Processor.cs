@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
 using Generator;
 using Generator.InputParsing;
@@ -12,7 +11,7 @@ using LLGenerator.SetsParser;
 using LLGenerator.TableGenerator;
 using LLGenerator.Types;
 
-namespace LLGenerator.Processors
+namespace LLGenerator
 {
     public class Processor
     {
@@ -33,18 +32,21 @@ namespace LLGenerator.Processors
                 .All(groupsDirs => groupsDirs.Count == groupsDirs.Distinct().Count());
         }
         
-        public void Process()
+        public void Process(RulesKeeper rulesKeeper = null, bool buildTable = true)
         {
+            var lettersProvider = new LettersProvider();
             var inputRules = _rulesParser.Parse();
 
             var rules = _rulesProcessor.Process(inputRules);
-            var fixedRules = RulesFixer.FixRules(rules);
-            UpdateLettersProvider(fixedRules, LettersProvider.Instance);
+            var fixedRules = new RulesFixer(lettersProvider).FixRules(rules);
+            UpdateLettersProvider(fixedRules, lettersProvider);
             
-            var factorizedRules = Factorization.MakeFactorization(fixedRules);
+            var factorizedRules = new Factorization(lettersProvider).MakeFactorization(fixedRules);
 
-            var leftRules = LeftRecursionRemover.RemoveLeftRecursion(factorizedRules);
+            var leftRules = new LeftRecursionRemover(lettersProvider).RemoveLeftRecursion(factorizedRules);
             var dirRules = DirSetsFinder.Find(leftRules);
+            if (rulesKeeper != null)
+                rulesKeeper.DirRules = dirRules;
             
             Console.WriteLine("Rules:");
             foreach (var rule in dirRules) 
@@ -56,6 +58,9 @@ namespace LLGenerator.Processors
                 return;
             }
 
+            if (!buildTable)
+                return;
+            
             var table = TableGenerator.TableGenerator.Parse(dirRules);
             CsvExport.SaveToCsv(table);
 

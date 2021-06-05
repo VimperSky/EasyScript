@@ -1,8 +1,6 @@
-﻿using System.IO;
-using Generator.InputParsing;
+﻿using Generator.InputParsing;
 using Generator.RulesParsing;
 using Generator.RulesProcessing;
-using LLGenerator.Processors;
 
 namespace LLGenerator
 {
@@ -19,7 +17,7 @@ namespace LLGenerator
                 processor = new Processor(new TxtRulesParser("rules.txt"), 
                     new SimpleRulesProcessor(), new SimpleRulesParser("input.txt"));
 
-            processor.Process();
+            processor.Process(buildTable: false);
         }
     }
 }

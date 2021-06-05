@@ -6,9 +6,16 @@ using Generator.Types;
 
 namespace LLGenerator.SetsParser
 {
-    internal static class LeftRecursionRemover
+    internal class LeftRecursionRemover
     {
-        public static ImmutableList<Rule> RemoveLeftRecursion(ImmutableList<Rule> ruleList)
+        private readonly LettersProvider _lettersProvider;
+
+        public LeftRecursionRemover(LettersProvider lettersProvider)
+        {
+            _lettersProvider = lettersProvider;
+        }
+
+        public ImmutableList<Rule> RemoveLeftRecursion(ImmutableList<Rule> ruleList)
         {
             var newRules = new List<Rule>();
             var groups = ruleList.GetGroups();
@@ -24,7 +31,7 @@ namespace LLGenerator.SetsParser
 
                 if (recursionRules.Count > 0)
                 {
-                    var newNonTerm = LettersProvider.Instance.GetNextFreeLetter();
+                    var newNonTerm = _lettersProvider.GetNextFreeLetter();
 
                     foreach (var normalRule in normalRules)
                     {

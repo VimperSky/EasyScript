@@ -11,7 +11,7 @@ namespace Generator.RulesParsing
         public TxtRulesParser(string path)
         {
             if (!path.EndsWith(".txt"))
-                throw new ArgumentException("TXT Rules Parser accepts only csv files!");
+                throw new ArgumentException("TXT Rules Parser accepts only txt files!");
             
             _path = path;
         }

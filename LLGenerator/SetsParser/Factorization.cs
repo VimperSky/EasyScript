@@ -6,12 +6,18 @@ using Generator.Types;
 
 namespace LLGenerator.SetsParser
 {
-    internal static class Factorization
+    internal class Factorization
     {
-        private static IEnumerable<Rule> GenerateNewRules(IList<Rule> commonRules, int commonLen)
+        private readonly LettersProvider _lettersProvider;
+        internal Factorization(LettersProvider lettersProvider)
+        {
+            _lettersProvider = lettersProvider;
+        }
+        
+        private IEnumerable<Rule> GenerateNewRules(IList<Rule> commonRules, int commonLen)
         {
             var newRules = new List<Rule>();
-            var newNonTerm = LettersProvider.Instance.GetNextFreeLetter();
+            var newNonTerm = _lettersProvider.GetNextFreeLetter();
 
             var commonFinal = commonRules[0].Items.Take(commonLen).ToList();
             commonFinal.Add(new RuleItem(newNonTerm, ElementType.NonTerminal));
@@ -48,7 +54,7 @@ namespace LLGenerator.SetsParser
             return newRules;
         }
 
-        private static List<Rule> ProcessRulesIteration(ref List<Rule> rules)
+        private List<Rule> ProcessRulesIteration(ref List<Rule> rules)
         {
             var iterRules = new List<Rule>();
             for (var j = 0; j < rules.Count; j++)
@@ -83,7 +89,7 @@ namespace LLGenerator.SetsParser
             return iterRules;
         }
 
-        public static ImmutableList<Rule> MakeFactorization(ImmutableList<Rule> ruleList)
+        public ImmutableList<Rule> MakeFactorization(ImmutableList<Rule> ruleList)
         {
             var newRules = new List<Rule>();
             var groups = ruleList.GetGroups();

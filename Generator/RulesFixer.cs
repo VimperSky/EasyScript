@@ -5,18 +5,25 @@ using Generator.Types;
 
 namespace Generator
 {
-    public static class RulesFixer
+    public class RulesFixer
     {
-        private static void InsertRuleAtStart(IList<Rule> rules, bool letterFromEnd = false)
+        private readonly LettersProvider _lettersProvider;
+
+        public RulesFixer(LettersProvider lettersProvider)
+        {
+            _lettersProvider = lettersProvider;
+        }
+
+        private void InsertRuleAtStart(IList<Rule> rules, bool letterFromEnd = false)
         {
             rules.Insert(0, new Rule
             {
-                NonTerminal = LettersProvider.Instance.GetNextFreeLetter(letterFromEnd),
+                NonTerminal = _lettersProvider.GetNextFreeLetter(letterFromEnd),
                 Items = new List<RuleItem> {new(rules[0].NonTerminal, ElementType.NonTerminal)}
             });
         }
         
-        public static ImmutableList<Rule> FixRules(ImmutableList<Rule> rules, bool slr = false)
+        public ImmutableList<Rule> FixRules(ImmutableList<Rule> rules, bool slr = false)
         {
             if (rules[0].Items[^1].Type is not ElementType.End)
             {

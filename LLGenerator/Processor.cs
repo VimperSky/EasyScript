@@ -31,8 +31,8 @@ namespace LLGenerator
             return groups.Select(group => group.SelectMany(x => x.Dirs).ToList())
                 .All(groupsDirs => groupsDirs.Count == groupsDirs.Distinct().Count());
         }
-        
-        public void Process(RulesKeeper rulesKeeper = null, bool buildTable = true)
+
+        public ImmutableList<DirRule> GenerateRules()
         {
             var lettersProvider = new LettersProvider();
             var inputRules = _rulesParser.Parse();
@@ -45,8 +45,12 @@ namespace LLGenerator
 
             var leftRules = new LeftRecursionRemover(lettersProvider).RemoveLeftRecursion(factorizedRules);
             var dirRules = DirSetsFinder.Find(leftRules);
-            if (rulesKeeper != null)
-                rulesKeeper.DirRules = dirRules;
+            return dirRules;
+        }
+        
+        public void Process()
+        {
+            var dirRules = GenerateRules();
             
             Console.WriteLine("Rules:");
             foreach (var rule in dirRules) 
@@ -57,11 +61,8 @@ namespace LLGenerator
                 Console.WriteLine("Not LL1 grammar");
                 return;
             }
-
-            if (!buildTable)
-                return;
             
-            var table = TableGenerator.TableGenerator.Parse(dirRules);
+            var table = TableBuilder.Build(dirRules);
             CsvExport.SaveToCsv(table);
 
             var input = _inputParser.Parse();

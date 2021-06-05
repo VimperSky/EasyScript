@@ -35,11 +35,10 @@ namespace LLGenerator.Tests
             var processor = new Processor(new TxtRulesParser($"../../../TestCases/{id}.txt"), 
                 new SimpleRulesProcessor(), new SimpleRulesParser("input.txt"));
 
-            var keeper = new RulesKeeper();
-            processor.Process(keeper, false);
+            var rules = processor.GenerateRules();
             
             var expected = File.ReadAllLines($"../../../Expected/{id}.txt");
-            Assert.Equal(expected.ToList(), keeper.DirRules.Select(x => x.ToString()).ToList());
+            Assert.Equal(expected, rules.Select(x => x.ToString()));
         }
     }
 }

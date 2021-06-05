@@ -6,9 +6,9 @@ using LLGenerator.Types;
 
 namespace LLGenerator.TableGenerator
 {
-    public static class TableGenerator
+    public static class TableBuilder
     {
-        public static ImmutableList<TableRule> Parse(ImmutableList<DirRule> dirRules)
+        public static ImmutableList<TableRule> Build(ImmutableList<DirRule> dirRules)
         {
             var table = new List<TableRule>();
             var globalId = 0;

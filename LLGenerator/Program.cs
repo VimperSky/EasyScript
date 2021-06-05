@@ -17,7 +17,7 @@ namespace LLGenerator
                 processor = new Processor(new TxtRulesParser("rules.txt"), 
                     new SimpleRulesProcessor(), new SimpleRulesParser("input.txt"));
 
-            processor.Process(buildTable: false);
+            processor.Process();
         }
     }
 }

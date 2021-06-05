@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using SLR.Types;
+using Generator;
+using Generator.Types;
 
 namespace SLR.Table
 {
@@ -85,7 +86,7 @@ namespace SLR.Table
             // Это последний элемент в правиле
             if (item.ItemIndex >= _rules[item.RuleIndex].Items.Count - 1)
             {
-                var nextItems = FindNextRecursive(_rules[item.RuleIndex].NonTerminal);
+                var nextItems = _rules.FindNextRecursive(_rules[item.RuleIndex].NonTerminal);
                 foreach (var nextItem in nextItems)
                 {
                     tableRule.QuickCollapse(nextItem.Value, item.RuleIndex + 1);
@@ -143,38 +144,6 @@ namespace SLR.Table
                     }
                 }
             }
-        }
-        
-        private IEnumerable<RuleItem> FindNextRecursive(string nonTerm)
-        {
-            return FindUp(nonTerm, new HashSet<int>());
-        }
-
-        private IEnumerable<RuleItem> FindUp(string nonTerm, ISet<int> history)
-        {
-            var returns = new HashSet<RuleItem>();
-            for (var i = 0; i < _rules.Count; i++)
-            {
-                var rule = _rules[i];
-                for (var j = 0; j < rule.Items.Count; j++)
-                    if (rule.Items[j].Value == nonTerm)
-                    {
-                        if (++j < rule.Items.Count)
-                        {
-                            returns.Add(rule.Items[j]);
-                        }
-                        else
-                        {
-                            if (history.Contains(i)) return returns;
-                            history.Add(i);
-                            var nextReturns = FindUp(rule.NonTerminal, history);
-                            foreach (var item in nextReturns)
-                                returns.Add(item);
-                        }
-                    }
-            }
-
-            return returns;
         }
     }
 }

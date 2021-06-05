@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace SLR
+namespace Generator
 {
     public class LettersProvider
     {
+        private static readonly Lazy<LettersProvider> Lazy = new(() => new LettersProvider());
+
+        public static LettersProvider Instance => Lazy.Value;
+
         // Without R
         private const string Alphabet = "ABCDEFGHIJKLMNOPQSTUVWXYZ";
 

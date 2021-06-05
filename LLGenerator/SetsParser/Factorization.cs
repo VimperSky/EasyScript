@@ -1,22 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Lexer.Types;
-using LLGenerator.Entities;
+using Generator;
+using Generator.Types;
 
 namespace LLGenerator.SetsParser
 {
     internal static class Factorization
     {
-        private static IEnumerable<Rule> GenerateNewRules(IList<Rule> commonRules, int commonLen,
-            HashSet<string> nonTerms)
+        private static IEnumerable<Rule> GenerateNewRules(IList<Rule> commonRules, int commonLen)
         {
             var newRules = new List<Rule>();
-            var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms);
-            nonTerms.Add(newNonTerm);
+            var newNonTerm = LettersProvider.Instance.GetNextFreeLetter().ToString();
 
             var commonFinal = commonRules[0].Items.Take(commonLen).ToList();
-            commonFinal.Add(new RuleItem(newNonTerm));
+            commonFinal.Add(new RuleItem(newNonTerm, ElementType.NonTerminal));
             newRules.Add(new Rule
             {
                 NonTerminal = commonRules[0].NonTerminal,
@@ -44,13 +42,13 @@ namespace LLGenerator.SetsParser
                 newRules.Add(new Rule
                 {
                     NonTerminal = newNonTerm,
-                    Items = new List<RuleItem> {new(TokenType.Empty)}
+                    Items = new List<RuleItem> {new(Constants.EmptySymbol, ElementType.Empty)}
                 });
 
             return newRules;
         }
 
-        private static List<Rule> ProcessRulesIteration(ref List<Rule> rules, HashSet<string> nonTerms)
+        private static List<Rule> ProcessRulesIteration(ref List<Rule> rules)
         {
             var iterRules = new List<Rule>();
             for (var j = 0; j < rules.Count; j++)
@@ -77,7 +75,7 @@ namespace LLGenerator.SetsParser
                 {
                     var commonRules = rules.Where((_, i) => commonIds.Contains(i)).ToList();
                     rules = rules.Except(commonRules).ToList();
-                    var tempRules = GenerateNewRules(commonRules, minCommonLen, nonTerms);
+                    var tempRules = GenerateNewRules(commonRules, minCommonLen);
                     iterRules.AddRange(tempRules);
                 }
             }
@@ -89,7 +87,6 @@ namespace LLGenerator.SetsParser
         {
             var newRules = new List<Rule>();
             var groups = ruleList.GetGroups();
-            var nonTerms = groups.GetNonTerminals();
             foreach (var rulesGroup in groups)
             {
                 var rules = rulesGroup.ToList();
@@ -99,7 +96,7 @@ namespace LLGenerator.SetsParser
                     while (true)
                     {
                         nextRules.Clear();
-                        var newNonTermRules = ProcessRulesIteration(ref rules, nonTerms);
+                        var newNonTermRules = ProcessRulesIteration(ref rules);
                         nextRules.AddRange(newNonTermRules);
                         nextRules.AddRange(rules);
 

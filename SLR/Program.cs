@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Generator;
 using SLR.Table;
 
 namespace SLR
@@ -8,8 +9,6 @@ namespace SLR
     {
         private static void Main()
         {
-            var rules = new SimpleRulesParser().Parse(File.OpenRead("rules.txt"));
-            
             var noEmptyRules = new EmptyRemover(rules).RemoveEmpty();
 
             var fixedRules = new RulesFixer().FixRules(noEmptyRules);

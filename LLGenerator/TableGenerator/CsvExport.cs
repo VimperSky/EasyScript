@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using CsvHelper;
 using CsvHelper.Configuration;
-using LLGenerator.Entities;
+using LLGenerator.Types;
 
 namespace LLGenerator.TableGenerator
 {

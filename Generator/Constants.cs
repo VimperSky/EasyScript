@@ -1,4 +1,4 @@
-﻿namespace SLR
+﻿namespace Generator
 {
     public static class Constants
     {

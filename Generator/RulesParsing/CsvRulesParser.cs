@@ -5,11 +5,11 @@ using System.Linq;
 using CsvHelper;
 using CsvHelper.Configuration;
 
-namespace LLGenerator.SetsParser
+namespace Generator.RulesParsing
 {
-    internal class CsvImport
+    public class CsvRulesParser: IRulesParser
     {
-        public static List<(string NonTerminal, string RightBody)> Parse(Stream stream)
+        public List<(string NonTerminal, string RightBody)> Parse(Stream stream)
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {

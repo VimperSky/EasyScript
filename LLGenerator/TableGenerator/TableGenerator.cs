@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Lexer.Types;
-using LLGenerator.Entities;
+using Generator.Types;
+using LLGenerator.Types;
 
 namespace LLGenerator.TableGenerator
 {
@@ -31,9 +31,9 @@ namespace LLGenerator.TableGenerator
                     var newRuleId = ++globalId;
                     var item = dRule.Items[index];
                     var dirSet = new HashSet<string>();
-                    if (item.IsTerminal)
+                    if (item.Type is ElementType.Terminal)
                     {
-                        if (item.TokenType == TokenType.Empty)
+                        if (item.Type is ElementType.Empty)
                             dirSet = dRule.Dirs;
                         else
                             dirSet.Add(item.Value);
@@ -45,7 +45,7 @@ namespace LLGenerator.TableGenerator
 
                     var isLast = index + 1 == dRule.Items.Count;
                     int? ptr = null;
-                    if (item.IsTerminal)
+                    if (item.Type is ElementType.Terminal)
                     {
                         if (!isLast) ptr = globalId + 1;
                     }
@@ -61,9 +61,9 @@ namespace LLGenerator.TableGenerator
                         DirSet = dirSet,
                         GoTo = ptr,
                         IsError = true,
-                        IsShift = item.IsTerminal && item.TokenType != TokenType.Empty,
-                        MoveToStack = !item.IsTerminal && !isLast,
-                        IsEnd = item.TokenType == TokenType.End
+                        IsShift = item.Type is ElementType.Terminal and not ElementType.Empty,
+                        MoveToStack = item.Type is not ElementType.Terminal && !isLast,
+                        IsEnd = item.Type is ElementType.End
                     });
                     if (index == 0) table[i].GoTo = newRuleId;
                 }

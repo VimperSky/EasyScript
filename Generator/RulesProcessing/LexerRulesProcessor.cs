@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Generator.Types;
 using Lexer.Types;
-using LLGenerator.Entities;
 using static Lexer.Constants;
 
-namespace LLGenerator.SetsParser
+namespace Generator.RulesProcessing
 {
-    public static class LexerRulesParser
+    public class LexerRulesProcessor: IRulesProcessor
     {
         private static readonly Dictionary<string, TokenType> TokenTypes;
 
@@ -24,17 +24,17 @@ namespace LLGenerator.SetsParser
             {"!|", TokenType.Or}
         };
 
-        static LexerRulesParser()
+        static LexerRulesProcessor()
         {
             TokenTypes = ServiceSymbols.Concat(KeyWords).Concat(ParserTypes)
                 .ToDictionary(x => x.Key, x => x.Value);
         }
 
-        public static ImmutableList<Rule> Parse(IEnumerable<(string NonTerminal, string RightBody)> rules)
+        
+        public ImmutableList<Rule> Process(List<(string NonTerminal, string RightBody)> inputRules)
         {
             var lexerRules = new List<Rule>();
-            foreach (var (nonTerminal, rightBody) in
-                rules.Where(x => !string.IsNullOrWhiteSpace(x.NonTerminal)))
+            foreach (var (nonTerminal, rightBody) in inputRules.Where(x => !string.IsNullOrWhiteSpace(x.NonTerminal)))
             {
                 var tempTokens = new List<RuleItem>();
                 foreach (var item in rightBody.Split(" ", StringSplitOptions.RemoveEmptyEntries))
@@ -47,9 +47,9 @@ namespace LLGenerator.SetsParser
                     }
 
                     if (item.StartsWith("<") && item.EndsWith(">"))
-                        tempTokens.Add(new RuleItem(item));
+                        tempTokens.Add(new RuleItem(item, ElementType.NonTerminal));
                     else if (TokenTypes.ContainsKey(item))
-                        tempTokens.Add(new RuleItem(TokenTypes[item]));
+                        tempTokens.Add(new RuleItem(TokenTypes[item].ToString(), ElementType.Terminal));
                     else
                         throw new ArgumentException($"TokenType is not correct. {item}");
                 }

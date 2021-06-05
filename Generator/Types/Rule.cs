@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
-namespace LLGenerator.Entities
+namespace Generator.Types
 {
     public class Rule
     {
@@ -10,7 +9,7 @@ namespace LLGenerator.Entities
 
         public override string ToString()
         {
-            return $"{NonTerminal} -> {string.Join(" ", Items.Select(x => x.Value))}";
+            return $"{NonTerminal} -> {string.Join(" ", Items)}";
         }
     }
 }

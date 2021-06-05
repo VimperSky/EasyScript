@@ -1,32 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
-using SLR.Types;
+using Generator.Types;
 
-namespace SLR
+namespace Generator.RulesProcessing
 {
-    public class SimpleRulesParser
+    public class SimpleRulesProcessor: IRulesProcessor
     {
-
-        public ImmutableList<Rule> Parse(Stream stream)
+        public ImmutableList<Rule> Process(List<(string NonTerminal, string RightBody)> inputRules)
         {
-            using var sr = new StreamReader(stream);
-            string line;
-            var rawRules = new List<(string LeftBody, string RightBody)>();
-            while ((line = sr.ReadLine()) != null)
-            {
-                var split = line.Split("->", StringSplitOptions.TrimEntries);
-                var localRules = split[1].Split("|", StringSplitOptions.TrimEntries);
-                rawRules.AddRange(localRules.Select(rule => (split[0], rule)));
-            }
+            var nonTerminals = inputRules.Select(x => x.NonTerminal).ToHashSet();
 
-            var nonTerminals = rawRules.Select(x => x.LeftBody).ToHashSet();
-
-            var rules = rawRules.Select(rawRule => new Rule
+            var rules = inputRules.Select(rawRule => new Rule
                 {
-                    NonTerminal = rawRule.LeftBody,
+                    NonTerminal = rawRule.NonTerminal,
                     Items = rawRule.RightBody.Split(" ", StringSplitOptions.TrimEntries)
                         .Select(x => nonTerminals.Contains(x)
                             ? new RuleItem(x, ElementType.NonTerminal)
@@ -42,6 +30,5 @@ namespace SLR
 
             return rules.ToImmutableList();
         }
-        
     }
 }

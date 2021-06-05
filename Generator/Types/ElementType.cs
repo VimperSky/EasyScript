@@ -1,6 +1,6 @@
-﻿namespace SLR.Types
+﻿namespace Generator.Types
 {
-    public enum ElementType
+    public enum ElementType: byte
     {
         Terminal,
         NonTerminal,

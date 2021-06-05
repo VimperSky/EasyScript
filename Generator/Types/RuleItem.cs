@@ -1,8 +1,7 @@
 ﻿using System;
+using Generator.Types;
 
-namespace SLR.Types
-{
-    public class RuleItem : IEquatable<RuleItem>
+public class RuleItem : IEquatable<RuleItem>
     {
         public readonly string Value;
         public readonly ElementType Type;
@@ -17,10 +16,13 @@ namespace SLR.Types
         public int RuleIndex { get; private set; }
         public int ItemIndex { get; private set; }
 
+        private bool _indexesSet;
+
         public void SetIndex(int ruleId, int itemId)
         {
             RuleIndex = ruleId;
             ItemIndex = itemId;
+            _indexesSet = true;
         }
 
         public bool Equals(RuleItem other)
@@ -35,7 +37,10 @@ namespace SLR.Types
             if (Type == ElementType.Collapse)
                 return Value;
             
-            return Value + (RuleIndex + 1) + (ItemIndex + 1);
+            if (_indexesSet)
+                return Value + (RuleIndex + 1) + (ItemIndex + 1);
+
+            return Value;
         }
 
         public RuleItem Clone()
@@ -56,4 +61,3 @@ namespace SLR.Types
             return HashCode.Combine(Value, RuleIndex, ItemIndex);
         }
     }
-}

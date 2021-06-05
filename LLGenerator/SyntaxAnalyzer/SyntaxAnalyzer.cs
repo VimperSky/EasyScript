@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using LLGenerator.Entities;
+using LLGenerator.Types;
 
 namespace LLGenerator.SyntaxAnalyzer
 {

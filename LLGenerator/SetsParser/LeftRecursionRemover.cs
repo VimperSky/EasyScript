@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Lexer.Types;
-using LLGenerator.Entities;
+using Generator;
+using Generator.Types;
 
 namespace LLGenerator.SetsParser
 {
@@ -12,7 +12,6 @@ namespace LLGenerator.SetsParser
         {
             var newRules = new List<Rule>();
             var groups = ruleList.GetGroups();
-            var nonTerms = groups.GetNonTerminals();
             foreach (var rules in groups)
             {
                 var recursionRules = new List<Rule>();
@@ -25,27 +24,26 @@ namespace LLGenerator.SetsParser
 
                 if (recursionRules.Count > 0)
                 {
-                    var newNonTerm = SetsParserExtensions.GetNextFreeLetter(nonTerms);
-                    nonTerms.Add(newNonTerm);
+                    var newNonTerm = LettersProvider.Instance.GetNextFreeLetter().ToString();
 
                     foreach (var normalRule in normalRules)
                     {
-                        if (normalRule.Items[0].TokenType == TokenType.Empty)
+                        if (normalRule.Items[0].Type is ElementType.Empty)
                             normalRule.Items.RemoveAt(0);
-                        normalRule.Items.Add(new RuleItem(newNonTerm));
+                        normalRule.Items.Add(new RuleItem(newNonTerm, ElementType.NonTerminal));
                         newRules.Add(normalRule);
                     }
 
                     foreach (var items in recursionRules.Select(recRule => recRule.Items.Skip(1).ToList()))
                     {
-                        items.Add(new RuleItem(newNonTerm));
+                        items.Add(new RuleItem(newNonTerm, ElementType.NonTerminal));
                         newRules.Add(new Rule {NonTerminal = newNonTerm, Items = items});
                     }
 
                     newRules.Add(new Rule
                     {
                         NonTerminal = newNonTerm,
-                        Items = new List<RuleItem> {new(TokenType.Empty)}
+                        Items = new List<RuleItem> {new(Constants.EmptySymbol, ElementType.Empty)}
                     });
                 }
                 else

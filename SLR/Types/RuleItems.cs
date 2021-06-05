@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SLR.Types
+namespace Generator.Types
 {
     public class RuleItems : List<RuleItem>, IEquatable<RuleItems>
     {

@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLR", "SLR\SLR.csproj", "{0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLR.Tests", "SLR.Tests\SLR.Tests.csproj", "{DA6D7CB4-782A-48C2-AA74-BC0DACD50A83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generator\Generator.csproj", "{5513425B-20BF-4E09-9017-44E11FC644BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{DA6D7CB4-782A-48C2-AA74-BC0DACD50A83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA6D7CB4-782A-48C2-AA74-BC0DACD50A83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA6D7CB4-782A-48C2-AA74-BC0DACD50A83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5513425B-20BF-4E09-9017-44E11FC644BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5513425B-20BF-4E09-9017-44E11FC644BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5513425B-20BF-4E09-9017-44E11FC644BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5513425B-20BF-4E09-9017-44E11FC644BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

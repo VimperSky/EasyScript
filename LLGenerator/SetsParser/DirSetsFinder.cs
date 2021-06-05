@@ -1,83 +1,46 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Lexer.Types;
-using LLGenerator.Entities;
+using Generator;
+using Generator.Types;
+using LLGenerator.Types;
 
 namespace LLGenerator.SetsParser
 {
-    internal class DirSetsFinder
+    internal static class DirSetsFinder
     {
-        private readonly List<HashSet<(string Value, bool IsTerm)>> _foundValues = new();
-        private readonly ImmutableList<Rule> _rules;
-
-        public DirSetsFinder(ImmutableList<Rule> ruleList)
+        internal static ImmutableList<DirRule> Find(ImmutableList<Rule> rules)
         {
-            _rules = ruleList;
-            for (var i = 0; i < _rules.Count; i++)
-                _foundValues.Add(new HashSet<(string Value, bool IsTerm)>());
-        }
+            var foundValues = new List<HashSet<RuleItem>>();
+            for (var i = 0; i < rules.Count; i++)
+                foundValues.Add(new HashSet<RuleItem>());
 
-        private IEnumerable<(string Value, bool IsTerm)> FindUp(string nonTerm)
-        {
-            return FindUp(nonTerm, new HashSet<int>());
-        }
-
-        private IEnumerable<(string Value, bool IsTerm)> FindUp(string nonTerm, ISet<int> history)
-        {
-            var returns = new HashSet<(string Value, bool IsTerm)>();
-            for (var i = 0; i < _rules.Count; i++)
+            for (var i = 0; i < rules.Count; i++)
             {
-                var rule = _rules[i];
-                for (var j = 0; j < rule.Items.Count; j++)
-                    if (rule.Items[j].Value == nonTerm)
-                    {
-                        if (++j < rule.Items.Count)
-                        {
-                            returns.Add((rule.Items[j].Value, rule.Items[j].IsTerminal));
-                        }
-                        else
-                        {
-                            if (history.Contains(i)) return returns;
-                            history.Add(i);
-                            var nextReturns = FindUp(rule.NonTerminal, history);
-                            foreach (var item in nextReturns)
-                                returns.Add(item);
-                        }
-                    }
-            }
-
-            return returns;
-        }
-
-        public ImmutableList<DirRule> Find()
-        {
-            for (var i = 0; i < _rules.Count; i++)
-            {
-                var rule = _rules[i];
-                if (rule.Items[0].TokenType == TokenType.Empty)
-                    foreach (var item in FindUp(rule.NonTerminal))
-                        _foundValues[i].Add(item);
+                var rule = rules[i];
+                if (rule.Items[0].Type is ElementType.Empty)
+                    foreach (var item in rules.FindNextRecursive(rule.NonTerminal))
+                        foundValues[i].Add((item));
                 else
-                    _foundValues[i].Add((rule.Items[0].Value, rule.Items[0].IsTerminal));
+                    foundValues[i].Add((rule.Items[0]));
             }
 
             for (;;)
             {
                 var somethingChanged = false;
-                foreach (var foundVal in _foundValues)
+                foreach (var foundVal in foundValues)
                 {
-                    var nonTerms = foundVal.Where(x => !x.IsTerm).ToList();
+                    var nonTerms = foundVal.Where(x => x.Type is ElementType.NonTerminal).ToList();
                     if (nonTerms.Count > 0)
                         somethingChanged = true;
                     foreach (var nonTerm in nonTerms)
                     {
                         foundVal.Remove(nonTerm);
-                        var rules = _rules.Select((x, i) => (x, i))
+                        var rulesWithNonTerm = rules.Select((x, i) => (x, i))
                             .Where(x => x.x.NonTerminal == nonTerm.Value)
                             .Select(x => x.i)
                             .ToList();
-                        foreach (var fVal in rules.SelectMany(rule => _foundValues[rule]))
+                        foreach (var fVal in rulesWithNonTerm.SelectMany(rule => foundValues[rule]))
                             foundVal.Add(fVal);
                     }
                 }
@@ -85,7 +48,7 @@ namespace LLGenerator.SetsParser
                 if (!somethingChanged) break;
             }
 
-            return _rules.Select((t, i) => DirRule.Create(_foundValues[i]
+            return rules.Select((t, i) => DirRule.Create(foundValues[i]
                 .Select(x => x.Value).ToHashSet(), t)).ToImmutableList();
         }
     }

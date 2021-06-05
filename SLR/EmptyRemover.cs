@@ -49,7 +49,9 @@ namespace SLR
             {
                 if (rule.Items.Any(x => x.Value == nonTerm))
                 {
-                    var newItems = rule.Items.Where(x => x.Value != nonTerm).Select(x => x.Clone()).ToList();
+                    var newItems = rule.Items
+                        .Where(x => x.Value != nonTerm)
+                        .Select(x => x.Clone()).ToList();
                     if (newItems.All(x => x.Type is ElementType.End))
                         continue;
                     

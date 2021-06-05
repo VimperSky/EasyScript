@@ -40,9 +40,7 @@ namespace SLR.Types
 
         public RuleItem Clone()
         {
-            var newRuleItem = new RuleItem(Value, Type);
-            newRuleItem.SetIndex(RuleIndex, ItemIndex);
-            return newRuleItem;
+            return new(Value, Type);
         }
 
         public override bool Equals(object obj)

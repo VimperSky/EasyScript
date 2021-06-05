@@ -12,7 +12,7 @@ namespace SLR
             
             var noEmptyRules = new EmptyRemover(rules).RemoveEmpty();
 
-            var fixedRules = new RulesFixer().SetIndexes(noEmptyRules);
+            var fixedRules = new RulesFixer().FixRules(noEmptyRules);
 
             foreach (var item in fixedRules) Console.WriteLine(item);
             Console.WriteLine();
@@ -22,7 +22,7 @@ namespace SLR
             CsvExport.SaveToCsv(tableRules);
             
             var input = File.OpenRead("input.txt");
-            var analyzer = new Analyzer(input, tableRules, rules);
+            var analyzer = new Analyzer(input, tableRules, fixedRules);
             try
             {
                 analyzer.Analyze();

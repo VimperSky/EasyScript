@@ -23,7 +23,7 @@ namespace SLR
         }
 
         
-        public ImmutableList<Rule> SetIndexes(ImmutableList<Rule> inputRules)
+        public ImmutableList<Rule> FixRules(ImmutableList<Rule> inputRules)
         {
             var rules = inputRules.ToList();
             
@@ -34,6 +34,7 @@ namespace SLR
             }
 
             if (rules[0].Items.Any(x => x.Value == rules[0].NonTerminal)) InsertRuleAtStart(rules, true);
+            
             for (var i = 0; i < rules.Count; i++)
             for (var j = 0; j < rules[i].Items.Count; j++)
             {

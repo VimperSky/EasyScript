@@ -37,7 +37,14 @@ namespace SLR.Types
             
             return Value + (RuleIndex + 1) + (ItemIndex + 1);
         }
-        
+
+        public RuleItem Clone()
+        {
+            var newRuleItem = new RuleItem(Value, Type);
+            newRuleItem.SetIndex(RuleIndex, ItemIndex);
+            return newRuleItem;
+        }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;

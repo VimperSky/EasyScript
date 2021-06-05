@@ -1,0 +1,5 @@
+PROG -> begin d ; X end
+X -> d ; X
+X -> s Y
+Y -> e
+Y -> ; s Y

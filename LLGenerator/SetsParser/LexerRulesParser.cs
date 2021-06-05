@@ -29,10 +29,11 @@ namespace LLGenerator.SetsParser
             TokenTypes = ServiceSymbols.Concat(KeyWords).Concat(ParserTypes)
                 .ToDictionary(x => x.Key, x => x.Value);
         }
+
         public static ImmutableList<Rule> Parse(IEnumerable<(string NonTerminal, string RightBody)> rules)
         {
             var lexerRules = new List<Rule>();
-            foreach (var (nonTerminal, rightBody) in 
+            foreach (var (nonTerminal, rightBody) in
                 rules.Where(x => !string.IsNullOrWhiteSpace(x.NonTerminal)))
             {
                 var tempTokens = new List<RuleItem>();
@@ -46,18 +47,13 @@ namespace LLGenerator.SetsParser
                     }
 
                     if (item.StartsWith("<") && item.EndsWith(">"))
-                    {
                         tempTokens.Add(new RuleItem(item));
-                    }
                     else if (TokenTypes.ContainsKey(item))
-                    {
                         tempTokens.Add(new RuleItem(TokenTypes[item]));
-                    }
                     else
-                    {
                         throw new ArgumentException($"TokenType is not correct. {item}");
-                    }
                 }
+
                 lexerRules.Add(new Rule {NonTerminal = nonTerminal, Items = tempTokens});
             }
 

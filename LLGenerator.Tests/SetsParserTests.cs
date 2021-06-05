@@ -1,7 +1,6 @@
 using System.IO;
 using System.Linq;
 using Xunit;
-using static LLGenerator.SetsParser.SetsParser;
 
 namespace LLGenerator.Tests
 {
@@ -31,7 +30,7 @@ namespace LLGenerator.Tests
         public void RunTests(string id)
         {
             var input = File.OpenRead($"../../../TestCases/{id}.test");
-            var dirRules = DoParse(input);
+            var dirRules = LLGenerator.Program.DoParse(input);
             var expected = File.ReadAllLines($"../../../Expected/{id}.test");
             Assert.Equal(expected, dirRules.Select(x => x.ToString()));
         }

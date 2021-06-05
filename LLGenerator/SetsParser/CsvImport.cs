@@ -9,13 +9,6 @@ namespace LLGenerator.SetsParser
 {
     internal class CsvImport
     {
-        private class Record
-        {   
-            public string NonTerminal { get; set; }
-            
-            public string RightBody { get; set; }
-        }
-        
         public static List<(string NonTerminal, string RightBody)> Parse(Stream stream)
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
@@ -27,6 +20,13 @@ namespace LLGenerator.SetsParser
             using var csv = new CsvReader(reader, config);
             var records = csv.GetRecords<Record>().ToList();
             return records.Select(record => (record.NonTerminal, record.RightBody)).ToList();
+        }
+
+        private class Record
+        {
+            public string NonTerminal { get; set; }
+
+            public string RightBody { get; set; }
         }
     }
 }

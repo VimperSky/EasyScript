@@ -3,15 +3,8 @@ using Lexer.Types;
 
 namespace LLGenerator.Entities
 {
-    public class RuleItem: IEquatable<RuleItem>
+    public class RuleItem : IEquatable<RuleItem>
     {
-        private string NonTerminal { get; }
-        public TokenType? TokenType { get;}
-
-        public string Value => ToString();
-
-        public bool IsTerminal => NonTerminal == null;
-
         public RuleItem(string value)
         {
             NonTerminal = value;
@@ -21,21 +14,26 @@ namespace LLGenerator.Entities
         {
             TokenType = value;
         }
-        
-        public override string ToString()
-        {
-            if (NonTerminal == null && TokenType == null)
-            {
-                throw new ArgumentException("Both NonTerminal and TokenType can't be null!");
-            }
-            return NonTerminal ?? TokenType.ToString();
-        }
-        
+
+        private string NonTerminal { get; }
+        public TokenType? TokenType { get; }
+
+        public string Value => ToString();
+
+        public bool IsTerminal => NonTerminal == null;
+
         public bool Equals(RuleItem? other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             return Value == other.Value && IsTerminal == other.IsTerminal;
+        }
+
+        public override string ToString()
+        {
+            if (NonTerminal == null && TokenType == null)
+                throw new ArgumentException("Both NonTerminal and TokenType can't be null!");
+            return NonTerminal ?? TokenType.ToString();
         }
 
         public override bool Equals(object? obj)

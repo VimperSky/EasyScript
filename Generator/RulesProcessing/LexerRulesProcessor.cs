@@ -14,7 +14,7 @@ namespace Generator.RulesProcessing
 
         private static readonly Dictionary<string, TokenType> ParserTypes = new()
         {
-            {"end", TokenType.End},
+            {"$", TokenType.End},
             {"e", TokenType.Empty},
             {"id", TokenType.Identifier},
             {"!bool", TokenType.AnyBool},

@@ -45,16 +45,17 @@ namespace LLGenerator
 
             var leftRules = new LeftRecursionRemover(lettersProvider).RemoveLeftRecursion(factorizedRules);
             var dirRules = DirSetsFinder.Find(leftRules);
+            
+            Console.WriteLine("Rules:");
+            foreach (var rule in dirRules) 
+                Console.WriteLine(rule);
+
             return dirRules;
         }
         
         public void Process()
         {
             var dirRules = GenerateRules();
-            
-            Console.WriteLine("Rules:");
-            foreach (var rule in dirRules) 
-                Console.WriteLine(rule);
             
             if (!IsLLFirst(dirRules))
             {

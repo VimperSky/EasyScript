@@ -31,27 +31,30 @@ namespace LLGenerator.TableGenerator
                     var newRuleId = ++globalId;
                     var item = dRule.Items[index];
                     var dirSet = new HashSet<string>();
-                    if (item.Type is ElementType.Terminal)
+                    switch (item.Type)
                     {
-                        if (item.Type is ElementType.Empty)
-                            dirSet = dRule.Dirs;
-                        else
+                        case ElementType.Terminal:
+                        case ElementType.End:
                             dirSet.Add(item.Value);
-                    }
-                    else
-                    {
-                        dirSet = dirRules.Where(x => x.NonTerminal == item.Value).SelectMany(x => x.Dirs).ToHashSet();
+                            break;
+                        case ElementType.Empty:
+                            dirSet = dRule.Dirs;
+                            break;
+                        case ElementType.NonTerminal:
+                            dirSet = dirRules.Where(x => x.NonTerminal == item.Value)
+                                .SelectMany(x => x.Dirs).ToHashSet();
+                            break;
                     }
 
                     var isLast = index + 1 == dRule.Items.Count;
                     int? ptr = null;
-                    if (item.Type is ElementType.Terminal)
-                    {
-                        if (!isLast) ptr = globalId + 1;
-                    }
-                    else
+                    if (item.Type is ElementType.NonTerminal)
                     {
                         ptr = table.First(x => x.NonTerminal == item.Value).Id;
+                    }
+                    else if (!isLast)
+                    {
+                        ptr = globalId + 1;
                     }
 
                     addTable.Add(new TableRule
@@ -61,8 +64,8 @@ namespace LLGenerator.TableGenerator
                         DirSet = dirSet,
                         GoTo = ptr,
                         IsError = true,
-                        IsShift = item.Type is ElementType.Terminal and not ElementType.Empty,
-                        MoveToStack = item.Type is not ElementType.Terminal && !isLast,
+                        IsShift = item.Type is not ElementType.NonTerminal && item.Type is not ElementType.Empty,
+                        MoveToStack = item.Type is ElementType.NonTerminal && !isLast,
                         IsEnd = item.Type is ElementType.End
                     });
                     if (index == 0) table[i].GoTo = newRuleId;

@@ -15,7 +15,7 @@ namespace Generator.InputParsing
         public string[] Parse()
         {
             var lexer = new Lexer.Lexer(File.OpenRead(_path));
-            return lexer.Tokens.Select(x => x.ToString()).ToArray();
+            return lexer.Tokens.Select(x => x.Type.ToString()).ToArray();
         }
     }
 }

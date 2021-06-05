@@ -14,16 +14,16 @@ using LLGenerator.Types;
 
 namespace LLGenerator.Processors
 {
-    public abstract class Processor
+    public class Processor
     {
         private readonly IRulesParser _rulesParser;
         private readonly IRulesProcessor _rulesProcessor;
-        private readonly IInputProcessor _inputProcessor;
-        protected Processor(IRulesParser rulesParser, IRulesProcessor rulesProcessor, IInputProcessor inputProcessor)
+        private readonly IInputParser _inputParser;
+        public Processor(IRulesParser rulesParser, IRulesProcessor rulesProcessor, IInputParser inputParser)
         {
             _rulesParser = rulesParser;
             _rulesProcessor = rulesProcessor;
-            _inputProcessor = inputProcessor;
+            _inputParser = inputParser;
         }
         
         private static bool IsLLFirst(IEnumerable<DirRule> dirRules)
@@ -35,12 +35,13 @@ namespace LLGenerator.Processors
         
         public void Process()
         {
-            var inputRules = _rulesParser.Parse(RulesStream);
+            var inputRules = _rulesParser.Parse();
 
             var rules = _rulesProcessor.Process(inputRules);
-            UpdateLettersProvider(rules, LettersProvider.Instance);
+            var fixedRules = RulesFixer.FixRules(rules);
+            UpdateLettersProvider(fixedRules, LettersProvider.Instance);
             
-            var factorizedRules = Factorization.MakeFactorization(rules);
+            var factorizedRules = Factorization.MakeFactorization(fixedRules);
 
             var leftRules = LeftRecursionRemover.RemoveLeftRecursion(factorizedRules);
             var dirRules = DirSetsFinder.Find(leftRules);
@@ -58,7 +59,7 @@ namespace LLGenerator.Processors
             var table = TableGenerator.TableGenerator.Parse(dirRules);
             CsvExport.SaveToCsv(table);
 
-            var input = _inputProcessor.Parse(InputStream);
+            var input = _inputParser.Parse();
             
             ImmutableList<int> history;
             try
@@ -73,11 +74,7 @@ namespace LLGenerator.Processors
 
             Console.WriteLine($"Correct! History: [{string.Join(", ", history)}]");
         }
-
-        protected abstract Stream RulesStream { get; }
-
-        protected abstract Stream InputStream { get; }
-
+        
         private static void UpdateLettersProvider(ImmutableList<Rule> rules, LettersProvider lettersProvider)
         {
             foreach (var letter in rules.Select(x => x.NonTerminal).Where(x => x.Length == 1))

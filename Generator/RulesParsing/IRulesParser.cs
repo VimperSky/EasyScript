@@ -5,6 +5,6 @@ namespace Generator.RulesParsing
 {
     public interface IRulesParser
     {
-        List<(string NonTerminal, string RightBody)> Parse(Stream stream);
+        List<(string NonTerminal, string RightBody)> Parse();
     }
 }

@@ -7,9 +7,18 @@ namespace Generator.RulesParsing
 {
     public class TxtRulesParser: IRulesParser
     {
-        public List<(string NonTerminal, string RightBody)> Parse(Stream stream)
+        private readonly string _path;
+        public TxtRulesParser(string path)
         {
-            using var sr = new StreamReader(stream);
+            if (!path.EndsWith(".txt"))
+                throw new ArgumentException("TXT Rules Parser accepts only csv files!");
+            
+            _path = path;
+        }
+        
+        public List<(string NonTerminal, string RightBody)> Parse()
+        {
+            using var sr = new StreamReader(_path);
             string line;
             var rawRules = new List<(string LeftBody, string RightBody)>();
             while ((line = sr.ReadLine()) != null)

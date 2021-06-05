@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using LLGenerator.Processors;
 using Xunit;
 
 namespace LLGenerator.Tests
@@ -30,7 +31,7 @@ namespace LLGenerator.Tests
         public void RunTests(string id)
         {
             var input = File.OpenRead($"../../../TestCases/{id}.test");
-            var dirRules = LLGenerator.Program.DoParse(input);
+            var dirRules = new SimpleProcessor().Process(input);
             var expected = File.ReadAllLines($"../../../Expected/{id}.test");
             Assert.Equal(expected, dirRules.Select(x => x.ToString()));
         }

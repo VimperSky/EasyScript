@@ -24,7 +24,7 @@ namespace LLGenerator.SetsParser
 
                 if (recursionRules.Count > 0)
                 {
-                    var newNonTerm = LettersProvider.Instance.GetNextFreeLetter().ToString();
+                    var newNonTerm = LettersProvider.Instance.GetNextFreeLetter();
 
                     foreach (var normalRule in normalRules)
                     {

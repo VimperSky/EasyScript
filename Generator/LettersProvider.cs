@@ -19,13 +19,19 @@ namespace Generator
             _freeLetters = Alphabet.ToList();
         }
 
-        public char GetNextFreeLetter(bool fromEnd = false)
+        public void TakeLetter(char letterToTake)
+        {
+            if (_freeLetters.Contains(letterToTake))
+                _freeLetters.Remove(letterToTake);
+        }
+
+        public string GetNextFreeLetter(bool fromEnd = false)
         {
             var letter = fromEnd ? _freeLetters.Last() : _freeLetters.First();
 
             _freeLetters.Remove(letter);
 
-            return letter;
+            return letter.ToString();
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Generator.Types;
-using LLGenerator.Types;
 
 namespace LLGenerator.SetsParser
 {
@@ -12,11 +11,6 @@ namespace LLGenerator.SetsParser
         public static ImmutableList<IGrouping<string, Rule>> GetGroups(this ImmutableList<Rule> rules)
         {
             return rules.GroupBy(x => x.NonTerminal).ToImmutableList();
-        }
-
-        public static HashSet<string> GetNonTerminals(this ImmutableList<IGrouping<string, Rule>> groups)
-        {
-            return groups.Select(x => x.Key).ToHashSet();
         }
         
         public static List<RuleItem> FindCommon(this Rule a, Rule b)

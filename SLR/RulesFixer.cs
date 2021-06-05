@@ -18,7 +18,7 @@ namespace SLR
         {
             rules.Insert(0, new Rule
             {
-                NonTerminal = _lettersProvider.GetNextFreeLetter(letterFromEnd).ToString(),
+                NonTerminal = _lettersProvider.GetNextFreeLetter(letterFromEnd),
                 Items = new List<RuleItem> {new(rules[0].NonTerminal, ElementType.NonTerminal)}
             });
         }

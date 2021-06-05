@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using Generator;
 using Generator.InputParsing;
 using Generator.RulesParsing;
 using Generator.RulesProcessing;
+using Generator.Types;
 using LLGenerator.SetsParser;
 using LLGenerator.TableGenerator;
 using LLGenerator.Types;
@@ -21,7 +23,7 @@ namespace LLGenerator.Processors
         {
             _rulesParser = rulesParser;
             _rulesProcessor = rulesProcessor;
-            _inputProcessor = _inputProcessor;
+            _inputProcessor = inputProcessor;
         }
         
         private static bool IsLLFirst(IEnumerable<DirRule> dirRules)
@@ -36,6 +38,8 @@ namespace LLGenerator.Processors
             var inputRules = _rulesParser.Parse(RulesStream);
 
             var rules = _rulesProcessor.Process(inputRules);
+            UpdateLettersProvider(rules, LettersProvider.Instance);
+            
             var factorizedRules = Factorization.MakeFactorization(rules);
 
             var leftRules = LeftRecursionRemover.RemoveLeftRecursion(factorizedRules);
@@ -73,6 +77,12 @@ namespace LLGenerator.Processors
         protected abstract Stream RulesStream { get; }
 
         protected abstract Stream InputStream { get; }
+
+        private static void UpdateLettersProvider(ImmutableList<Rule> rules, LettersProvider lettersProvider)
+        {
+            foreach (var letter in rules.Select(x => x.NonTerminal).Where(x => x.Length == 1))
+                lettersProvider.TakeLetter(letter[0]);
+        }
 
     }
 }

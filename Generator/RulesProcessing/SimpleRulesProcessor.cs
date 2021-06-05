@@ -26,7 +26,6 @@ namespace Generator.RulesProcessing
                         .ToList()
                 })
                 .ToList();
-            
 
             return rules.ToImmutableList();
         }

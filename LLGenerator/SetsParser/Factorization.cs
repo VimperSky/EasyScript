@@ -11,7 +11,7 @@ namespace LLGenerator.SetsParser
         private static IEnumerable<Rule> GenerateNewRules(IList<Rule> commonRules, int commonLen)
         {
             var newRules = new List<Rule>();
-            var newNonTerm = LettersProvider.Instance.GetNextFreeLetter().ToString();
+            var newNonTerm = LettersProvider.Instance.GetNextFreeLetter();
 
             var commonFinal = commonRules[0].Items.Take(commonLen).ToList();
             commonFinal.Add(new RuleItem(newNonTerm, ElementType.NonTerminal));

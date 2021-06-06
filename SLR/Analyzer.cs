@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
 using Generator;
 using Generator.Types;
@@ -10,47 +9,21 @@ namespace SLR
 {
     public class Analyzer
     {
-        private readonly string[] _input;
-        private readonly ImmutableList<Rule> _rules;
-        private readonly ImmutableList<TableRule> _tableRules;
-
-        public Analyzer(Stream stream, ImmutableList<TableRule> table, ImmutableList<Rule> rules)
-        {
-            _input = InputParser(stream);
-            _tableRules = table;
-            _rules = rules;
-        }
-
-        private static string[] InputParser(Stream stream)
-        {
-            using var sr = new StreamReader(stream);
-            string line;
-            string[] split = { };
-            while ((line = sr.ReadLine()) != null)
-            {
-                split = line.Split();
-                break;
-            }
-
-            return split;
-        }
-
-
-        public void Analyze()
+        public static void Analyze(string[] input, ImmutableList<TableRule> table, ImmutableList<Rule> rules)
         {
             var left = new Stack<string>();
             var right = new Stack<string>();
             var inputStack = new Stack<string>();
-            foreach (var input in _input.Reverse())
-                inputStack.Push(input);
+            foreach (var inp in input.Reverse())
+                inputStack.Push(inp);
 
-            right.Push(_tableRules.First().Key);
+            right.Push(table.First().Key);
             while (true)
                 try
                 {
                     var character = "";
                     if (inputStack.Count > 0) character = inputStack.Pop();
-                    var values = _tableRules.First(x => x.Key == right.Peek()).Values;
+                    var values = table.First(x => x.Key == right.Peek()).Values;
                     var items = character == ""
                         ? values.Where(x => x.Key == Constants.EndSymbol).ToList()
                         : values.Where(x => x.Key == character).ToList();
@@ -68,9 +41,9 @@ namespace SLR
                         // номер свертки
                         var ruleNumber =
                             int.Parse(elements.First().Value.Substring(1, elements.First().Value.Length - 1)) - 1;
-                        var rule = _rules[ruleNumber];
+                        var rule = rules[ruleNumber];
 
-                        if (rule.Items[0].Type != ElementType.Empty)
+                        if (rule.Items[0].Type is not ElementType.Empty)
                             for (var i = 0; i < rule.Items.Count; i++)
                             {
                                 left.Pop();

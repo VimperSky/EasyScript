@@ -1,7 +1,8 @@
 ﻿using System;
-using Generator.Types;
 
-public class RuleItem : IEquatable<RuleItem>
+namespace Generator.Types
+{
+    public class RuleItem : IEquatable<RuleItem>
     {
         public readonly string Value;
         public readonly ElementType Type;
@@ -61,3 +62,4 @@ public class RuleItem : IEquatable<RuleItem>
             return HashCode.Combine(Value, RuleIndex, ItemIndex);
         }
     }
+}

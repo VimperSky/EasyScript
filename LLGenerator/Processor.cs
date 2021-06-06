@@ -49,8 +49,7 @@ namespace LLGenerator
             var inputRules = _rulesParser.Parse();
 
             var rules = _rulesProcessor.Process(inputRules);
-            var fixedRules = new RulesFixer(_rulesProcessor, lettersProvider).FixRules(rules);
-            UpdateLettersProvider(fixedRules, lettersProvider);
+            var fixedRules = new RulesFixer(_rulesProcessor, lettersProvider).FixRules(rules.ToList());
             
             var factorizedRules = new Factorization(lettersProvider).MakeFactorization(fixedRules);
 
@@ -96,11 +95,6 @@ namespace LLGenerator
             Console.WriteLine($"Correct! History: [{string.Join(", ", history)}]");
         }
         
-        private static void UpdateLettersProvider(ImmutableList<Rule> rules, LettersProvider lettersProvider)
-        {
-            foreach (var letter in rules.Select(x => x.NonTerminal).Where(x => x.Length == 1))
-                lettersProvider.TakeLetter(letter[0]);
-        }
 
     }
 }

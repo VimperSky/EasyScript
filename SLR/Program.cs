@@ -1,35 +1,23 @@
-﻿using System;
-using System.IO;
-using Generator;
-using SLR.Table;
+﻿using Generator.InputParsing;
+using Generator.RulesParsing;
+using Generator.RulesProcessing;
 
 namespace SLR
 {
     internal static class Program
     {
-        private static void Main()
+        private static void Main(string[] args)
         {
-            var noEmptyRules = new EmptyRemover(rules).RemoveEmpty();
+            var isLexerMode = args.Length > 0;
+            Processor processor;
+            if (isLexerMode)
+                processor = new Processor(new CsvRulesParser("rules.csv"),
+                    new LexerRulesProcessor(), new LexerInputParser("input.txt"));
+            else
+                processor = new Processor(new TxtRulesParser("rules.txt"), 
+                    new SimpleRulesProcessor(), new SimpleRulesParser("input.txt"));
 
-            var fixedRules = new RulesFixer().FixRules(noEmptyRules);
-
-            foreach (var item in fixedRules) Console.WriteLine(item);
-            Console.WriteLine();
-            
-            var tableRules = new TableBuilder(fixedRules).CreateTable();
-            
-            CsvExport.SaveToCsv(tableRules);
-            
-            var input = File.OpenRead("input.txt");
-            var analyzer = new Analyzer(input, tableRules, fixedRules);
-            try
-            {
-                analyzer.Analyze();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            processor.Process();
         }
     }
 }

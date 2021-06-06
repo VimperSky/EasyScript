@@ -17,7 +17,7 @@ namespace Generator
             _lettersProvider = lettersProvider;
         }
 
-        private void InsertRuleAtStart(IList<Rule> rules, bool letterFromEnd = false)
+        private void InsertRuleAtStart(List<Rule> rules, bool letterFromEnd = false)
         {
             rules.Insert(0, new Rule
             {
@@ -26,7 +26,7 @@ namespace Generator
             });
         }
         
-        public ImmutableList<Rule> FixRules(ImmutableList<Rule> rules, bool slr = false)
+        public ImmutableList<Rule> FixRules(List<Rule> rules, bool slr = false)
         {
             if (rules[0].Items[^1].Type is not ElementType.End)
             {
@@ -39,7 +39,10 @@ namespace Generator
             if (slr && rules[0].Items.Any(x => x.Value == rules[0].NonTerminal)) 
                 InsertRuleAtStart(rules, true);
 
-            return rules;
+            foreach (var letter in rules.Select(x => x.NonTerminal).Where(x => x.Length == 1))
+                _lettersProvider.TakeLetter(letter[0]);
+            
+            return rules.ToImmutableList();
         }
     }
 }

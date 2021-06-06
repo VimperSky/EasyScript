@@ -16,7 +16,7 @@ namespace Generator.InputParsing
         {
             var sw = new StreamReader(_path);
             var text = sw.ReadToEnd();
-            return text.Split(" ").ToArray();
+            return text.Split(" ").Append(Constants.EndSymbol).ToArray();
         }
     }
 }

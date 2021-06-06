@@ -8,10 +8,10 @@ namespace SLR.Table
 {
     public class TableBuilder
     {
-        private readonly ImmutableList<Rule> _rules;
-        private readonly ImmutableList<string> _valueKeys;
+        private readonly List<Rule> _rules;
+        private readonly List<string> _valueKeys;
 
-        public TableBuilder(ImmutableList<Rule> rules)
+        public TableBuilder(List<Rule> rules)
         {
             _rules = rules;
             var valueKeys = new HashSet<string>();
@@ -24,13 +24,13 @@ namespace SLR.Table
             }
 
             valueKeys.Add(Constants.EndSymbol);
-            _valueKeys = valueKeys.ToImmutableList();
+            _valueKeys = valueKeys.ToList();
         }
 
         private TableRule CreateTableRule(string key) => new(key, _valueKeys);
         private RuleItem GetItem(int ruleIndex, int itemIndex) => _rules[ruleIndex].Items[itemIndex];
 
-        public ImmutableList<TableRule> CreateTable()
+        public List<TableRule> CreateTable()
         {
             // Таблица и список правил на разбор и добавление в таблицу
             var tableRules = new List<TableRule>();
@@ -61,7 +61,7 @@ namespace SLR.Table
                 UpdatePendingItems(tableRule);
             }
 
-            return tableRules.ToImmutableList();
+            return tableRules.ToList();
             
             void UpdatePendingItems(TableRule tableRule)
             {

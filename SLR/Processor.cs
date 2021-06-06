@@ -27,27 +27,26 @@ namespace SLR
             var lettersProvider = new LettersProvider();
             
             var inputRules = _rulesParser.Parse();
+            
             var rules = _rulesProcessor.Process(inputRules);
-
-            var noEmptyRules = new EmptyRemover(rules).RemoveEmpty();
-
-            var fixedRules = new RulesFixer(_rulesProcessor, lettersProvider)
-                .FixRules(noEmptyRules.ToList(), true);
             
-            IndexesSetter.SetIndexes(fixedRules);
+            // Применяем к правилам различные фиксы
+            new EmptyRemover(rules).RemoveEmpty();
+            new RulesFixer(_rulesProcessor, lettersProvider).FixRules(rules, true);
+            IndexesSetter.SetIndexes(rules);
             
-            foreach (var item in fixedRules) 
+            foreach (var item in rules) 
                 Console.WriteLine(item);
             Console.WriteLine();
             
-            var tableRules = new TableBuilder(fixedRules).CreateTable();
+            var tableRules = new TableBuilder(rules).CreateTable();
             
             CsvExport.SaveToCsv(tableRules);
 
             var input = _inputParser.Parse(); 
             try
             {
-                Analyzer.Analyze(input, tableRules, fixedRules);
+                Analyzer.Analyze(input, tableRules, rules);
             }
             catch (Exception ex)
             {

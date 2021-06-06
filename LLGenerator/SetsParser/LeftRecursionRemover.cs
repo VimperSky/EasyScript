@@ -15,7 +15,7 @@ namespace LLGenerator.SetsParser
             _lettersProvider = lettersProvider;
         }
 
-        public ImmutableList<Rule> RemoveLeftRecursion(ImmutableList<Rule> ruleList)
+        public List<Rule> RemoveLeftRecursion(List<Rule> ruleList)
         {
             var newRules = new List<Rule>();
             var groups = ruleList.GetGroups();
@@ -59,7 +59,7 @@ namespace LLGenerator.SetsParser
                 }
             }
 
-            return newRules.ToImmutableList();
+            return newRules;
         }
     }
 }

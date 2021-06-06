@@ -8,9 +8,9 @@ namespace LLGenerator.SetsParser
 {
     internal static class SetsParserExtensions
     {
-        public static ImmutableList<IGrouping<string, Rule>> GetGroups(this ImmutableList<Rule> rules)
+        public static List<IGrouping<string, Rule>> GetGroups(this List<Rule> rules)
         {
-            return rules.GroupBy(x => x.NonTerminal).ToImmutableList();
+            return rules.GroupBy(x => x.NonTerminal).ToList();
         }
         
         public static List<RuleItem> FindCommon(this Rule a, Rule b)

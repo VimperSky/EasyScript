@@ -8,7 +8,7 @@ namespace LLGenerator.TableGenerator
 {
     public static class TableBuilder
     {
-        public static ImmutableList<TableRule> Build(ImmutableList<DirRule> dirRules)
+        public static List<TableRule> Build(List<DirRule> dirRules)
         {
             var table = new List<TableRule>();
             var globalId = 0;
@@ -73,7 +73,7 @@ namespace LLGenerator.TableGenerator
             }
 
             table.AddRange(addTable);
-            return table.ToImmutableList();
+            return table.ToList();
         }
     }
 }

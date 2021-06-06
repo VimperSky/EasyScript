@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Generator;
 using Generator.Types;
@@ -89,7 +88,7 @@ namespace LLGenerator.SetsParser
             return iterRules;
         }
 
-        public ImmutableList<Rule> MakeFactorization(ImmutableList<Rule> ruleList)
+        public List<Rule> MakeFactorization(List<Rule> ruleList)
         {
             var newRules = new List<Rule>();
             var groups = ruleList.GetGroups();
@@ -115,7 +114,7 @@ namespace LLGenerator.SetsParser
                 newRules.AddRange(rules);
             }
 
-            return newRules.ToImmutableList();
+            return newRules;
         }
     }
 }

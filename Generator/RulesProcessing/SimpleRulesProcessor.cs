@@ -21,7 +21,7 @@ namespace Generator.RulesProcessing
                         : new RuleItem(token, ElementType.Terminal);
         }
 
-        public ImmutableList<Rule> Process(List<(string NonTerminal, string RightBody)> inputRules)
+        public List<Rule> Process(List<(string NonTerminal, string RightBody)> inputRules)
         {
             _nonTerminals = inputRules.Select(x => x.NonTerminal).ToHashSet();
 
@@ -32,7 +32,7 @@ namespace Generator.RulesProcessing
                         .Select(ParseToken).ToList()
                 }).ToList();
 
-            return rules.ToImmutableList();
+            return rules;
         }
     }
 }

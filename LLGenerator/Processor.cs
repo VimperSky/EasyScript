@@ -43,16 +43,15 @@ namespace LLGenerator
         }
         
 
-        public ImmutableList<DirRule> GenerateRules()
+        public List<DirRule> GenerateRules()
         {
             var lettersProvider = new LettersProvider();
             var inputRules = _rulesParser.Parse();
 
             var rules = _rulesProcessor.Process(inputRules);
-            var fixedRules = new RulesFixer(_rulesProcessor, lettersProvider).FixRules(rules.ToList());
+            new RulesFixer(_rulesProcessor, lettersProvider).FixRules(rules);
             
-            var factorizedRules = new Factorization(lettersProvider).MakeFactorization(fixedRules);
-
+            var factorizedRules = new Factorization(lettersProvider).MakeFactorization(rules);
             var leftRules = new LeftRecursionRemover(lettersProvider).RemoveLeftRecursion(factorizedRules);
             var dirRules = DirSetsFinder.Find(leftRules);
             
@@ -81,7 +80,7 @@ namespace LLGenerator
 
             var input = _inputParser.Parse();
             
-            ImmutableList<int> history;
+            List<int> history;
             try
             {
                 history = SyntaxAnalyzer.SyntaxAnalyzer.Analyze(input, table);

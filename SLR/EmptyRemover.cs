@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Generator.Types;
 
@@ -8,20 +7,19 @@ namespace SLR
     public class EmptyRemover
     {
         private readonly List<Rule> _rules;
-        public EmptyRemover(ImmutableList<Rule> rules)
+        public EmptyRemover(List<Rule> rules)
         {
             _rules = rules.ToList();
         }
         
 
-        public ImmutableList<Rule> RemoveEmpty()
+        public void RemoveEmpty()
         {
             var foundEmpty = true;
             while (foundEmpty)
             {
                 foundEmpty = RemoveEmptySingle();
             }
-            return _rules.ToImmutableList();
         }
 
         private bool RemoveEmptySingle()

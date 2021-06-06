@@ -9,7 +9,7 @@ namespace SLR
 {
     public class Analyzer
     {
-        public static void Analyze(string[] input, ImmutableList<TableRule> table, ImmutableList<Rule> rules)
+        public static void Analyze(string[] input, List<TableRule> table, List<Rule> rules)
         {
             var left = new Stack<string>();
             var right = new Stack<string>();

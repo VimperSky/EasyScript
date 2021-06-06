@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using Generator.Types;
 
 namespace Generator
 {
     public static class Extensions
     {
-        public static IEnumerable<RuleItem> FindNextRecursive(this ImmutableList<Rule> rules, string nonTerm)
+        public static IEnumerable<RuleItem> FindNextRecursive(this List<Rule> rules, string nonTerm)
         {
             return FindUp(rules, nonTerm, new HashSet<int>());
         }
 
-        private static IEnumerable<RuleItem> FindUp(ImmutableList<Rule> rules, string nonTerm, ISet<int> history)
+        private static IEnumerable<RuleItem> FindUp(List<Rule> rules, string nonTerm, ISet<int> history)
         {
             var returns = new HashSet<RuleItem>();
             for (var i = 0; i < rules.Count; i++)

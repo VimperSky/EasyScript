@@ -51,7 +51,7 @@ namespace Generator.RulesProcessing
             throw new ArgumentException($"TokenType is not correct. {token}");
         }
 
-        public ImmutableList<Rule> Process(List<(string NonTerminal, string RightBody)> inputRules)
+        public List<Rule> Process(List<(string NonTerminal, string RightBody)> inputRules)
         {
             var lexerRules = new List<Rule>();
             foreach (var (nonTerminal, rightBody) in inputRules
@@ -74,7 +74,7 @@ namespace Generator.RulesProcessing
                 lexerRules.Add(new Rule {NonTerminal = nonTerminal, Items = tempTokens});
             }
 
-            return lexerRules.ToImmutableList();
+            return lexerRules;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Generator
             });
         }
         
-        public ImmutableList<Rule> FixRules(List<Rule> rules, bool slr = false)
+        public void FixRules(List<Rule> rules, bool slr = false)
         {
             if (rules[0].Items[^1].Type is not ElementType.End)
             {
@@ -41,8 +41,6 @@ namespace Generator
 
             foreach (var letter in rules.Select(x => x.NonTerminal).Where(x => x.Length == 1))
                 _lettersProvider.TakeLetter(letter[0]);
-            
-            return rules.ToImmutableList();
         }
     }
 }

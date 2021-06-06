@@ -9,7 +9,7 @@ namespace LLGenerator.SetsParser
 {
     internal static class DirSetsFinder
     {
-        internal static ImmutableList<DirRule> Find(ImmutableList<Rule> rules)
+        internal static List<DirRule> Find(List<Rule> rules)
         {
             var foundValues = new List<HashSet<RuleItem>>();
             for (var i = 0; i < rules.Count; i++)
@@ -49,7 +49,7 @@ namespace LLGenerator.SetsParser
             }
 
             return rules.Select((t, i) => DirRule.Create(foundValues[i]
-                .Select(x => x.Value).ToHashSet(), t)).ToImmutableList();
+                .Select(x => x.Value).ToHashSet(), t)).ToList();
         }
     }
 }

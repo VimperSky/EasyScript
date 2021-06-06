@@ -8,24 +8,29 @@ namespace Generator.RulesProcessing
 {
     public class SimpleRulesProcessor: IRulesProcessor
     {
+        private HashSet<string> _nonTerminals;
+        
+        public RuleItem ParseToken(string token)
+        {
+            return _nonTerminals.Contains(token)
+                ? new RuleItem(token, ElementType.NonTerminal)
+                : token == Constants.EmptySymbol
+                    ? new RuleItem(token, ElementType.Empty)
+                    : token == Constants.EndSymbol
+                        ? new RuleItem(token, ElementType.End)
+                        : new RuleItem(token, ElementType.Terminal);
+        }
+
         public ImmutableList<Rule> Process(List<(string NonTerminal, string RightBody)> inputRules)
         {
-            var nonTerminals = inputRules.Select(x => x.NonTerminal).ToHashSet();
+            _nonTerminals = inputRules.Select(x => x.NonTerminal).ToHashSet();
 
             var rules = inputRules.Select(rawRule => new Rule
                 {
                     NonTerminal = rawRule.NonTerminal,
                     Items = rawRule.RightBody.Split(" ", StringSplitOptions.TrimEntries)
-                        .Select(x => nonTerminals.Contains(x)
-                            ? new RuleItem(x, ElementType.NonTerminal)
-                            : x == Constants.EmptySymbol
-                                ? new RuleItem(x, ElementType.Empty)
-                                : x == Constants.EndSymbol
-                                    ? new RuleItem(x, ElementType.End)
-                                    : new RuleItem(x, ElementType.Terminal))
-                        .ToList()
-                })
-                .ToList();
+                        .Select(ParseToken).ToList()
+                }).ToList();
 
             return rules.ToImmutableList();
         }

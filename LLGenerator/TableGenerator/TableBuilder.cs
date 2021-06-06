@@ -64,7 +64,7 @@ namespace LLGenerator.TableGenerator
                         DirSet = dirSet,
                         GoTo = ptr,
                         IsError = true,
-                        IsShift = item.Type is not ElementType.NonTerminal && item.Type is not ElementType.Empty,
+                        IsShift = item.Type is ElementType.Terminal or ElementType.End,
                         MoveToStack = item.Type is ElementType.NonTerminal && !isLast,
                         IsEnd = item.Type is ElementType.End
                     });

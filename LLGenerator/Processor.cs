@@ -25,12 +25,23 @@ namespace LLGenerator
             _inputParser = inputParser;
         }
         
-        private static bool IsLLFirst(IEnumerable<DirRule> dirRules)
+        // ReSharper disable once InconsistentNaming
+        private static List<string> FindNotLLGroups(IEnumerable<DirRule> dirRules)
         {
+            var duplicates = new List<string>();
             var groups = dirRules.GroupBy(x => x.NonTerminal);
-            return groups.Select(group => group.SelectMany(x => x.Dirs).ToList())
-                .All(groupsDirs => groupsDirs.Count == groupsDirs.Distinct().Count());
+            foreach (var group in groups)
+            {
+                var dirs = group.SelectMany(x => x.Dirs).ToList();
+                if (dirs.Count != dirs.Distinct().Count())
+                {
+                    duplicates.Add(group.Key);
+                }
+            }
+
+            return duplicates;
         }
+        
 
         public ImmutableList<DirRule> GenerateRules()
         {
@@ -38,7 +49,7 @@ namespace LLGenerator
             var inputRules = _rulesParser.Parse();
 
             var rules = _rulesProcessor.Process(inputRules);
-            var fixedRules = new RulesFixer(lettersProvider).FixRules(rules);
+            var fixedRules = new RulesFixer(_rulesProcessor, lettersProvider).FixRules(rules);
             UpdateLettersProvider(fixedRules, lettersProvider);
             
             var factorizedRules = new Factorization(lettersProvider).MakeFactorization(fixedRules);
@@ -56,10 +67,13 @@ namespace LLGenerator
         public void Process()
         {
             var dirRules = GenerateRules();
-            
-            if (!IsLLFirst(dirRules))
+
+            var notLLGroups = FindNotLLGroups(dirRules);
+            if (notLLGroups.Count > 0)
             {
                 Console.WriteLine("Not LL1 grammar");
+                foreach (var item in notLLGroups)
+                    Console.WriteLine(item);
                 return;
             }
             

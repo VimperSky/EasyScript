@@ -6,6 +6,7 @@ namespace Generator.RulesProcessing
 {
     public interface IRulesProcessor
     {
+        RuleItem ParseToken(string token);
         ImmutableList<Rule> Process(List<(string NonTerminal, string RightBody)> inputRules);
     }
 }

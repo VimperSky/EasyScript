@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Generator.RulesProcessing;
 using Generator.Types;
 
 namespace Generator
 {
     public class RulesFixer
     {
+        private readonly IRulesProcessor _rulesProcessor;
         private readonly LettersProvider _lettersProvider;
 
-        public RulesFixer(LettersProvider lettersProvider)
+        public RulesFixer(IRulesProcessor rulesProcessor, LettersProvider lettersProvider)
         {
+            _rulesProcessor = rulesProcessor;
             _lettersProvider = lettersProvider;
         }
 
@@ -29,7 +32,8 @@ namespace Generator
             {
                 if (rules.Count(x => x.NonTerminal == rules[0].NonTerminal) > 1) 
                     InsertRuleAtStart(rules, true);
-                rules[0].Items.Add(new RuleItem(Constants.EndSymbol, ElementType.End));
+
+                rules[0].Items.Add(_rulesProcessor.ParseToken(Constants.EndSymbol));
             }
             
             if (slr && rules[0].Items.Any(x => x.Value == rules[0].NonTerminal)) 

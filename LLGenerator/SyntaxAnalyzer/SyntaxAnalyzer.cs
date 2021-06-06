@@ -21,7 +21,8 @@ namespace LLGenerator.SyntaxAnalyzer
                 if (!tableItem.DirSet.Contains(inItem))
                 {
                     if (tableItem.IsError)
-                        GenerateException($"DirSet doesn't contain token: {inItem ?? "NULL"}");
+                        GenerateException($"DirSet doesn't contain token: {inItem ?? "NULL"}. " +
+                                          $"TableItem is: {tableItem}.");
                     index++;
                     continue;
                 }
@@ -58,7 +59,7 @@ namespace LLGenerator.SyntaxAnalyzer
             {
                 throw new ArgumentException("[Syntax Analyzer Error] " + err +
                                             $"\nToken Number: {input.Length - inputQ.Count}, " +
-                                            $"Stack: [{string.Join(", ", stack)}], InputQ: [{string.Join(", ", inputQ)}], TableItem: {index}\nHistory: [{string.Join(", ", history)}]");
+                                            $"Stack: [{string.Join(", ", stack)}], InputQ: [{string.Join(", ", inputQ)}], \nHistory: [{string.Join(", ", history)}]");
             }
 
             return history.ToImmutableList();

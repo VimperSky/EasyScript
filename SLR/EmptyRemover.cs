@@ -6,7 +6,7 @@ namespace SLR
 {
     public class EmptyRemover
     {
-        private readonly List<Rule> _rules;
+        public  List<Rule> _rules;
         public EmptyRemover(List<Rule> rules)
         {
             _rules = rules.ToList();

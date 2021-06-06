@@ -31,22 +31,26 @@ namespace SLR
             var rules = _rulesProcessor.Process(inputRules);
             
             // Применяем к правилам различные фиксы
-            new EmptyRemover(rules).RemoveEmpty();
-            new RulesFixer(_rulesProcessor, lettersProvider).FixRules(rules, true);
-            IndexesSetter.SetIndexes(rules);
+            // Если сделать по-старому, то от e не избавляемся
+            var emptyRemover = new EmptyRemover(rules);
+            emptyRemover.RemoveEmpty();
+            var newRules = emptyRemover._rules;
             
-            foreach (var item in rules) 
+            new RulesFixer(_rulesProcessor, lettersProvider).FixRules(newRules, true);
+            IndexesSetter.SetIndexes(newRules);
+            
+            foreach (var item in newRules) 
                 Console.WriteLine(item);
             Console.WriteLine();
             
-            var tableRules = new TableBuilder(rules).CreateTable();
+            var tableRules = new TableBuilder(newRules).CreateTable();
             
             CsvExport.SaveToCsv(tableRules);
 
             var input = _inputParser.Parse(); 
             try
             {
-                Analyzer.Analyze(input, tableRules, rules);
+                Analyzer.Analyze(input, tableRules, newRules);
             }
             catch (Exception ex)
             {

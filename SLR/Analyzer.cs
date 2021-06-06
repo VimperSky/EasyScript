@@ -32,11 +32,12 @@ namespace SLR
                         throw new Exception("Items are empty");
 
                     var elements = items.First().Value;
+                    // Тут проверка на ОК  ( Z -> Z OK)
+                    // Если OK, то Console.WriteLine("Analyzer correct!");
                     // Если свертка
                     if (elements.First().Type is ElementType.Collapse)
                     {
-                        if (character != "")
-                            inputStack.Push(character);
+                        if (character != "") inputStack.Push(character);
 
                         // номер свертки
                         var ruleNumber =
@@ -44,7 +45,7 @@ namespace SLR
                         var rule = rules[ruleNumber];
 
                         if (rule.Items[0].Type is not ElementType.Empty)
-                            for (var i = 0; i < rule.Items.Count; i++)
+                            for (var i = 0; i < rule.Items.Count && rule.Items[i].Type is not ElementType.End; i++)
                             {
                                 left.Pop();
                                 right.Pop();
@@ -55,7 +56,6 @@ namespace SLR
                             Console.WriteLine("Analyzer correct!");
                             return;
                         }
-
                         inputStack.Push(rule.NonTerminal);
                     }
                     // Иначе

@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Generator\Generator.csproj" />
       <ProjectReference Include="..\LLGenerator\LLGenerator.csproj" />
     </ItemGroup>
 

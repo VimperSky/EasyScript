@@ -3,11 +3,12 @@ using System.Linq;
 using Generator.InputParsing;
 using Generator.RulesParsing;
 using Generator.RulesProcessing;
+using LLGenerator;
 using Xunit;
 
-namespace LLGenerator.Tests
+namespace LL.Tests
 {
-    public class SetsParserTests
+    public class ParserAndProcessorTests
     {
         [Theory]
         [InlineData("1")]

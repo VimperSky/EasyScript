@@ -21,11 +21,11 @@ namespace SLR
             while (true)
                 try
                 {
-                    var character = (inputStack.Count > 0) ?  inputStack.Pop() : "";
+                    var ch = inputStack.Count > 0 ?  inputStack.Pop() : "";
                     var values = table.First(x => x.Key == right.Peek()).Values;
-                    var items = character == ""
+                    var items = ch == ""
                         ? values.Where(x => x.Key == Constants.EndSymbol).ToList()
-                        : values.Where(x => x.Key == character).ToList();
+                        : values.Where(x => x.Key == ch).ToList();
 
                     if (items.Count == 0)
                         throw new Exception("Items are empty");
@@ -40,7 +40,7 @@ namespace SLR
                         // Иначе
                         case > 0 when elements.First().Type is ElementType.Collapse:
                         {
-                            if (character != "") inputStack.Push(character);
+                            if (ch != "") inputStack.Push(ch);
 
                             // номер свертки
                             var ruleNumber =
@@ -64,7 +64,7 @@ namespace SLR
                         }
                         default:
                             right.Push(elements.ToString());
-                            left.Push(character);
+                            left.Push(ch);
                             break;
                     }
 

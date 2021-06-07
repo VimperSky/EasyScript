@@ -28,15 +28,12 @@ namespace SLR
         {
             for (var i = 0; i < _rules.Count; i++)
             {
-                for (var j = 0; j < _rules[i].Items.Count; j++)
+                if (_rules[i].Items.Any(t => t.Type is ElementType.Empty))
                 {
-                    if (_rules[i].Items[j].Type is ElementType.Empty)
-                    {
-                        var nonTerminal = _rules[i].NonTerminal;
-                        _rules.RemoveAt(i);
-                        RebuildRules(nonTerminal);
-                        return true;
-                    }
+                    var nonTerminal = _rules[i].NonTerminal;
+                    _rules.RemoveAt(i);
+                    RebuildRules(nonTerminal);
+                    return true;
                 }
             }
 

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Generator;
 using Generator.Types;
+using SLR.Types;
 
 namespace SLR
 {
-    public class Analyzer
+    public static class Analyzer
     {
-        public static void Analyze(string[] input, List<TableRule> table, List<Rule> rules)
+        public static void Analyze(IEnumerable<string> input, List<TableRule> table, List<Rule> rules)
         {
             var left = new Stack<string>();
             var right = new Stack<string>();
@@ -21,8 +21,7 @@ namespace SLR
             while (true)
                 try
                 {
-                    var character = "";
-                    if (inputStack.Count > 0) character = inputStack.Pop();
+                    var character = (inputStack.Count > 0) ?  inputStack.Pop() : "";
                     var values = table.First(x => x.Key == right.Peek()).Values;
                     var items = character == ""
                         ? values.Where(x => x.Key == Constants.EndSymbol).ToList()
@@ -33,40 +32,40 @@ namespace SLR
 
                     var elements = items.First().Value;
                     
-                    if (elements.Count > 0 && elements.First().Value == "OK")
+                    switch (elements.Count)
                     {
-                        Console.WriteLine("Analyzer correct!");
-                        return;
-                    }
-                    
-                    if (elements.Count > 0 && elements.First().Type is ElementType.Collapse)
-                    {
-                        if (character != "") inputStack.Push(character);
-
-                        // номер свертки
-                        var ruleNumber =
-                            int.Parse(elements.First().Value.Substring(1, elements.First().Value.Length - 1)) - 1;
-                        var rule = rules[ruleNumber];
-
-                        if (rule.Items[0].Type is not ElementType.Empty)
-                            for (var i = 0; i < rule.Items.Count && rule.Items[i].Type is not ElementType.End; i++)
-                            {
-                                left.Pop();
-                                right.Pop();
-                            }
-
-                        if (right.Count == 1 && left.Count == 0 && inputStack.Count == 0)
-                        {
+                        case > 0 when elements.First().Value == "OK":
                             Console.WriteLine("Analyzer correct!");
                             return;
+                        // Иначе
+                        case > 0 when elements.First().Type is ElementType.Collapse:
+                        {
+                            if (character != "") inputStack.Push(character);
+
+                            // номер свертки
+                            var ruleNumber =
+                                int.Parse(elements.First().Value.Substring(1, elements.First().Value.Length - 1)) - 1;
+                            var rule = rules[ruleNumber];
+
+                            if (rule.Items[0].Type is not ElementType.Empty)
+                                for (var i = 0; i < rule.Items.Count && rule.Items[i].Type is not ElementType.End; i++)
+                                {
+                                    left.Pop();
+                                    right.Pop();
+                                }
+
+                            if (right.Count == 1 && left.Count == 0 && inputStack.Count == 0)
+                            {
+                                Console.WriteLine("Analyzer correct!");
+                                return;
+                            }
+                            inputStack.Push(rule.NonTerminal);
+                            break;
                         }
-                        inputStack.Push(rule.NonTerminal);
-                    }
-                    // Иначе
-                    else
-                    {
-                        right.Push(elements.ToString());
-                        left.Push(character);
+                        default:
+                            right.Push(elements.ToString());
+                            left.Push(character);
+                            break;
                     }
 
                     Console.WriteLine($"Left [{string.Join(", ", left.ToArray())}]" +

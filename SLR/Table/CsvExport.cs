@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using CsvHelper;
 using CsvHelper.Configuration;
-using Generator.Types;
+using SLR.Types;
 
 namespace SLR.Table
 {

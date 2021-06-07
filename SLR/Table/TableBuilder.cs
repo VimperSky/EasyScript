@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Generator;
 using Generator.Types;
+using SLR.Types;
 
 namespace SLR.Table
 {

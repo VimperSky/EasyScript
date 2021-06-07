@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using Generator;
 using Generator.InputParsing;
 using Generator.RulesParsing;
@@ -33,7 +31,6 @@ namespace SLR
             var fixedRules = new EmptyRemover(rules).RemoveEmpty();
 
             // Применяем к правилам различные фиксы
-            // Если сделать по-старому, то от e не избавляемся
             new RulesFixer(_rulesProcessor, lettersProvider).FixRules(fixedRules, true);
             IndexesSetter.SetIndexes(fixedRules);
             

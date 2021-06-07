@@ -17,19 +17,11 @@ namespace SLR.Table
             csv.WriteField("");
             foreach (var item in rules.First().Values) csv.WriteField(item.Key);
             csv.NextRecord();
-            var okFlag = false;
             foreach (var rule in rules)
             {
                 csv.WriteField(rule.Key);
                 foreach (var value in rule.Values)
                 {
-                    if (!okFlag)
-                    {
-                        okFlag = true;
-                        csv.WriteField("OK");
-                        continue;
-                    }
-
                     csv.WriteField(value.Value.ToString());
                 }
 

@@ -32,10 +32,14 @@ namespace SLR
                         throw new Exception("Items are empty");
 
                     var elements = items.First().Value;
-                    // Тут проверка на ОК  ( Z -> Z OK)
-                    // Если OK, то Console.WriteLine("Analyzer correct!");
-                    // Если свертка
-                    if (elements.First().Type is ElementType.Collapse)
+                    
+                    if (elements.Count > 0 && elements.First().Value == "OK")
+                    {
+                        Console.WriteLine("Analyzer correct!");
+                        return;
+                    }
+                    
+                    if (elements.Count > 0 && elements.First().Type is ElementType.Collapse)
                     {
                         if (character != "") inputStack.Push(character);
 

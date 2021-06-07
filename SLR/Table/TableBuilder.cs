@@ -38,7 +38,7 @@ namespace SLR.Table
             
             { // Начальный проход с первого нетерминала
                 var tableRule = CreateTableRule(_rules[0].NonTerminal);
-                
+                tableRule.Values[_rules[0].NonTerminal] = new RuleItems {new("OK", ElementType.Terminal)};
                 First(tableRule, _rules[0].NonTerminal);
                 
                 UpdatePendingItems(tableRule);

@@ -6,20 +6,22 @@ namespace SLR
 {
     public class EmptyRemover
     {
-        public  List<Rule> _rules;
+        private readonly List<Rule> _rules;
         public EmptyRemover(List<Rule> rules)
         {
             _rules = rules.ToList();
         }
         
 
-        public void RemoveEmpty()
+        public List<Rule> RemoveEmpty()
         {
             var foundEmpty = true;
             while (foundEmpty)
             {
                 foundEmpty = RemoveEmptySingle();
             }
+
+            return _rules;
         }
 
         private bool RemoveEmptySingle()

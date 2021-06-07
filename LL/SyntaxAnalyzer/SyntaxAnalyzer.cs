@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LLGenerator.Types;
+using LL.Types;
 
-namespace LLGenerator.SyntaxAnalyzer
+namespace LL.SyntaxAnalyzer
 {
     public static class SyntaxAnalyzer
     {

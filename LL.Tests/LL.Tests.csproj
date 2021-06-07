@@ -21,7 +21,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Generator\Generator.csproj" />
-      <ProjectReference Include="..\LLGenerator\LLGenerator.csproj" />
+      <ProjectReference Include="..\LLGenerator\LL.csproj" />
+      <ProjectReference Include="..\LL\LL.csproj" />
     </ItemGroup>
 
 </Project>

@@ -3,9 +3,9 @@ using System.Collections.Immutable;
 using System.Linq;
 using Generator;
 using Generator.Types;
-using LLGenerator.Types;
+using LL.Types;
 
-namespace LLGenerator.SetsParser
+namespace LL.SetsParser
 {
     internal static class DirSetsFinder
     {

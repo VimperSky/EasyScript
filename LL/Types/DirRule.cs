@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Generator.Types;
 
-namespace LLGenerator.Types
+namespace LL.Types
 {
     public class DirRule : Rule
     {

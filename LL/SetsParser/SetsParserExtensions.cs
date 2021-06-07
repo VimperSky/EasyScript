@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Generator.Types;
 
-namespace LLGenerator.SetsParser
+namespace LL.SetsParser
 {
     internal static class SetsParserExtensions
     {

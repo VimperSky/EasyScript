@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace LLGenerator.Types
+namespace LL.Types
 {
     public class TableRule
     {

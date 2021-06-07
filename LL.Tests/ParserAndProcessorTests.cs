@@ -3,7 +3,6 @@ using System.Linq;
 using Generator.InputParsing;
 using Generator.RulesParsing;
 using Generator.RulesProcessing;
-using LLGenerator;
 using Xunit;
 
 namespace LL.Tests

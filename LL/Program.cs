@@ -2,7 +2,7 @@
 using Generator.RulesParsing;
 using Generator.RulesProcessing;
 
-namespace LLGenerator
+namespace LL
 {
     public static class Program
     {

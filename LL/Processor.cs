@@ -7,11 +7,11 @@ using Generator.InputParsing;
 using Generator.RulesParsing;
 using Generator.RulesProcessing;
 using Generator.Types;
-using LLGenerator.SetsParser;
-using LLGenerator.TableGenerator;
-using LLGenerator.Types;
+using LL.SetsParser;
+using LL.TableGenerator;
+using LL.Types;
 
-namespace LLGenerator
+namespace LL
 {
     public class Processor
     {

@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using CsvHelper;
 using CsvHelper.Configuration;
-using LLGenerator.Types;
+using LL.Types;
 
-namespace LLGenerator.TableGenerator
+namespace LL.TableGenerator
 {
     public static class CsvExport
     {

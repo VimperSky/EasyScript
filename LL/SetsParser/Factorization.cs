@@ -3,7 +3,7 @@ using System.Linq;
 using Generator;
 using Generator.Types;
 
-namespace LLGenerator.SetsParser
+namespace LL.SetsParser
 {
     internal class Factorization
     {

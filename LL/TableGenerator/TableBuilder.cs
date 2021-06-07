@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Generator.Types;
-using LLGenerator.Types;
+using LL.Types;
 
-namespace LLGenerator.TableGenerator
+namespace LL.TableGenerator
 {
     public static class TableBuilder
     {

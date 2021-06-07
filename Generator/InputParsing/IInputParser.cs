@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Generator.InputParsing
+﻿namespace Generator.InputParsing
 {
     public interface IInputParser
     {

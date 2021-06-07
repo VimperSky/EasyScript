@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Generator.Types;
 
 namespace Generator.RulesProcessing
 {
-    public class SimpleRulesProcessor: IRulesProcessor
+    public class SimpleRulesProcessor : IRulesProcessor
     {
         private HashSet<string> _nonTerminals;
-        
+
         public RuleItem ParseToken(string token)
         {
             return _nonTerminals.Contains(token)
@@ -26,11 +25,11 @@ namespace Generator.RulesProcessing
             _nonTerminals = inputRules.Select(x => x.NonTerminal).ToHashSet();
 
             var rules = inputRules.Select(rawRule => new Rule
-                {
-                    NonTerminal = rawRule.NonTerminal,
-                    Items = rawRule.RightBody.Split(" ", StringSplitOptions.TrimEntries)
-                        .Select(ParseToken).ToList()
-                }).ToList();
+            {
+                NonTerminal = rawRule.NonTerminal,
+                Items = rawRule.RightBody.Split(" ", StringSplitOptions.TrimEntries)
+                    .Select(ParseToken).ToList()
+            }).ToList();
 
             return rules;
         }

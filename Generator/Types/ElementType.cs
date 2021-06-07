@@ -1,6 +1,6 @@
 ﻿namespace Generator.Types
 {
-    public enum ElementType: byte
+    public enum ElementType : byte
     {
         Terminal,
         NonTerminal,

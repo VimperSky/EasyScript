@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Generator.InputParsing
 {
-    public class SimpleRulesParser: IInputParser
+    public class SimpleRulesParser : IInputParser
     {
         private readonly string _path;
 

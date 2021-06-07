@@ -8,17 +8,18 @@ using CsvHelper.Configuration;
 
 namespace Generator.RulesParsing
 {
-    public class CsvRulesParser: IRulesParser
+    public class CsvRulesParser : IRulesParser
     {
         private readonly string _path;
+
         public CsvRulesParser(string path)
         {
             if (!path.EndsWith(".csv"))
                 throw new ArgumentException("CSV Rules Parser accepts only csv files!");
-            
+
             _path = path;
         }
-        
+
         public List<(string NonTerminal, string RightBody)> Parse()
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)

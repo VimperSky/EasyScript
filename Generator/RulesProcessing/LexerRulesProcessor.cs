@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Generator.Types;
 using Lexer.Types;
@@ -8,7 +7,7 @@ using static Lexer.Constants;
 
 namespace Generator.RulesProcessing
 {
-    public class LexerRulesProcessor: IRulesProcessor
+    public class LexerRulesProcessor : IRulesProcessor
     {
         private static readonly Dictionary<string, TokenType> TokenTypes;
 
@@ -47,7 +46,7 @@ namespace Generator.RulesProcessing
                 };
                 return new RuleItem(tokenType.ToString(), elementType);
             }
-            
+
             throw new ArgumentException($"TokenType is not correct. {token}");
         }
 

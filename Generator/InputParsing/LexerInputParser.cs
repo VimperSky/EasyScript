@@ -4,7 +4,7 @@ using Lexer.Types;
 
 namespace Generator.InputParsing
 {
-    public class LexerInputParser: IInputParser
+    public class LexerInputParser : IInputParser
     {
         private readonly string _path;
 
@@ -13,7 +13,7 @@ namespace Generator.InputParsing
             _path = path;
         }
 
-        
+
         public string[] Parse()
         {
             var lexer = new Lexer.Lexer(File.OpenRead(_path));

@@ -25,7 +25,10 @@ namespace Generator
                         }
                         else
                         {
-                            if (history.Contains(i)) return returns;
+                            if (history.Contains(i))
+                            {
+                                return returns;
+                            }
                             history.Add(i);
                             var nextReturns = FindUp(rules, rule.NonTerminal, history);
                             foreach (var item in nextReturns)

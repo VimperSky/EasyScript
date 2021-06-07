@@ -5,11 +5,11 @@ namespace Generator
 {
     public class LettersProvider
     {
-        
         // Without R
         private const string Alphabet = "ABCDEFGHIJKLMNOPQSTUVWXYZ";
 
         private readonly List<char> _freeLetters;
+
         public LettersProvider()
         {
             _freeLetters = Alphabet.ToList();

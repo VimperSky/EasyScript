@@ -4,8 +4,10 @@ namespace Generator.Types
 {
     public class RuleItem : IEquatable<RuleItem>
     {
-        public readonly string Value;
         public readonly ElementType Type;
+        public readonly string Value;
+
+        private bool _indexesSet;
 
         public RuleItem(string value, ElementType type)
         {
@@ -13,11 +15,17 @@ namespace Generator.Types
             Type = type;
         }
 
-        
+
         public int RuleIndex { get; private set; }
         public int ItemIndex { get; private set; }
 
-        private bool _indexesSet;
+        public bool Equals(RuleItem other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(Value, other.Value) && Equals(RuleIndex, other.RuleIndex) &&
+                   Equals(ItemIndex, other.ItemIndex);
+        }
 
         public void SetIndex(int ruleId, int itemId)
         {
@@ -26,18 +34,11 @@ namespace Generator.Types
             _indexesSet = true;
         }
 
-        public bool Equals(RuleItem other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(Value, other.Value) && Equals(RuleIndex, other.RuleIndex) && Equals(ItemIndex, other.ItemIndex);
-        }
-
         public override string ToString()
         {
             if (Type == ElementType.Collapse)
                 return Value;
-            
+
             if (_indexesSet)
                 return Value + (RuleIndex + 1) + (ItemIndex + 1);
 

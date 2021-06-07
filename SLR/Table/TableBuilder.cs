@@ -27,15 +27,9 @@ namespace SLR.Table
             _valueKeys = valueKeys.ToList();
         }
 
-        private TableRule CreateTableRule(string key)
-        {
-            return new(key, _valueKeys);
-        }
+        private TableRule CreateTableRule(string key) => new(key, _valueKeys);
 
-        private RuleItem GetItem(int ruleIndex, int itemIndex)
-        {
-            return _rules[ruleIndex].Items[itemIndex];
-        }
+        private RuleItem GetItem(int ruleIndex, int itemIndex) => _rules[ruleIndex].Items[itemIndex];
 
         public List<TableRule> CreateTable()
         {

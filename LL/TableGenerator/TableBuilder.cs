@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Generator.Types;
 using LL.Types;
@@ -49,13 +48,8 @@ namespace LL.TableGenerator
                     var isLast = index + 1 == dRule.Items.Count;
                     int? ptr = null;
                     if (item.Type is ElementType.NonTerminal)
-                    {
                         ptr = table.First(x => x.NonTerminal == item.Value).Id;
-                    }
-                    else if (!isLast)
-                    {
-                        ptr = globalId + 1;
-                    }
+                    else if (!isLast) ptr = globalId + 1;
 
                     addTable.Add(new TableRule
                     {

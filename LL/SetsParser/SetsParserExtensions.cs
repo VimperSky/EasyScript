@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Generator.Types;
 
@@ -12,7 +11,7 @@ namespace LL.SetsParser
         {
             return rules.GroupBy(x => x.NonTerminal).ToList();
         }
-        
+
         public static List<RuleItem> FindCommon(this Rule a, Rule b)
         {
             var minLen = Math.Min(a.Items.Count, b.Items.Count);

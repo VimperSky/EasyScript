@@ -8,11 +8,12 @@ namespace LL.SetsParser
     internal class Factorization
     {
         private readonly LettersProvider _lettersProvider;
+
         internal Factorization(LettersProvider lettersProvider)
         {
             _lettersProvider = lettersProvider;
         }
-        
+
         private IEnumerable<Rule> GenerateNewRules(IList<Rule> commonRules, int commonLen)
         {
             var newRules = new List<Rule>();

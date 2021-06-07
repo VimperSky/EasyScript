@@ -21,7 +21,7 @@ namespace SLR
             while (true)
                 try
                 {
-                    var ch = inputStack.Count > 0 ?  inputStack.Pop() : "";
+                    var ch = inputStack.Count > 0 ? inputStack.Pop() : "";
                     var values = table.First(x => x.Key == right.Peek()).Values;
                     var items = ch == ""
                         ? values.Where(x => x.Key == Constants.EndSymbol).ToList()
@@ -31,7 +31,7 @@ namespace SLR
                         throw new Exception("Items are empty");
 
                     var elements = items.First().Value;
-                    
+
                     switch (elements.Count)
                     {
                         case > 0 when elements.First().Value == "OK":
@@ -59,6 +59,7 @@ namespace SLR
                                 Console.WriteLine("Analyzer correct!");
                                 return;
                             }
+
                             inputStack.Push(rule.NonTerminal);
                             break;
                         }

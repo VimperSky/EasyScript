@@ -32,11 +32,11 @@ namespace LL.Tests
         [InlineData("20")]
         public void RunTests(string id)
         {
-            var processor = new Processor(new TxtRulesParser($"../../../TestCases/{id}.txt"), 
+            var processor = new Processor(new TxtRulesParser($"../../../TestCases/{id}.txt"),
                 new SimpleRulesProcessor(), new SimpleRulesParser("input.txt"));
 
             var rules = processor.GenerateRules();
-            
+
             var expected = File.ReadAllLines($"../../../Expected/{id}.txt");
             Assert.Equal(expected, rules.Select(x => x.ToString()));
         }

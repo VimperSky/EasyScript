@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Generator;
 using Generator.InputParsing;
 using Generator.RulesParsing;
 using Generator.RulesProcessing;
-using Generator.Types;
 using LL.SetsParser;
 using LL.TableGenerator;
 using LL.Types;
@@ -15,16 +13,17 @@ namespace LL
 {
     public class Processor
     {
+        private readonly IInputParser _inputParser;
         private readonly IRulesParser _rulesParser;
         private readonly IRulesProcessor _rulesProcessor;
-        private readonly IInputParser _inputParser;
+
         public Processor(IRulesParser rulesParser, IRulesProcessor rulesProcessor, IInputParser inputParser)
         {
             _rulesParser = rulesParser;
             _rulesProcessor = rulesProcessor;
             _inputParser = inputParser;
         }
-        
+
         // ReSharper disable once InconsistentNaming
         private static List<string> FindNotLLGroups(IEnumerable<DirRule> dirRules)
         {
@@ -33,15 +32,12 @@ namespace LL
             foreach (var group in groups)
             {
                 var dirs = group.SelectMany(x => x.Dirs).ToList();
-                if (dirs.Count != dirs.Distinct().Count())
-                {
-                    duplicates.Add(group.Key);
-                }
+                if (dirs.Count != dirs.Distinct().Count()) duplicates.Add(group.Key);
             }
 
             return duplicates;
         }
-        
+
 
         public List<DirRule> GenerateRules()
         {
@@ -50,18 +46,18 @@ namespace LL
 
             var rules = _rulesProcessor.Process(inputRules);
             new RulesFixer(_rulesProcessor, lettersProvider).FixRules(rules);
-            
+
             var factorizedRules = new Factorization(lettersProvider).MakeFactorization(rules);
             var leftRules = new LeftRecursionRemover(lettersProvider).RemoveLeftRecursion(factorizedRules);
             var dirRules = DirSetsFinder.Find(leftRules);
-            
+
             Console.WriteLine("Rules:");
-            foreach (var rule in dirRules) 
+            foreach (var rule in dirRules)
                 Console.WriteLine(rule);
 
             return dirRules;
         }
-        
+
         public void Process()
         {
             var dirRules = GenerateRules();
@@ -74,12 +70,12 @@ namespace LL
                     Console.WriteLine(item);
                 return;
             }
-            
+
             var table = TableBuilder.Build(dirRules);
             CsvExport.SaveToCsv(table);
 
             var input = _inputParser.Parse();
-            
+
             List<int> history;
             try
             {
@@ -93,7 +89,5 @@ namespace LL
 
             Console.WriteLine($"Correct! History: [{string.Join(", ", history)}]");
         }
-        
-
     }
 }

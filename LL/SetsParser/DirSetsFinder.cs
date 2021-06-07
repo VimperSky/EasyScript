@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Generator;
 using Generator.Types;
@@ -20,9 +19,9 @@ namespace LL.SetsParser
                 var rule = rules[i];
                 if (rule.Items[0].Type is ElementType.Empty)
                     foreach (var item in rules.FindNextRecursive(rule.NonTerminal))
-                        foundValues[i].Add((item));
+                        foundValues[i].Add(item);
                 else
-                    foundValues[i].Add((rule.Items[0]));
+                    foundValues[i].Add(rule.Items[0]);
             }
 
             for (;;)

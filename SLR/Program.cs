@@ -14,7 +14,7 @@ namespace SLR
                 processor = new Processor(new CsvRulesParser("rules.csv"),
                     new LexerRulesProcessor(), new LexerInputParser("input.txt"));
             else
-                processor = new Processor(new TxtRulesParser("rules.txt"), 
+                processor = new Processor(new TxtRulesParser("rules.txt"),
                     new SimpleRulesProcessor(), new SimpleRulesParser("input.txt"));
 
             processor.Process();

@@ -29,6 +29,7 @@ namespace Generator
                             {
                                 return returns;
                             }
+
                             history.Add(i);
                             var nextReturns = FindUp(rules, rule.NonTerminal, history);
                             foreach (var item in nextReturns)

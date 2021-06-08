@@ -41,6 +41,7 @@ namespace SLR
                         Console.WriteLine("Analyzer correct!");
                         return;
                     }
+
                     if (firstElement.Type is ElementType.Collapse)
                     {
                         if (ch != "") inputStack.Push(ch);
@@ -66,7 +67,7 @@ namespace SLR
                         inputStack.Push(rule.NonTerminal);
                         continue;
                     }
-                    
+
                     right.Push(elements.ToString());
                     left.Push(ch);
 

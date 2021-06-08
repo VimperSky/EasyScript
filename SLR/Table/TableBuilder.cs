@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Generator;
 using Generator.Types;
@@ -20,7 +19,7 @@ namespace SLR.Table
             {
                 valueKeys.Add(rule.NonTerminal);
                 foreach (var ruleItem in rule.Items.Where(ruleItem =>
-                    ruleItem.Type != ElementType.Empty))
+                    ruleItem.Type is not ElementType.Empty))
                     valueKeys.Add(ruleItem.Value);
             }
 

@@ -2,9 +2,9 @@
 using Generator.RulesParsing;
 using Generator.RulesProcessing;
 
-namespace SLR
+namespace LL
 {
-    internal static class Program
+    public static class Program
     {
         private static void Main(string[] args)
         {

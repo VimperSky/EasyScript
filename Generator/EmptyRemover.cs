@@ -2,7 +2,7 @@
 using System.Linq;
 using Generator.Types;
 
-namespace SLR
+namespace Generator
 {
     public class EmptyRemover
     {

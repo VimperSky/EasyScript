@@ -45,11 +45,14 @@ namespace LL
             var inputRules = _rulesParser.Parse();
 
             var rules = _rulesProcessor.Process(inputRules);
-            new RulesFixer(_rulesProcessor, lettersProvider).FixRules(rules);
-
+            
             var factorizedRules = new Factorization(lettersProvider).MakeFactorization(rules);
             var leftRules = new LeftRecursionRemover(lettersProvider).RemoveLeftRecursion(factorizedRules);
-            var dirRules = DirSetsFinder.Find(leftRules);
+            
+            var fixedRules = new EmptyRemover(leftRules).RemoveEmpty();
+            new RulesFixer(_rulesProcessor, lettersProvider).FixRules(fixedRules);
+
+            var dirRules = DirSetsFinder.Find(fixedRules);
 
             Console.WriteLine("Rules:");
             foreach (var rule in dirRules)

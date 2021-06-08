@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Generator;
 using Generator.Types;
@@ -19,7 +20,7 @@ namespace SLR.Table
             {
                 valueKeys.Add(rule.NonTerminal);
                 foreach (var ruleItem in rule.Items.Where(ruleItem =>
-                    ruleItem.Type != ElementType.Empty && ruleItem.Type != ElementType.End))
+                    ruleItem.Type != ElementType.Empty))
                     valueKeys.Add(ruleItem.Value);
             }
 
@@ -71,7 +72,7 @@ namespace SLR.Table
                     if (tableRules.Any(x => x.Key == value.ToString()))
                         continue;
 
-                    if (value.Any(x => x.Value.StartsWith("R")))
+                    if (value.Any(x => x.Type is ElementType.Collapse))
                         continue;
 
                     pendingItems.Enqueue(value);

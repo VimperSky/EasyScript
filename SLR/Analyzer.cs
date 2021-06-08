@@ -22,52 +22,53 @@ namespace SLR
                 try
                 {
                     var ch = inputStack.Count > 0 ? inputStack.Pop() : "";
-                    var values = table.First(x => x.Key == right.Peek()).Values;
-                    var items = ch == ""
-                        ? values.Where(x => x.Key == Constants.EndSymbol).ToList()
-                        : values.Where(x => x.Key == ch).ToList();
+                    var tableValuesWithKey = table.First(x => x.Key == right.Peek()).Values;
+                    var tableItems = ch == ""
+                        ? tableValuesWithKey.Where(x => x.Key == Constants.EndSymbol).ToList()
+                        : tableValuesWithKey.Where(x => x.Key == ch).ToList();
 
-                    if (items.Count == 0)
+                    if (tableItems.Count == 0)
                         throw new Exception("Items are empty");
 
-                    var elements = items.First().Value;
+                    var elements = tableItems.First().Value;
 
-                    switch (elements.Count)
+                    if (elements.Count == 0)
+                        continue;
+
+                    var firstElement = elements.First();
+                    if (firstElement.Value == "OK")
                     {
-                        case > 0 when elements.First().Value == "OK":
-                            Console.WriteLine("Analyzer correct!");
-                            return;
-                        // Иначе
-                        case > 0 when elements.First().Type is ElementType.Collapse:
-                        {
-                            if (ch != "") inputStack.Push(ch);
+                        Console.WriteLine("Analyzer correct!");
+                        return;
+                    }
+                    if (firstElement.Type is ElementType.Collapse)
+                    {
+                        if (ch != "") inputStack.Push(ch);
 
-                            // номер свертки
-                            var ruleNumber =
-                                int.Parse(elements.First().Value.Substring(1, elements.First().Value.Length - 1)) - 1;
-                            var rule = rules[ruleNumber];
+                        // номер свертки
+                        var ruleNumber =
+                            int.Parse(elements.First().Value.Substring(1, elements.First().Value.Length - 1)) - 1;
+                        var rule = rules[ruleNumber];
 
-                            if (rule.Items[0].Type is not ElementType.Empty)
-                                for (var i = 0; i < rule.Items.Count && rule.Items[i].Type is not ElementType.End; i++)
-                                {
-                                    left.Pop();
-                                    right.Pop();
-                                }
-
-                            if (right.Count == 1 && left.Count == 0 && inputStack.Count == 0)
+                        if (rule.Items[0].Type is not ElementType.Empty)
+                            for (var i = 0; i < rule.Items.Count && rule.Items[i].Type is not ElementType.End; i++)
                             {
-                                Console.WriteLine("Analyzer correct!");
-                                return;
+                                left.Pop();
+                                right.Pop();
                             }
 
-                            inputStack.Push(rule.NonTerminal);
-                            break;
+                        if (right.Count == 1 && left.Count == 0 && inputStack.Count == 0)
+                        {
+                            Console.WriteLine("Analyzer correct!");
+                            return;
                         }
-                        default:
-                            right.Push(elements.ToString());
-                            left.Push(ch);
-                            break;
+
+                        inputStack.Push(rule.NonTerminal);
+                        continue;
                     }
+                    
+                    right.Push(elements.ToString());
+                    left.Push(ch);
 
                     Console.WriteLine($"Left [{string.Join(", ", left.ToArray())}]" +
                                       $" Input [{string.Join(" ", inputStack.ToArray())}]" +

@@ -89,9 +89,9 @@ namespace SLR.Table
                 var nextItems = _rules.FindNextRecursive(_rules[item.RuleIndex].NonTerminal);
                 foreach (var nextItem in nextItems)
                 {
-                    tableRule.QuickCollapse(nextItem.Value, item.RuleIndex + 1);
+                    tableRule.QuickCollapse(nextItem.Value, _rules[item.RuleIndex]);
                     if (nextItem.Type is ElementType.NonTerminal)
-                        FirstCollapse(tableRule, nextItem.Value, item.RuleIndex + 1);
+                        FirstCollapse(tableRule, nextItem.Value, _rules[item.RuleIndex]);
                 }
 
                 return;
@@ -101,7 +101,7 @@ namespace SLR.Table
             var next = GetItem(item.RuleIndex, item.ItemIndex + 1);
             if (next.Type == ElementType.End)
             {
-                tableRule.QuickCollapse(Constants.EndSymbol, item.RuleIndex + 1);
+                tableRule.QuickCollapse(Constants.EndSymbol, _rules[item.RuleIndex]);
                 return;
             }
 
@@ -109,15 +109,15 @@ namespace SLR.Table
             if (next.Type == ElementType.NonTerminal) First(tableRule, next.Value);
         }
 
-        private void FirstCollapse(TableRule tableRule, string nonTerm, int collapseIndex)
+        private void FirstCollapse(TableRule tableRule, string nonTerm, Rule collapseRule)
         {
             foreach (var rules in _rules.Where(x => x.NonTerminal == nonTerm))
             {
                 var first = rules.Items[0];
                 if (first.Type is ElementType.Terminal or ElementType.End)
-                    tableRule.QuickCollapse(first.Value, collapseIndex);
+                    tableRule.QuickCollapse(first.Value, collapseRule);
                 else if (first.Type is ElementType.NonTerminal && nonTerm != first.Value)
-                    FirstCollapse(tableRule, first.Value, collapseIndex);
+                    FirstCollapse(tableRule, first.Value, collapseRule);
             }
         }
 

@@ -34,27 +34,28 @@ namespace SLR.Types
                 Values[ruleItem.Value].Add(ruleItem);
         }
 
-        public void QuickCollapse(string key, int index)
+        public void QuickCollapse(string key, Rule rule)
         {
             // Если такого ключа не существует в словаре впринципе
             if (!Values.ContainsKey(key))
                 throw new ArgumentException("Wrong ruleItem index! " + key);
 
+            var newVal = rule.NonTerminal + "-" + rule.Items.Count;
             // Если уже существуют ключи
             if (Values[key].Count > 0)
             {
                 var first = Values[key].First();
                 // Если мы пытаемся добавить тоже самое, что уже добавили, то просто делаем возврат
-                if (first.Type == ElementType.Collapse && first.Value == $"R{index}")
+                if (first.Type == ElementType.Collapse && first.Value == newVal)
                     return;
 
                 // Иначе, если мы пытаемся добавить другую свертку или обычное значение, кидаем ошибку
                 throw new Exception("Trying to collapse item which was added with regular value. " +
-                                    $"\r\n[Info] key: {key}, index: {index}");
+                                    $"\r\n[Info] key: {key}, new value: {newVal}");
             }
 
 
-            Values[key].Add(new RuleItem($"R{index}", ElementType.Collapse));
+            Values[key].Add(new RuleItem(newVal, ElementType.Collapse));
         }
 
         public override string ToString()

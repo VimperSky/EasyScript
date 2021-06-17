@@ -51,12 +51,10 @@ namespace SLR.Table
             {
                 var items = pendingItems.Dequeue();
                 var key = items.ToString();
-                if (tableRules.Any(x => x.Key == key))
-                    continue;
-
+                if (key == "OK") continue;
+                if (tableRules.Any(x => x.Key == key)) continue;
                 var tableRule = CreateTableRule(key);
                 foreach (var item in items) Follow(tableRule, item);
-
                 UpdatePendingItems(tableRule);
             }
 
@@ -68,11 +66,9 @@ namespace SLR.Table
                     .Where(x => x.Value.Count > 0))
                 {
                     var value = item.Value;
-                    if (tableRules.Any(x => x.Key == value.ToString()))
-                        continue;
+                    if (tableRules.Any(x => x.Key == value.ToString())) continue;
 
-                    if (value.Any(x => x.Type is ElementType.Collapse))
-                        continue;
+                    if (value.Any(x => x.Type is ElementType.Collapse)) continue;
 
                     pendingItems.Enqueue(value);
                 }
@@ -114,10 +110,15 @@ namespace SLR.Table
             foreach (var rules in _rules.Where(x => x.NonTerminal == nonTerm))
             {
                 var first = rules.Items[0];
-                if (first.Type is ElementType.Terminal or ElementType.End)
-                    tableRule.QuickCollapse(first.Value, collapseIndex);
-                else if (first.Type is ElementType.NonTerminal && nonTerm != first.Value)
-                    FirstCollapse(tableRule, first.Value, collapseIndex);
+                switch (first.Type)
+                {
+                    case ElementType.Terminal or ElementType.End:
+                        tableRule.QuickCollapse(first.Value, collapseIndex);
+                        break;
+                    case ElementType.NonTerminal when nonTerm != first.Value:
+                        FirstCollapse(tableRule, first.Value, collapseIndex);
+                        break;
+                }
             }
         }
 

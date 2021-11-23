@@ -33,7 +33,7 @@ namespace LL.Tests
         public void RunTests(string id)
         {
             var processor = new Processor(new TxtRulesParser($"../../../TestCases/{id}.txt"),
-                new SimpleRulesProcessor(), new SimpleRulesParser("input.txt"));
+                new SimpleRulesProcessor(), new SimpleInputParser("input.txt"));
 
             var rules = processor.GenerateRules();
 

@@ -3,11 +3,11 @@ using System.Linq;
 
 namespace Generator.InputParsing
 {
-    public class SimpleRulesParser : IInputParser
+    public class SimpleInputParser : IInputParser
     {
         private readonly string _path;
 
-        public SimpleRulesParser(string path)
+        public SimpleInputParser(string path)
         {
             _path = path;
         }

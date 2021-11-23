@@ -15,7 +15,7 @@ namespace SLR
                     new LexerRulesProcessor(), new LexerInputParser("input.txt"));
             else
                 processor = new Processor(new TxtRulesParser("rules.txt"),
-                    new SimpleRulesProcessor(), new SimpleRulesParser("input.txt"));
+                    new SimpleRulesProcessor(), new SimpleInputParser("input.txt"));
 
             processor.Process();
         }

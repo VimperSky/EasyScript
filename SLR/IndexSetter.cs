@@ -3,7 +3,7 @@ using Generator.Types;
 
 namespace SLR
 {
-    public static class IndexesSetter
+    public static class IndexSetter
     {
         public static void SetIndexes(List<Rule> rules)
         {

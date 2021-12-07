@@ -1,3 +1,0 @@
-F -> S $
-S -> S a | A S | a
-A -> b A | b S | e

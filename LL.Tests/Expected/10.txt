@@ -1,9 +1,0 @@
-F -> S $ / b, a
-S -> A S C / b, a
-S -> a C / a
-C -> a C / a
-C -> e / $, a, b
-A -> b B / b
-A -> e / b, a
-B -> A / b, a
-B -> S / b, a

@@ -1,3 +1,0 @@
-S -> A B $
-A -> a A | a | c | c A
-B -> B d | b A | e

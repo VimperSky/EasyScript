@@ -1,4 +1,0 @@
-F -> A $
-A -> b | a B | a C
-B -> b
-C -> b c

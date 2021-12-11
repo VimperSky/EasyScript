@@ -5,9 +5,11 @@ namespace Lexer;
 
 internal static class Program
 {
-    private static void Main(string[] args)
+    private static void Main()
     {
         var lexer = new Lexer(File.OpenRead("input.txt"));
-        foreach (var token in lexer.Tokens) Console.WriteLine(token);
+        
+        foreach (var token in lexer.Tokens) 
+            Console.WriteLine(token);
     }
 }

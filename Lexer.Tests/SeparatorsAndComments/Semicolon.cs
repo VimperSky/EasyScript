@@ -62,7 +62,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer(");");
 
-            Assert.Equal(new Token(TokenType.CloseBracket, ")", 0, 0).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.CloseParenthesis, ")", 0, 0).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Semicolon, ";", 0, 1).ToString(), lexer.GetNextToken().ToString());
         }
 
@@ -80,7 +80,7 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("( ;");
 
-            Assert.Equal(new Token(TokenType.OpenBracket, "(", 0, 0).ToString(), lexer.GetNextToken().ToString());
+            Assert.Equal(new Token(TokenType.OpenParenthesis, "(", 0, 0).ToString(), lexer.GetNextToken().ToString());
             Assert.Equal(new Token(TokenType.Semicolon, ";", 0, 2).ToString(), lexer.GetNextToken().ToString());
         }
 

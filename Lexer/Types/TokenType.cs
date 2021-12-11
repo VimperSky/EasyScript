@@ -11,12 +11,15 @@ public enum TokenType : byte
     Error,
 
     // Обычные скоюбки
-    OpenBracket, // (
-    CloseBracket, // )
+    OpenParenthesis, // (
+    CloseParenthesis, // )
 
     // Фигурные скобки
     OpenBrace, // {
     CloseBrace, // }
+    
+    ArrayStart, // [
+    ArrayEnd, // ]
 
     // Комментарии
     Comment, // //

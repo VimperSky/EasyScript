@@ -18,8 +18,6 @@ public partial class LexerMachine
     private const char Underscore = '_';
     private const byte MaxIntSize = 19; // long = 19 characters
     private const byte MaxFloatSize = 38;
-    private const char ArrayStart = '[';
-    private const char ArrayEnd = ']';
 
     private static readonly List<TokenType> SkipTokens = new() { TokenType.Space, TokenType.NewLine };
 
@@ -28,13 +26,19 @@ public partial class LexerMachine
         { Space.ToString(), TokenType.Space },
         { EndLine.ToString(), TokenType.NewLine },
 
-        { "(", TokenType.OpenBracket },
-        { ")", TokenType.CloseBracket },
+        { "(", TokenType.OpenParenthesis },
+        { ")", TokenType.CloseParenthesis },
+        
+        { "[", TokenType.ArrayStart },
+        { "]", TokenType.ArrayEnd },
+        
         { "{", TokenType.OpenBrace },
         { "}", TokenType.CloseBrace },
+        
         { "=", TokenType.Assign },
         { ";", TokenType.Semicolon },
         { ",", TokenType.Comma },
+        
         { SingleComment, TokenType.Comment },
         { MultiCommentStart, TokenType.MultiComment },
 

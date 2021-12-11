@@ -10,8 +10,8 @@ namespace Lexer.Tests.SeparatorsAndComments
         {
             var lexer = new TestLexer("()");
 
-            Assert.Equal(TokenType.OpenBracket, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.CloseBracket, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.OpenParenthesis, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.CloseParenthesis, lexer.GetNextToken().Type);
         }
 
         [Fact]
@@ -20,7 +20,7 @@ namespace Lexer.Tests.SeparatorsAndComments
             var lexer = new TestLexer("lost)s");
 
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
-            Assert.Equal(TokenType.CloseBracket, lexer.GetNextToken().Type);
+            Assert.Equal(TokenType.CloseParenthesis, lexer.GetNextToken().Type);
             Assert.Equal(TokenType.Identifier, lexer.GetNextToken().Type);
         }
 

@@ -1,7 +1,6 @@
-﻿namespace Lexer.States
+﻿namespace Lexer.States;
+
+public interface ILexerState
 {
-    public interface ILexerState
-    {
-        public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine);
-    }
+    public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine);
 }

@@ -1,11 +1,10 @@
 ﻿using Lexer.Types;
 
-namespace Lexer.LexerMachine
+namespace Lexer.LexerMachine;
+
+public interface ILexerMachine
 {
-    public interface ILexerMachine
-    {
-        void PassChar(char ch);
-        void Finish();
-        Token GetToken();
-    }
+    void PassChar(char ch);
+    void Finish();
+    Token GetToken();
 }

@@ -1,24 +1,23 @@
 ﻿using Lexer.Types;
 
-namespace Lexer.States
+namespace Lexer.States;
+
+public class FloatState : ILexerState
 {
-    public class FloatState : ILexerState
+    public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
     {
-        public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
+        // 5. .
+        if (machine.IsFloatContinue)
+            return machine.AddChar();
+
+        // 5.; .5; 
+        if (machine.IsServiceStart && machine.IsFloatConstructed)
         {
-            // 5. .
-            if (machine.IsFloatContinue)
-                return machine.AddChar();
-
-            // 5.; .5; 
-            if (machine.IsServiceStart && machine.IsFloatConstructed)
-            {
-                machine.GenerateToken(TokenType.AnyFloat);
-                return machine.SetServiceOrComment();
-            }
-
-            // 5.. .. .;
-            return machine.SetError();
+            machine.GenerateToken(TokenType.AnyFloat);
+            return machine.SetServiceOrComment();
         }
+
+        // 5.. .. .;
+        return machine.SetError();
     }
 }

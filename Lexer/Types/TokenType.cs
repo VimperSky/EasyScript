@@ -1,82 +1,84 @@
-﻿namespace Lexer.Types
+﻿namespace Lexer.Types;
+
+public enum TokenType : byte
 {
-    public enum TokenType : byte
-    {
-        Space,
-        NewLine,
-        End,
-        Empty,
+    Space,
+    NewLine,
+    End,
+    Empty,
 
-        // Ошибка
-        Error,
+    // Ошибка
+    Error,
 
-        // Обычные скоюбки
-        OpenBracket, // (
-        CloseBracket, // )
+    // Обычные скоюбки
+    OpenParenthesis, // (
+    CloseParenthesis, // )
 
-        // Фигурные скобки
-        OpenBrace, // {
-        CloseBrace, // }
+    // Фигурные скобки
+    OpenBrace, // {
+    CloseBrace, // }
+    
+    ArrayStart, // [
+    ArrayEnd, // ]
 
-        // Комментарии
-        Comment, // //
-        MultiComment, // /* */
+    // Комментарии
+    Comment, // //
+    MultiComment, // /* */
 
-        // Название переменной
-        Identifier,
+    // Название переменной
+    Identifier,
 
-        // Типы данных
-        AnyInt, // 32 bit integer
-        AnyFloat, // 32 bit floating point
-        AnyString, // "
-        AnyBool, // true or false
+    // Типы данных
+    AnyInt, // 32 bit integer
+    AnyFloat, // 32 bit floating point
+    AnyString, // "
+    AnyBool, // true or false
 
-        // Точка с запятой
-        Semicolon, // ;
-        Comma, // ,
+    // Точка с запятой
+    Semicolon, // ;
+    Comma, // ,
 
-        // Присвоение
-        Assign, // =
+    // Присвоение
+    Assign, // =
 
-        // Математические операторы
-        MinusOp, // +
-        PlusOp, // -
-        DivOp, // / 
-        MultiplyOp, // *
+    // Математические операторы
+    MinusOp, // +
+    PlusOp, // -
+    DivOp, // / 
+    MultiplyOp, // *
 
-        Increment, // ++
-        Decrement, // --
+    Increment, // ++
+    Decrement, // --
 
-        // Операторы сравнения
-        MoreEquals, // >=
-        LessEquals, // <=
-        More, // >
-        Less, // < 
-        Equals, // ==
-        NotEquals, // !=
+    // Операторы сравнения
+    MoreEquals, // >=
+    LessEquals, // <=
+    More, // >
+    Less, // < 
+    Equals, // ==
+    NotEquals, // !=
 
-        // Операторы условия
-        And, // &
-        Or, // |
+    // Операторы условия
+    And, // &
+    Or, // |
 
-        // Ключевые слова
-        Const = 100,
-        Let,
-        If,
-        Else,
-        For,
-        While,
-        True,
-        False,
-        Say,
-        Sayl,
-        Ask,
-        Askl,
-        Fun,
-        Ret,
-        Int,
-        Float,
-        Bool,
-        Str
-    }
+    // Ключевые слова
+    Const = 100,
+    Let,
+    If,
+    Else,
+    For,
+    While,
+    True,
+    False,
+    Say,
+    Sayl,
+    Ask,
+    Askl,
+    Fun,
+    Ret,
+    Int,
+    Float,
+    Bool,
+    Str
 }

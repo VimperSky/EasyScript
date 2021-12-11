@@ -1,31 +1,30 @@
 ﻿using Lexer.Types;
 
-namespace Lexer.LexerMachine
+namespace Lexer.LexerMachine;
+
+public partial class LexerMachine : ILexerMachine
 {
-    public partial class LexerMachine : ILexerMachine
+    private int _charIndex;
+    private int _lineIndex;
+
+    public void PassChar(char ch)
     {
-        private int _charIndex;
-        private int _lineIndex;
-
-        public void PassChar(char ch)
+        ProcessChar(ch, _lineIndex, _charIndex++);
+        if (ch == '\n')
         {
-            ProcessChar(ch, _lineIndex, _charIndex++);
-            if (ch == '\n')
-            {
-                _charIndex = 0;
-                _lineIndex++;
-            }
+            _charIndex = 0;
+            _lineIndex++;
         }
+    }
 
-        public Token GetToken()
-        {
-            return _tokens.Count > 0 ? _tokens.Dequeue() : null;
-        }
+    public Token GetToken()
+    {
+        return _tokens.Count > 0 ? _tokens.Dequeue() : null;
+    }
 
-        public void Finish()
-        {
-            IsEof = true;
-            PassChar(' ');
-        }
+    public void Finish()
+    {
+        IsEof = true;
+        PassChar(' ');
     }
 }

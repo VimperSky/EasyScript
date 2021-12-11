@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Generator.Types;
+using Lexer.LexerMachine;
 using Lexer.Types;
-using static Lexer.Constants;
 
 namespace Generator.RulesProcessing
 {
@@ -25,7 +25,7 @@ namespace Generator.RulesProcessing
 
         static LexerRulesProcessor()
         {
-            TokenTypes = ServiceSymbols.Concat(KeyWords).Concat(ParserTypes)
+            TokenTypes = LexerMachine.ServiceSymbols.Concat(LexerMachine.KeyWords).Concat(ParserTypes)
                 .ToDictionary(x => x.Key, x => x.Value);
         }
 

@@ -32,7 +32,7 @@ namespace SLR
 
             // Применяем к правилам различные фиксы
             new RulesFixer(_rulesProcessor, lettersProvider).FixRules(fixedRules, true);
-            IndexesSetter.SetIndexes(fixedRules);
+            IndexSetter.SetIndexes(fixedRules);
 
             foreach (var item in fixedRules)
                 Console.WriteLine(item);

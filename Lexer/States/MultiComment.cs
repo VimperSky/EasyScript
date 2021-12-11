@@ -1,27 +1,26 @@
 using Lexer.Types;
 
-namespace Lexer.States
+namespace Lexer.States;
+
+public class MultiComment : ILexerState
 {
-    public class MultiComment : ILexerState
+    private bool _isProbablyEnd;
+
+    public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
     {
-        private bool _isProbablyEnd;
+        if (machine.IsEof)
+            return machine.GenerateToken(TokenType.MultiComment);
 
-        public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
+        if (_isProbablyEnd)
         {
-            if (machine.IsEof)
-                return machine.GenerateToken(TokenType.MultiComment);
+            _isProbablyEnd = false;
 
-            if (_isProbablyEnd)
-            {
-                _isProbablyEnd = false;
-
-                if (machine.IsCommentSymbol)
-                    return machine.RemoveChar().GenerateToken(TokenType.MultiComment);
-            }
-
-            if (machine.IsMultiCommentSymbol) _isProbablyEnd = true;
-
-            return machine.AddChar();
+            if (machine.IsCommentSymbol)
+                return machine.RemoveChar().GenerateToken(TokenType.MultiComment);
         }
+
+        if (machine.IsMultiCommentSymbol) _isProbablyEnd = true;
+
+        return machine.AddChar();
     }
 }

@@ -1,27 +1,26 @@
 ﻿using Lexer.Types;
 
-namespace Lexer.States
+namespace Lexer.States;
+
+public class IntState : ILexerState
 {
-    public class IntState : ILexerState
+    public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
     {
-        public LexerMachine.LexerMachine Process(LexerMachine.LexerMachine machine)
+        // 53
+        if (machine.IsIntContinue)
+            return machine.AddChar();
+
+        // 53.
+        if (machine.IsPoint)
+            return machine.AddChar().SetFloatState();
+
+        // 5;
+        if (machine.IsServiceStart)
         {
-            // 53
-            if (machine.IsIntContinue)
-                return machine.AddChar();
-
-            // 53.
-            if (machine.IsPoint)
-                return machine.AddChar().SetFloatState();
-
-            // 5;
-            if (machine.IsServiceStart)
-            {
-                machine.GenerateToken(TokenType.AnyInt);
-                return machine.SetServiceOrComment();
-            }
-
-            return machine.SetError();
+            machine.GenerateToken(TokenType.AnyInt);
+            return machine.SetServiceOrComment();
         }
+
+        return machine.SetError();
     }
 }

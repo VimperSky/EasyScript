@@ -18,8 +18,8 @@ public enum TokenType : byte
     OpenBrace, // {
     CloseBrace, // }
     
-    ArrayStart, // [
-    ArrayEnd, // ]
+    OpenSquareBracket, // [
+    CloseSquareBracket, // ]
 
     // Комментарии
     Comment, // //

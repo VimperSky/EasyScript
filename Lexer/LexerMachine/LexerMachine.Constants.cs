@@ -29,8 +29,8 @@ public partial class LexerMachine
         { "(", TokenType.OpenParenthesis },
         { ")", TokenType.CloseParenthesis },
         
-        { "[", TokenType.ArrayStart },
-        { "]", TokenType.ArrayEnd },
+        { "[", TokenType.OpenSquareBracket },
+        { "]", TokenType.CloseSquareBracket },
         
         { "{", TokenType.OpenBrace },
         { "}", TokenType.CloseBrace },

@@ -79,6 +79,7 @@ public enum TokenType : byte
     Ret,
     Int,
     Float,
-    Bool,
-    Str
+    Bool, 
+    Str,
+    Len
 }

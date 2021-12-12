@@ -1,15 +1,30 @@
-﻿using Generator.InputParsing;
+﻿using System;
+using Generator.InputParsing;
 using Generator.RulesParsing;
 using Generator.RulesProcessing;
 using SLR;
+using static System.Enum;
 
-var isLexerMode = args.Length > 0;
-Processor processor;
-if (isLexerMode)
-    processor = new Processor(new CsvRulesParser("rules.csv"),
-        new LexerRulesProcessor(), new LexerInputParser("input.txt"));
-else
-    processor = new Processor(new TxtRulesParser("rules.txt"),
-        new SimpleRulesProcessor(), new SimpleInputParser("input.txt"));
+var parsingMode = ParsingMode.LexerOnline;
+try
+{
+    TryParse(args[0], out parsingMode);
+}
+catch
+{
+    Console.WriteLine("Не удалось прочитать аргументы командной строки. Используется стандартный режим.");
+}
+
+IRulesParser rulesParser = parsingMode switch
+{
+    ParsingMode.Txt => new TxtRulesParser("rules.txt"),
+    ParsingMode.LexerManual => new CsvRulesParser("rules.csv"),
+    ParsingMode.LexerOnline => new OnlineCsvRulesParser(),
+    _ => throw new ArgumentOutOfRangeException()
+};
+
+var processor = new Processor(rulesParser,
+    new LexerRulesProcessor(), new LexerInputParser("input.txt"));
+        
 
 processor.Process();

@@ -5,6 +5,7 @@
     </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\Lexer\Lexer.csproj" />
+      <ProjectReference Include="..\SymbolTable\SymbolTable.csproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="CsvHelper" Version="27.1.0" />

@@ -20,6 +20,9 @@ public class SymbolTableProcessor
 
     public void Push(TokenType type, string name)
     {
+        if (TopTable.Any(x => x.Name == name))
+            throw new ArgumentException($"[SymbolTable] Trying to push token with an existing name: {name}");
+        
         TopTable.Push(new TableItem {TokenType = type, Name = name});
     }
 

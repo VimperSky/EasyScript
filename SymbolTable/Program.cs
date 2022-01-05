@@ -22,6 +22,8 @@ st.Push(TokenType.Bool, "aboba");
 st.Push(TokenType.Str, "kek");
 st.Push(TokenType.Int, "mek");
 st.Push(TokenType.Float, "dek");
+st.Push(TokenType.Int, "dek");
+
 Console.WriteLine(st.Find("mek"));
 st.CreateTable();
 st.Push(TokenType.Int, "dek");

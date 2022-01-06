@@ -10,7 +10,7 @@ namespace Generator.RulesProcessing
         private HashSet<string> _nonTerminals;
 
 
-        public string EmptyToken => Constants.EmptySymbol;
+        public string EndToken => Constants.EmptySymbol;
 
         public RuleItem ParseToken(string token)
         {

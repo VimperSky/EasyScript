@@ -1,6 +1,6 @@
 ﻿using SymbolTable;
 
-namespace SLR;
+namespace SLR.Analyzer;
 
 public class ActionManager
 {

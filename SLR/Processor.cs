@@ -3,6 +3,7 @@ using Generator;
 using Generator.InputParsing;
 using Generator.RulesParsing;
 using Generator.RulesProcessing;
+using SLR.Analyzer;
 using SLR.Table;
 
 namespace SLR
@@ -45,11 +46,11 @@ namespace SLR
             var input = _inputParser.Parse();
             try
             {
-                new Analyzer(_rulesProcessor).Analyze(input, tableRules, fixedRules);
+                new Analyzer.Analyzer(_rulesProcessor).Analyze(input, tableRules, fixedRules);
             }
-            catch (Exception ex)
+            catch (AnalyzerException ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex);
             }
         }
     }

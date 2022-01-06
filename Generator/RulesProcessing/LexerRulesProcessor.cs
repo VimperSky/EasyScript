@@ -30,7 +30,7 @@ namespace Generator.RulesProcessing
         }
 
 
-        public string EmptyToken { get; } = TokenType.Empty.ToString();
+        public string EndToken { get; } = TokenType.Empty.ToString();
 
         public RuleItem ParseToken(string token)
         {

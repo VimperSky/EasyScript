@@ -5,7 +5,7 @@ namespace Generator.RulesProcessing
 {
     public interface IRulesProcessor
     {
-        string EmptyToken { get; }
+        string EndToken { get; }
         RuleItem ParseToken(string token);
         List<Rule> Process(List<(string NonTerminal, string RightBody)> inputRules);
     }

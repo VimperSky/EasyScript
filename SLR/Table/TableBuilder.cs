@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Generator;
+using Generator.RulesProcessing;
 using Generator.Types;
 using SLR.Types;
 
@@ -23,7 +24,6 @@ namespace SLR.Table
                     valueKeys.Add(ruleItem.Value);
             }
 
-            valueKeys.Add(Constants.EndSymbol);
             _valueKeys = valueKeys.ToList();
         }
 
@@ -97,7 +97,7 @@ namespace SLR.Table
             var next = GetItem(item.RuleIndex, item.ItemIndex + 1);
             if (next.Type == ElementType.End)
             {
-                tableRule.QuickCollapse(Constants.EndSymbol, item.RuleIndex + 1);
+                tableRule.QuickCollapse(next.Value, item.RuleIndex + 1);
                 return;
             }
 
@@ -130,7 +130,8 @@ namespace SLR.Table
                 if (first.Type is ElementType.Terminal or ElementType.NonTerminal or ElementType.End)
                 {
                     tableRule.QuickAdd(first);
-                    if (first.Type is ElementType.NonTerminal && nonTerm != first.Value) First(tableRule, first.Value);
+                    if (first.Type is ElementType.NonTerminal && nonTerm != first.Value) 
+                        First(tableRule, first.Value);
                 }
             }
         }

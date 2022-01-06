@@ -9,6 +9,9 @@ namespace Generator.RulesProcessing
     {
         private HashSet<string> _nonTerminals;
 
+
+        public string EmptyToken => Constants.EmptySymbol;
+
         public RuleItem ParseToken(string token)
         {
             return _nonTerminals.Contains(token)

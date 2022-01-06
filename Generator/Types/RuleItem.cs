@@ -6,13 +6,15 @@ namespace Generator.Types
     {
         public readonly ElementType Type;
         public readonly string Value;
+        public string Action;
 
         private bool _indexesSet;
 
-        public RuleItem(string value, ElementType type)
+        public RuleItem(string value, ElementType type, string action = null)
         {
             Value = value;
             Type = type;
+            Action = action;
         }
 
 
@@ -41,7 +43,7 @@ namespace Generator.Types
 
             if (_indexesSet)
                 return Value + (RuleIndex + 1) + (ItemIndex + 1);
-
+            
             return Value;
         }
 

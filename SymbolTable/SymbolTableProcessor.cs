@@ -5,9 +5,15 @@ namespace SymbolTable;
 
 public class SymbolTableProcessor
 {
-    private readonly Stack<Stack<TableItem>> _tables = new();
+    private readonly Stack<Stack<TableItem>> _tables;
     private Stack<TableItem> TopTable => _tables.Peek();
 
+    public SymbolTableProcessor()
+    {
+        _tables = new Stack<Stack<TableItem>>();
+        CreateTable();
+    }
+    
     public void CreateTable()
     {
         _tables.Push(new Stack<TableItem>());
@@ -26,7 +32,7 @@ public class SymbolTableProcessor
         TopTable.Push(new TableItem {TokenType = type, Name = name});
     }
 
-    public TokenType? Find(string name)
+    public TokenType? Get(string name)
     {
         foreach (var item in _tables)
         {

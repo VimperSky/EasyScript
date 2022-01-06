@@ -45,7 +45,7 @@ namespace SLR
             var input = _inputParser.Parse();
             try
             {
-                Analyzer.Analyze(input, tableRules, fixedRules);
+                new Analyzer(_rulesProcessor).Analyze(input, tableRules, fixedRules);
             }
             catch (Exception ex)
             {

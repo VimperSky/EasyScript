@@ -1,87 +1,96 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Generator;
+using Generator.RulesProcessing;
 using Generator.Types;
 using SLR.Types;
 
-namespace SLR
+namespace SLR;
+
+public class Analyzer
 {
-    public static class Analyzer
+    private readonly IRulesProcessor _rulesProcessor;
+    private readonly ActionManager _actionManager;
+
+    public Analyzer(IRulesProcessor rulesProcessor)
     {
-        public static void Analyze(IEnumerable<string> input, List<TableRule> table, List<Rule> rules)
+        _rulesProcessor = rulesProcessor;
+        
+        _actionManager = new ActionManager();
+    }
+    
+    public void Analyze(IEnumerable<string> inputTokens, List<TableRule> table, List<Rule> rules)
+    {
+        var leftStack = new Stack<string>();
+        var rightStack = new Stack<string>();
+        var inputStack = new Stack<string>();
+        foreach (var inp in inputTokens.Reverse())
+            inputStack.Push(inp);
+
+        rightStack.Push(table.First().Key);
+        while (true)
         {
-            var left = new Stack<string>();
-            var right = new Stack<string>();
-            var inputStack = new Stack<string>();
-            foreach (var inp in input.Reverse())
-                inputStack.Push(inp);
+            try
+            {
+                var token = inputStack.Count > 0 ? inputStack.Peek() : _rulesProcessor.EmptyToken;
+                
+                var (_, rowItems) = table.First(x => x.Key == rightStack.Peek()).Values
+                    .SingleOrDefault(x => x.Key == token);
 
-            right.Push(table.First().Key);
-            while (true)
-                try
+                if (rowItems == null)
+                    throw new Exception("Items are empty");
+
+                if (rowItems.Count == 0)
+                    continue;
+
+                var firstRowItem = rowItems.First();
+                if (firstRowItem.Value == "OK")
                 {
-                    var ch = inputStack.Count > 0 ? inputStack.Pop() : "";
-                    var tableValuesWithKey = table.First(x => x.Key == right.Peek()).Values;
-                    var tableItems = ch == ""
-                        ? tableValuesWithKey.Where(x => x.Key == Constants.EndSymbol).ToList()
-                        : tableValuesWithKey.Where(x => x.Key == ch).ToList();
+                    Console.WriteLine("Analyzer correct!");
+                    return;
+                }
 
-                    if (tableItems.Count == 0)
-                        throw new Exception("Items are empty");
+                if (firstRowItem.Type is ElementType.Collapse)
+                {
+                    // Правило, по которому сворачиваемся
+                    var rule = rules[int.Parse(firstRowItem.Value.Substring(1, firstRowItem.Value.Length - 1)) - 1];
+                    
 
-                    var elements = tableItems.First().Value;
+                    if (rule.Items[0].Type is not ElementType.Empty)
+                    {
+                        for (var i = 0; i < rule.Items.Count && rule.Items[i].Type is not ElementType.End; i++)
+                        {
+                            leftStack.Pop();
+                            rightStack.Pop();
+                        }
+                    }
 
-                    if (elements.Count == 0)
-                        continue;
-
-                    var firstElement = elements.First();
-                    if (firstElement.Value == "OK")
+                    if (rightStack.Count == 1 && leftStack.Count == 0 && inputStack.Count == 0)
                     {
                         Console.WriteLine("Analyzer correct!");
                         return;
                     }
 
-                    if (firstElement.Type is ElementType.Collapse)
-                    {
-                        if (ch != "") inputStack.Push(ch);
-
-                        // номер свертки
-                        var ruleNumber =
-                            int.Parse(elements.First().Value.Substring(1, elements.First().Value.Length - 1)) - 1;
-                        var rule = rules[ruleNumber];
-
-                        if (rule.Items[0].Type is not ElementType.Empty)
-                            for (var i = 0; i < rule.Items.Count && rule.Items[i].Type is not ElementType.End; i++)
-                            {
-                                left.Pop();
-                                right.Pop();
-                            }
-
-                        if (right.Count == 1 && left.Count == 0 && inputStack.Count == 0)
-                        {
-                            Console.WriteLine("Analyzer correct!");
-                            return;
-                        }
-
-                        inputStack.Push(rule.NonTerminal);
-                        continue;
-                    }
-
-                    right.Push(elements.ToString());
-                    left.Push(ch);
-
-                    Console.WriteLine($"Left [{string.Join(", ", left.ToArray())}]" +
-                                      $" Input [{string.Join(" ", inputStack.ToArray())}]" +
-                                      $" Right [{string.Join(", ", right.ToArray())}]");
+                    inputStack.Push(rule.NonTerminal);
                 }
-                catch (Exception e)
+                else
                 {
-                    throw new ArgumentException("[Syntax Analyzer Error] " + e + "\r\n*** Analyzer State ***" +
-                                                $"\r\nLeft [{string.Join(", ", left.ToArray())}]" +
-                                                $"\r\nInput [{string.Join(" ", inputStack.ToArray())}]" +
-                                                $"\r\nRight [{string.Join(", ", right.ToArray())}]");
+                    inputStack.Pop();
+                    rightStack.Push(rowItems.ToString());
+                    leftStack.Push(token);
                 }
+                
+                Console.WriteLine($"Left [{string.Join(", ", leftStack.ToArray())}]" +
+                                  $" Input [{string.Join(" ", inputStack.ToArray())}]" +
+                                  $" Right [{string.Join(", ", rightStack.ToArray())}]");
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException("[Syntax Analyzer Error] " + e + "\r\n*** Analyzer State ***" +
+                                            $"\r\nLeft [{string.Join(", ", leftStack.ToArray())}]" +
+                                            $"\r\nInput [{string.Join(" ", inputStack.ToArray())}]" +
+                                            $"\r\nRight [{string.Join(", ", rightStack.ToArray())}]");
+            }
         }
     }
 }

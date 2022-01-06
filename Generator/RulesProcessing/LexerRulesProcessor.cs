@@ -30,24 +30,30 @@ namespace Generator.RulesProcessing
         }
 
 
+        public string EmptyToken { get; } = TokenType.Empty.ToString();
+
         public RuleItem ParseToken(string token)
         {
-            if (token.StartsWith("<") && token.EndsWith(">"))
-                return new RuleItem(token, ElementType.NonTerminal);
+            var splitToken = token.Split("#");
+            var tokenValue = splitToken[0];
+            var action = splitToken.Length > 1 ? splitToken[1] : null;
 
-            if (TokenTypes.ContainsKey(token))
+            if (tokenValue.StartsWith("<") && tokenValue.EndsWith(">"))
+                return new RuleItem(tokenValue, ElementType.NonTerminal, action);
+
+            if (TokenTypes.ContainsKey(tokenValue))
             {
-                var tokenType = TokenTypes[token];
+                var tokenType = TokenTypes[tokenValue];
                 var elementType = tokenType switch
                 {
                     TokenType.End => ElementType.End,
                     TokenType.Empty => ElementType.Empty,
                     _ => ElementType.Terminal
                 };
-                return new RuleItem(tokenType.ToString(), elementType);
+                return new RuleItem(tokenType.ToString(), elementType, action);
             }
 
-            throw new ArgumentException($"TokenType is not correct. {token}");
+            throw new ArgumentException($"TokenType is not correct. {tokenValue}");
         }
 
         public List<Rule> Process(List<(string NonTerminal, string RightBody)> inputRules)

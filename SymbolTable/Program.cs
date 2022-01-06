@@ -24,12 +24,12 @@ st.Push(TokenType.Int, "mek");
 st.Push(TokenType.Float, "dek");
 st.Push(TokenType.Int, "dek");
 
-Console.WriteLine(st.Find("mek"));
+Console.WriteLine(st.Get("mek"));
 st.CreateTable();
 st.Push(TokenType.Int, "dek");
 st.Push(TokenType.Float, "mek");
-Console.WriteLine(st.Find("mek"));
-Console.WriteLine(st.Find("dek"));
+Console.WriteLine(st.Get("mek"));
+Console.WriteLine(st.Get("dek"));
 st.CreateTable();
 st.Push(TokenType.Int, "aboba");
-Console.WriteLine(st.Find("aboba"));
+Console.WriteLine(st.Get("aboba"));

@@ -30,7 +30,8 @@ public class Analyzer
             inputStack.Push(inp);
 
         rightStack.Push(table.First().Key);
-        
+
+        int index = 0;
         while (true)
         {
             try
@@ -43,10 +44,10 @@ public class Analyzer
                 var (_, cell) = table.Single(x => x.Key == tableValue).Values
                     .SingleOrDefault(x => x.Key == token);
 
-                if (cell == null)
-                    throw new AnalyzerInnerException($"Cannot find cell by token: {token} in table row: {tableValue}.");
-
-                // В клетке может находится 1 и более элементов. Пример двух элементов: if11, if12.
+                if (cell == null || cell.Count == 0)
+                    throw new AnalyzerInnerException($"In input {token} follows the {tableValue} at index: {index}, it is not allowed by rules.");
+                
+                // В клетке может находится 0 и более элементов. Пример двух элементов: if11, if12.
                 var firstItem = cell.First();
                 if (firstItem.Value == "OK")
                 {
@@ -58,7 +59,12 @@ public class Analyzer
                 {
                     // Ищем правило, по которому происходит свертка
                     var rule = rules[int.Parse(firstItem.Value.Substring(1, firstItem.Value.Length - 1)) - 1];
-
+                    if (firstItem.Action != null)
+                    {
+                        
+                    }
+                    
+                    
                     // Мы удаляем из левого и правого стека столько элементов, сколько находится в этом правиле, за исключением End символа.
                     for (var i = 0; i < rule.Items.Count && rule.Items[i].Type is not ElementType.End; i++)
                     {
@@ -77,6 +83,7 @@ public class Analyzer
                 }
                 else
                 {
+                    index++;
                     inputStack.Pop();
                     rightStack.Push(cell.ToString());
                     leftStack.Push(token);

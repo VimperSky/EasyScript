@@ -85,7 +85,7 @@ namespace SLR.Table
                 var nextItems = _rules.FindNextRecursive(_rules[item.RuleIndex].NonTerminal);
                 foreach (var nextItem in nextItems)
                 {
-                    tableRule.QuickCollapse(nextItem.Value, item.RuleIndex + 1);
+                    tableRule.QuickCollapse(nextItem, item.RuleIndex + 1);
                     if (nextItem.Type is ElementType.NonTerminal)
                         FirstCollapse(tableRule, nextItem.Value, item.RuleIndex + 1);
                 }
@@ -97,7 +97,7 @@ namespace SLR.Table
             var next = GetItem(item.RuleIndex, item.ItemIndex + 1);
             if (next.Type == ElementType.End)
             {
-                tableRule.QuickCollapse(next.Value, item.RuleIndex + 1);
+                tableRule.QuickCollapse(next, item.RuleIndex + 1);
                 return;
             }
 
@@ -113,7 +113,7 @@ namespace SLR.Table
                 switch (first.Type)
                 {
                     case ElementType.Terminal or ElementType.End:
-                        tableRule.QuickCollapse(first.Value, collapseIndex);
+                        tableRule.QuickCollapse(first, collapseIndex);
                         break;
                     case ElementType.NonTerminal when nonTerm != first.Value:
                         FirstCollapse(tableRule, first.Value, collapseIndex);

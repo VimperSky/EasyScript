@@ -39,10 +39,17 @@ namespace Generator.Types
         public override string ToString()
         {
             if (Type == ElementType.Collapse)
-                return Value;
+            {
+                var val =  Value;
+                
+                if (Action != null)
+                    val += $"#{Action}";
+                
+                return val;
+            }
 
             if (_indexesSet)
-                return Value + (RuleIndex + 1) + (ItemIndex + 1);
+                return Value + (RuleIndex + 1) + (ItemIndex + 1) ;
             
             return Value;
         }

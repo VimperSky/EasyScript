@@ -34,8 +34,9 @@ namespace SLR.Types
                 Values[ruleItem.Value].Add(ruleItem);
         }
 
-        public void QuickCollapse(string key, int index)
+        public void QuickCollapse(RuleItem ruleItem, int index)
         {
+            var key = ruleItem.Value;
             // Если такого ключа не существует в словаре впринципе
             if (!Values.ContainsKey(key))
                 throw new ArgumentException("Wrong ruleItem index! " + key);
@@ -54,7 +55,7 @@ namespace SLR.Types
             }
 
 
-            Values[key].Add(new RuleItem($"R{index}", ElementType.Collapse));
+            Values[key].Add(new RuleItem($"R{index}", ElementType.Collapse, ruleItem.Action));
         }
 
         public override string ToString()

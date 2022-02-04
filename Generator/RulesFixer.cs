@@ -34,7 +34,7 @@ namespace Generator
                     InsertRuleAtStart(rules, true);
                 }
 
-                rules[0].Items.Add(_rulesProcessor.ParseToken(Constants.EndSymbol));
+                //rules[0].Items.Add(_rulesProcessor.ParseToken(Constants.EndSymbol));
             }
 
             if (slr && rules[0].Items.Any(x => x.Value == rules[0].NonTerminal))

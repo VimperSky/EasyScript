@@ -3,13 +3,9 @@ using Generator.RulesParsing;
 using Generator.RulesProcessing;
 using SLR;
 
-var isLexerMode = args.Length > 0;
-Processor processor;
-if (isLexerMode)
-    processor = new Processor(new GoogleSheetsRulesParser(args[0]),
-        new LexerRulesProcessor(), new LexerInputParser("input.txt"));
-else
-    processor = new Processor(new TxtRulesParser("rules.txt"),
-        new SimpleRulesProcessor(), new SimpleInputParser("input.txt"));
+var sheetName = args.Length > 0 ? args[0] : "Ready";
+
+var processor = new Processor(new GoogleSheetsRulesParser(sheetName),
+    new LexerRulesProcessor(), new LexerInputParser("input.txt"));
 
 processor.Process();

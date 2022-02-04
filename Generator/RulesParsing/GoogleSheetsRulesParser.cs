@@ -9,7 +9,7 @@ using CsvHelper.Configuration;
 
 namespace Generator.RulesParsing
 {
-    public class GoogleSheetsRulesParser : IRulesParser
+    public class GoogleSheetsRulesParser: IRulesParser
     {
         private const string Uri = "https://docs.google.com/spreadsheets/d/1-qwiBiovunGgM05c2Zntl6r440ZCM_E1K6yaKpp5dvY/gviz/tq?tqx=out:csv&sheet=";
         private static readonly HttpClient HttpClient = new();

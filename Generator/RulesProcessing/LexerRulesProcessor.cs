@@ -7,7 +7,7 @@ using Lexer.Types;
 
 namespace Generator.RulesProcessing
 {
-    public class LexerRulesProcessor : IRulesProcessor
+    public class LexerRulesProcessor: IRulesProcessor
     {
         private static readonly Dictionary<string, TokenType> TokenTypes;
 
@@ -29,10 +29,17 @@ namespace Generator.RulesProcessing
                 .ToDictionary(x => x.Key, x => x.Value);
         }
 
+        public TokenType ParseTokenType(string tokenValue)
+        {
+            if (TokenTypes.ContainsKey(tokenValue))
+            {
+                return TokenTypes[tokenValue];
+            }
 
-        public string EndToken { get; } = TokenType.Empty.ToString();
-
-        public RuleItem ParseToken(string token)
+            throw new ArgumentException($"TokenType is not correct. {tokenValue}");
+        }
+        
+        private RuleItem ParseToken(string token)
         {
             var splitToken = token.Split("#");
             var tokenValue = splitToken[0];
@@ -41,19 +48,14 @@ namespace Generator.RulesProcessing
             if (tokenValue.StartsWith("<") && tokenValue.EndsWith(">"))
                 return new RuleItem(tokenValue, ElementType.NonTerminal, action);
 
-            if (TokenTypes.ContainsKey(tokenValue))
+            var tokenType = ParseTokenType(tokenValue);
+            var elementType = tokenType switch
             {
-                var tokenType = TokenTypes[tokenValue];
-                var elementType = tokenType switch
-                {
-                    TokenType.End => ElementType.End,
-                    TokenType.Empty => ElementType.Empty,
-                    _ => ElementType.Terminal
-                };
-                return new RuleItem(tokenType.ToString(), elementType, action);
-            }
-
-            throw new ArgumentException($"TokenType is not correct. {tokenValue}");
+                TokenType.End => ElementType.End,
+                TokenType.Empty => ElementType.Empty,
+                _ => ElementType.Terminal
+            };
+            return new RuleItem(tokenType.ToString(), elementType, action);
         }
 
         public List<Rule> Process(List<(string NonTerminal, string RightBody)> inputRules)

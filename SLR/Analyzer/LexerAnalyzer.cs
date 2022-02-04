@@ -3,49 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using Generator.RulesProcessing;
 using Generator.Types;
+using Lexer.Types;
 using SLR.Types;
 
 namespace SLR.Analyzer;
 
-public class Analyzer
+public class LexerAnalyzer
 {
-    private readonly IRulesProcessor _rulesProcessor;
+    private readonly LexerRulesProcessor _rulesProcessor;
     private readonly ActionManager _actionManager;
 
-    public Analyzer(IRulesProcessor rulesProcessor)
+    public LexerAnalyzer(LexerRulesProcessor rulesProcessor)
     {
         _rulesProcessor = rulesProcessor;
-        
         _actionManager = new ActionManager();
     }
     
-    public void Analyze(IEnumerable<string> inputTokens, List<TableRule> table, List<Rule> rules)
+    public void Analyze(IEnumerable<Token> inputTokens, List<TableRule> table, List<Rule> rules)
     {
-        // Левый стек используется для хранения токенов
+        // Левый стек используется для хранения типов токенов
         // Правый стек используется для хранения табличных значений
-        var leftStack = new Stack<string>();
+        var inputStack = new Stack<Token>();
+
+        var leftStack = new Stack<TokenType>();
         var rightStack = new Stack<string>();
-        var inputStack = new Stack<string>();
         foreach (var inp in inputTokens.Reverse())
             inputStack.Push(inp);
 
         rightStack.Push(table.First().Key);
 
-        int index = 0;
         while (true)
         {
             try
             {
-                var token = inputStack.Count > 0 ? inputStack.Peek() : _rulesProcessor.EndToken;
+                var token = inputStack.Peek();
                 var tableValue = rightStack.Peek();
 
                 // Достаем элемент из правого стека, находим строчку, где этот элемент находится слева таблицы. 
                 // Находим в строчке клетку, где этот элемент равен входному токену
                 var (_, cell) = table.Single(x => x.Key == tableValue).Values
-                    .SingleOrDefault(x => x.Key == token);
+                    .SingleOrDefault(x => x.Key == token.Type.ToString());
 
                 if (cell == null || cell.Count == 0)
-                    throw new AnalyzerInnerException($"In input {token} follows the {tableValue} at index: {index}, it is not allowed by rules.");
+                    throw new AnalyzerInnerException($"In input {token.ToString()} follows the {tableValue}, it is not allowed by rules.");
                 
                 // В клетке может находится 0 и более элементов. Пример двух элементов: if11, if12.
                 var firstItem = cell.First();
@@ -59,12 +59,7 @@ public class Analyzer
                 {
                     // Ищем правило, по которому происходит свертка
                     var rule = rules[int.Parse(firstItem.Value.Substring(1, firstItem.Value.Length - 1)) - 1];
-                    if (firstItem.Action != null)
-                    {
-                        
-                    }
-                    
-                    
+
                     // Мы удаляем из левого и правого стека столько элементов, сколько находится в этом правиле, за исключением End символа.
                     for (var i = 0; i < rule.Items.Count && rule.Items[i].Type is not ElementType.End; i++)
                     {
@@ -79,14 +74,14 @@ public class Analyzer
                     //     return;
                     // }
 
+                    inputStack.Push( new Token(_rulesProcessor.ParseTokenType(rule.NonTerminal), );
                     inputStack.Push(rule.NonTerminal);
                 }
                 else
                 {
-                    index++;
                     inputStack.Pop();
                     rightStack.Push(cell.ToString());
-                    leftStack.Push(token);
+                    leftStack.Push(token.Type.ToString());
                 }
 
                 // Console.WriteLine($"Left [{string.Join(", ", leftStack.ToArray())}]" +

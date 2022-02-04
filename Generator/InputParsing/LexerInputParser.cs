@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
 using Lexer.Types;
 
 namespace Generator.InputParsing
@@ -14,11 +14,10 @@ namespace Generator.InputParsing
         }
 
 
-        public string[] Parse()
+        public IEnumerable<Token> Parse()
         {
             var lexer = new Lexer.Lexer(File.OpenRead(_path));
-            return lexer.Tokens.Select(x => x.Type.ToString())
-                .Append(TokenType.End.ToString()).ToArray();
+            return lexer.Tokens;
         }
     }
 }
